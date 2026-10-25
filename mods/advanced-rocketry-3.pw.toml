@@ -1,0 +1,13 @@
+name = "Advanced Rocketry 3"
+filename = "adv_rocketry-1.21.1-3.0.beta.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/ADdFpoYl/versions/OA08w9Vk/adv_rocketry-1.21.1-3.0.beta.jar"
+hash-format = "sha512"
+hash = "1e95f392f296a00e86ba00fd74455748e58156568b3dee4e62b48a238a8cbaaeb4fe2476d7a9374ed5a8d14eb2de45c8712131da3f770744435bf1542a783eaf"
+
+[update]
+[update.modrinth]
+mod-id = "ADdFpoYl"
+version-id = "OA08w9Vk"

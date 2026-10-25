@@ -1,0 +1,13 @@
+name = "Multiblocked2"
+filename = "Multiblocked2-1.21-1.21.1-21.1.2-all.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/R2gjKEpa/versions/XlQ10omv/Multiblocked2-1.21-1.21.1-21.1.2-all.jar"
+hash-format = "sha512"
+hash = "741e43029b4a58584a0d215e7fe62e6553a5648f190d5477f57a01f4570ae3fc0dde997c3ccf3e5405d23556cf59a0f66bf648f5507181a421b8f68bd5de9a7a"
+
+[update]
+[update.modrinth]
+mod-id = "R2gjKEpa"
+version-id = "XlQ10omv"

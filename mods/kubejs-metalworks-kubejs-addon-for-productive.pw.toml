@@ -1,0 +1,13 @@
+name = "KubeJS Metalworks (KubeJS Addon for Productive Metalworks)"
+filename = "productive-metalworks-kubejs-addon-1.0.0.jar"
+side = "both"
+
+[download]
+url = "https://mediafilez.forgecdn.net/files/8329/295/productive-metalworks-kubejs-addon-1.0.0.jar"
+hash-format = "sha512"
+hash = "679995eb9a30ea2e235f851225b39ae2bb4d1b70f15f2e74fee545e48db82996b538606eb9ffb77851154f290161f22155b30b72e4bd261293eb9b3b3efe9c4a"
+
+[update]
+[update.curseforge]
+file-id = 8329295
+project-id = 1589907

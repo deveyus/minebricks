@@ -1,0 +1,13 @@
+name = "KilaGraph"
+filename = "kilagraph-neoforge-1.21.1-21.1.0.16.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/zZO0N3W6/versions/KwiKbOzM/kilagraph-neoforge-1.21.1-21.1.0.16.jar"
+hash-format = "sha512"
+hash = "2e3c473cbaeb708b311374cf180af683dd81106232ee716037043273434976ba22179ea6b405c24c714f045105cd7e1a4480b2552720061e43bf346d90294598"
+
+[update]
+[update.modrinth]
+mod-id = "zZO0N3W6"
+version-id = "KwiKbOzM"

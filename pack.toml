@@ -1,0 +1,13 @@
+name = "Minebricks"
+author = "Fina"
+version = "0.4.0"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "51b9f83f444db1109532107fc2f0064960edf8a74008ca3705649e8d72e40a1f"
+
+[versions]
+minecraft = "1.21.1"
+neoforge = "21.1.265"
