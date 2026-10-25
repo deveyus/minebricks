@@ -1,4 +1,4 @@
-# Minebricks — packwiz starter (v0.4.0)
+# Minebricks — packwiz starter (v0.4.1)
 
 Built 2026-10-25. Every version resolved live from Modrinth/CurseForge at build time;
 roster per the pack lead's calls. No Create. Storage, scripting, privacy, multiblock,
@@ -226,3 +226,26 @@ hash recomputed, `packwiz_verify.py` ALL PASS.
 Design consequences (pack lead): molten fluids + temperatures for custom ores via KubeJS
 Metalworks = makeOre emit growth, **deferred**. Standing requirement: statistical
 ore-availability check per metal before shipping (avoid TFC-style scarcity traps).
+
+## Map era (v0.4.1, added 2026-10-25)
+
+| Mod | Version | Source | Note |
+|---|---|---|---|
+| Antique Atlas | 1.21.1-8.0.1 | **CurseForge** (227795 / 6849155) | Hunternif-lineage hand-drawn atlas, native NeoForge build. NOT the sisby "Antique Atlas 4" rewrite (that one needs Connector + FFAPI — skipped) |
+| Xaero's Minimap | neoforge-1.21.1-26.6.0 | Modrinth | **gated off at start** — see below |
+| Xaero's World Map | neoforge-1.21.1-1.47.0 | Modrinth | **gated off at start** — see below |
+| Open Parties and Claims | neoforge-1.21.1-0.33.0 | Modrinth | claims/parties; paints onto Xaero once GPS is up |
+| Xaero's Map Server Utils | 1.1.0+mod | Modrinth (YJgkgKMm) | the gate hardware — universal mod jar (NeoForge/Fabric manifests + embedded data/), so it lives in `mods/` as a metafile, NOT in the Paxi datapacks folder |
+
+### The GPS gate (design — KubeJS owns the logic, ships later)
+
+Server Utils' mechanism (read from its 36 mcfunctions): Xaero's listens for magic
+chat markers — `§n§o§m§i§n§i§m§a§p` disables the minimap completely,
+`§r§e§s§e§t§x§a§e§r§o` resets all server-set flags (map back on). The mod's
+autorun is a global scoreboard mode (`#mode xa_autorun`) re-sent per join —
+**shipped with autorun OFF (its default)**. Gate logic is KubeJS: per-player
+join hook sends the right marker to that player only. Per-person unlock = a
+tellraw to one player; constellation = the global broadcast variant. Exact
+trigger (own satellite vs shared constellation) is a pack-lead call recorded
+in the scanner spec. Early game runs on Antique Atlas + vanilla paper maps;
+the ore scanner's rings are vanilla-map decorations and never touch Xaero.

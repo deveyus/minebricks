@@ -1,0 +1,13 @@
+name = "Antique Atlas"
+filename = "Antique Atlas-1.21.1-8.0.1-NeoForge.jar"
+side = "both"
+
+[download]
+url = "https://edge.forgecdn.net/files/6849/155/Antique%20Atlas-1.21.1-8.0.1-NeoForge.jar"
+hash-format = "sha512"
+hash = "9a050899cace18f0a907c5e460feddcc9b17ddcf6c5a3113921ead70c275f0e16cb23a374a7c537b30632be690a85149f0f1d536052baeca770970bae1284573"
+
+[update]
+[update.curseforge]
+file-id = 6849155
+project-id = 227795

@@ -6,6 +6,11 @@ hash = "bfb09d2504b2811643f99528f4b2645e1ee3c3aae67d798fe23943b06fad9f3a"
 metafile = true
 
 [[files]]
+file = "mods/antique-atlas.pw.toml"
+hash = "b205dffed163712290ac45bf2948e731242ce6d0d3c40622d6a430e63c051155"
+metafile = true
+
+[[files]]
 file = "mods/appleskin.pw.toml"
 hash = "b79bd430bfb569a549f6490ea08bb7b1e3e6bcee75c35f76769578550ba699a8"
 metafile = true
@@ -85,11 +90,11 @@ file = "mods/kilagraph.pw.toml"
 hash = "7f8cf9a5d1520173451153c1ae84957d6e4042a3ad39150b7d8b9157ea22c225"
 metafile = true
 
-
 [[files]]
 file = "mods/kubejs-metalworks-kubejs-addon-for-productive.pw.toml"
 hash = "874faed48ff6ae8a7d7a9124d0c260dffde550e8a37bee8c22cfe19769b976c9"
 metafile = true
+
 [[files]]
 file = "mods/kubejs.pw.toml"
 hash = "aef60c1b79959b5a56afaf0f35962ce090ce6d2f028259429056cc5516da0217"
@@ -161,6 +166,11 @@ hash = "fb9372a473677708db4111075274c6fc1616b89b988d95c9595cd1868b9a1902"
 metafile = true
 
 [[files]]
+file = "mods/open-parties-and-claims.pw.toml"
+hash = "96f6e8e9a2c8059136524bc86655ba7bc48812bda87c9951115e521db30e49c1"
+metafile = true
+
+[[files]]
 file = "mods/paxi.pw.toml"
 hash = "b02997143ba06ec7a7e4ab96a40f046b2bc1b8a5f52494463f0667a30a80f764"
 metafile = true
@@ -170,11 +180,11 @@ file = "mods/probejs.pw.toml"
 hash = "606171489c28db1240cc7a0867d38eabd0452e3e174356c4d3d05b9afdac1a84"
 metafile = true
 
-
 [[files]]
 file = "mods/productive-metalworks.pw.toml"
 hash = "81496e445bf484e5cfec7c81e4ddef48c7df1e2b5e62bdd10b4f3a1114504524"
 metafile = true
+
 [[files]]
 file = "mods/railcraft-reborn.pw.toml"
 hash = "0369715060e4e68153d5a1cc028c87e6d07f91f3827566614c16c8e3ff40997f"
@@ -195,11 +205,11 @@ file = "mods/rhino.pw.toml"
 hash = "78108dd9502bb40a8fd5e0cffda7c17356260adf27765a0154330cc689a19252"
 metafile = true
 
-
 [[files]]
 file = "mods/silent-gear-metalworks.pw.toml"
 hash = "e8791e21951e0b42dd25b7284274e4d1fdaa8eacaf5144dc6445b2465c2c7fba"
 metafile = true
+
 [[files]]
 file = "mods/silent-gear.pw.toml"
 hash = "0546e61b591915b23e3042b894a7bf0bf6ab5a29ca11d82bcbf46cb290deb256"
@@ -258,4 +268,19 @@ metafile = true
 [[files]]
 file = "mods/via-romana.pw.toml"
 hash = "80068027ac96d780015866c87ed16eefb7c12c5f3f383d1c98397ffbffffa0ef"
+metafile = true
+
+[[files]]
+file = "mods/xaeros-map-server-utils.pw.toml"
+hash = "4063c19c78a2d5db3058b332f74c1cc848641602f8e3ae3e268ebbd6c246c4a5"
+metafile = true
+
+[[files]]
+file = "mods/xaeros-minimap.pw.toml"
+hash = "a3f9db19fb014b9f9030898b9f1cf800072cbb2f686d91b82d237c56cf991f81"
+metafile = true
+
+[[files]]
+file = "mods/xaeros-world-map.pw.toml"
+hash = "3c7fff3f6ea2550dc9892955c37159dff6f242bacff92bb2388b5dfcdafcc70e"
 metafile = true
