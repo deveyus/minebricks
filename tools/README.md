@@ -21,3 +21,9 @@ at the pack root (`tools/`, `*.md`, `*.zip`, `*.sh`, `.git/` stay in git, out of
 - **chunking debates**: `chunk-index-surface-scan.py`, `chunk-reachability-scan.py`
 - **AR3 satellite chain**: `sat-scan.py` (+2, 3)
 - **debug builds**: `debugbuild_lootdump.py` (lootdump zips)
+- **no-infinity doctrine (mintscan)**: `mintscan.py` (closure + expanding-cycle
+  audit over runtime dumps -> MINT-REPORT.md), `mintscan-corpus.py` (static
+  fixture builder from jars — stand-in until a real /mintdump pass). Inputs:
+  `kubejs/export/mint/*` (from minebricks_mintdump.js), `kubejs/export/loot/*`
+  (from /lootdump), `GROWTH-DIALS.json` + `WORLDGEN-SOURCES.json` (pack root,
+  hand-maintained dials/sources).

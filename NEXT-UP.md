@@ -27,6 +27,26 @@ Vector ledger (doctrine-active, audit queued):
 - **Audit pending, untouched** — lava dripstone farming, cobble generators,
   villager trade loops. Nothing installed touches them yet.
 
+**Mintscan v1 — SHIPPED 20:36Z+ (doctrine audit instrumented):** the loop-detection
+tool she greenlit with one correction: ground truth = **debug outputs**, not jar
+parsing, because verification must run against the KubeJS-modified graph.
+- `/mintdump` (`minebricks_mintdump.js`) captures the runtime post-KubeJS graph:
+  recipes (normalized, tags pre-resolved), item tags, block→loot-table edges →
+  `kubejs/export/mint/`. Loot contents ride `/lootdump`. Rides the next debug build.
+- `tools/mintscan.py` consumes dumps + `GROWTH-DIALS.json` + `WORLDGEN-SOURCES.json`
+  (pack root, hand-maintained) → pass 1 fixpoint closure, pass 2 log-space
+  expanding-cycle detection → `MINT-REPORT.md`, every edge citing its recipe id.
+- Static fixture (`tools/mintscan-corpus.py`) previewed the audit early: **0 ungated
+  mints** in 5943 jar-side recipes; 14 gated growths (all on dials with gates on
+  record); 134 flat parity loops; closure 63.2% of observed items. Fixture caveat:
+  pre-KubeJS, quarantines fluid-driven recipe types (PM casting) — runtime dump supersedes.
+- Verification loop from here: change KubeJS scripts → `/mintdump` → mintscan →
+  diff MINT-REPORT. Our own recipes get audited by the same gate.
+
+**Tank cart variants — HELD (her call 20:36Z):** revisit only if convoys prove
+insufficient. Ladder remains LL 10 / RC 32 / convoy n×32 / RC iron tank (static);
+custom entities need a Java companion mod (KubeJS can't register entities on 1.21).
+
 **Barrel status (all seven approved 20:12Z, with conditions):** Farmer's Delight
 clean · Spice of Life Onion clean (config blocked on food math — `/fooddump`
 tool built, `minebricks_fooddump.js`, rides the next debug build) · toffel's
