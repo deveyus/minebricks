@@ -66,6 +66,12 @@ tag `v*` → GitHub Actions → three artifacts + SHA256SUMS on a Release:
   tools/, docs, dials, and fixtures out of all outputs. Dry-runs: Actions
   "Release" dispatch → artifacts without release. First release = `v0.4.1`
   (pack.toml version).
+- Design note 23:15Z (her challenge, answered): the bootstrapper route needs ZERO
+  embedded jars — the CF zip (52 embedded MR jars, 98.8 MB) and mrpack (5 embedded
+  CF jars, 3.8 MB) exist solely for launchers WITHOUT pre-launch hooks (CurseForge
+  app, Modrinth App). Trim is the pack lead's call: floor = Pages URL + 78 KB raw
+  zip; mrpack buys one-click Prism onboarding + Modrinth App support; CF zip buys
+  CurseForge-app support only.
 - Flag: manifest/pack name still reads "Friend Pack (working title)" — branding
   stamp is one `pack.toml` edit away, pack lead's call.
 
@@ -76,8 +82,25 @@ launch — releases (tag route) are for initial distribution, Pages is the live
 channel:
 - **Client (Prism/MultiMC):** `packwiz-installer-bootstrap.jar`
   (v0.0.3, stable link: `github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar`)
-  into the instance `.minecraft` folder, pre-launch command
-  `"$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://deveyus.github.io/minebricks/pack.toml`.
+  into the instance ROOT (Prism instances have no `.minecraft` folder — mods/ sits at
+  instance root), pre-launch command
+  `"$INST_JAVA" -jar packwiz-installer-bootstrap.jar --multimc-folder . https://deveyus.github.io/minebricks/pack.toml`.
+- **E2E-verified 2026-10-26 ~23:25Z** (first live bootstrapper run, Prism-shaped sandbox
+  instance → live Pages): 65/65 entries delivered (57 mods + 6 scripts + 2 .keep),
+  "Finished successfully!" — the route needs zero embedded jars, as designed. Two
+  findings, now baked into the release notes:
+  (a) `--multimc-folder .` is REQUIRED — packwiz-installer's upstream default (`..`)
+  misses Prism's `mmc-pack.json` (pre-launch CWD = instance root via
+  `setWorkingDirectory(gameRoot())`, and mmc-pack.json lives exactly there), so the
+  MC/loader auto-fix never fires by default; with the flag it rewrote a
+  vanilla-1.20.1 test instance to `net.minecraft=1.21.1` + `net.neoforged=21.1.265`
+  on first launch (GUI asks once, CLI auto-accepts). Bootstrapper route = zero manual
+  loader steps.
+  (b) First-ever run fetches packwiz-installer.jar via UNAUTHENTICATED
+  api.github.com (rate-limit shared per IP, 60/hr); 403 there is fatal when no cached
+  jar exists, survivable afterward (check degrades to the cached jar). Offline fallback:
+  `--bootstrap-no-update --bootstrap-main-jar packwiz-installer.jar`, or chainload via
+  `packwiz-installer-bootstrap.properties` (`packwiz.chainload.jar=<path>`).
 - **Server:** `java -jar packwiz-installer-bootstrap.jar -g -s server https://deveyus.github.io/minebricks/pack.toml`
   — the `-s server` filter works because all 6 client-only mods carry side metadata.
 - Deployment = `.github/workflows/pages.yml`: packwiz refresh → stage
