@@ -1,0 +1,6 @@
+# packwiz ignores (gitignore-style, pack-root relative) — saved in git, never indexed into the pack
+tools/
+*.md
+*.zip
+*.sh
+.git/
