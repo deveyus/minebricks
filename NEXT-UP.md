@@ -73,6 +73,13 @@ tag `v*` → GitHub Actions → ONE artifact + SHA256SUMS on a Release:
   "Easy There" note retired with the import formats. Consequence: Prism users
   lose one-click import but gain auto-update; Modrinth App / CF app users have
   no route (accepted by ruling).
+- Purge sweep 23:52Z (her: "We don't want to accidentally infringe by rehosting"):
+  full audit — releases (1, clean), Actions artifacts (old run's 102.65 MB
+  pack-outputs stash = cf zip + mrpack build output — DELETED; dry-run residue
+  DELETED; remaining = 3 github-pages artifacts, toml index only), git history
+  (13 commits, 0 jars ever committed), workflow definitions (zero jar downloads).
+  No mod bytes hosted anywhere in the repo, ever: the zip holds .pw.toml pointers;
+  jars resolve to Modrinth / CF's own CDN at install time.
 - Flag: manifest/pack name still reads "Friend Pack (working title)" — branding
   stamp is one `pack.toml` edit away, pack lead's call.
 
