@@ -15,16 +15,39 @@ jobs:
       - name: Check out pack
         uses: actions/checkout@v4
 
-      - name: Set up Go 1.24.6
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.24.6'
-
-      - name: Build packwiz (pinned 170b22d7, prebuilt-binaries upstream)
+      # packwiz publishes no release binaries; its CI artifacts ARE the prebuilt
+      # binaries (her pointer, 22:0xZ). Download the latest green Linux artifact;
+      # go-install fallback (pinned) if upstream renames workflows/artifacts or
+      # artifacts expire. Runner image ships a Go toolchain, so the fallback
+      # needs no setup-go step.
+      - name: Resolve packwiz (upstream CI artifact, go-install fallback)
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          go install github.com/packwiz/packwiz@170b22d785959dda5876b54b7f16e1b807a57fb6
-          echo "$HOME/go/bin" >> "$GITHUB_PATH"
-          packwiz --help > /dev/null
+          set -euo pipefail
+          BIN=""
+          RUN_ID=$(gh api "repos/packwiz/packwiz/actions/runs?status=success&per_page=15" \
+            --jq '[.workflow_runs[] | select(.name == "Go" and .head_branch == "main")][0].id' || true)
+          if [ -n "${RUN_ID:-}" ] && [ "$RUN_ID" != "null" ]; then
+            ART_ID=$(gh api "repos/packwiz/packwiz/actions/runs/$RUN_ID/artifacts" \
+              --jq '[.artifacts[] | select(.name == "Linux 64-bit x86")][0].id' || true)
+            if [ -n "${ART_ID:-}" ] && [ "$ART_ID" != "null" ]; then
+              mkdir -p "$RUNNER_TEMP/pw"
+              gh api "repos/packwiz/packwiz/actions/artifacts/$ART_ID/zip" > "$RUNNER_TEMP/pw/pw.zip"
+              unzip -q "$RUNNER_TEMP/pw/pw.zip" -d "$RUNNER_TEMP/pw"
+              chmod +x "$RUNNER_TEMP/pw/packwiz"
+              BIN="$RUNNER_TEMP/pw/packwiz"
+              echo "packwiz source: upstream CI artifact (run $RUN_ID)"
+            fi
+          fi
+          if [ -z "$BIN" ]; then
+            echo "artifact route unavailable — falling back to go install (pinned 170b22d7)"
+            echo "$HOME/go/bin" >> "$GITHUB_PATH"
+            go install github.com/packwiz/packwiz@170b22d785959dda5876b54b7f16e1b807a57fb6
+            BIN="$HOME/go/bin/packwiz"
+          fi
+          "$BIN" --help > /dev/null
+          echo "PW_BIN=$BIN" >> "$GITHUB_ENV"
 
       # NOTE: both exports run `index.Refresh()` internally — the working dir's
       # index.toml/pack.toml get upgraded to a FULL index in this workspace
@@ -34,10 +57,10 @@ jobs:
       # reuses it, raw zip ships the refreshed index.
 
       - name: Export CurseForge zip
-        run: packwiz cf export --output "minebricks-cf-${GITHUB_REF_NAME}.zip"
+        run: ${PW_BIN} cf export --output "minebricks-cf-${GITHUB_REF_NAME}.zip"
 
       - name: Export Modrinth mrpack
-        run: packwiz mr export --output "minebricks-mr-${GITHUB_REF_NAME}.mrpack"
+        run: ${PW_BIN} mr export --output "minebricks-mr-${GITHUB_REF_NAME}.mrpack"
 
       - name: Pack raw packwiz zip
         run: |
