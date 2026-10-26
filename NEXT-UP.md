@@ -4,6 +4,40 @@ Everything empty in the pack now has a draft sitting in it. Nothing is decided,
 nothing is shipped — every numbered item below is the pack lead's pick. Zero
 rush; this file keeps.
 
+**CORE DESIGN GOAL — received 2026-10-26 20:12Z, standing rule (hers, verbatim):**
+"We should be aware of and prepared for and removing where possible all forms of
+'infinity'." (Why the pack has no solar panels, no passive water wheels.) This is
+now the vetting gate for every mod, recipe, and mechanic — "does this mint
+something from nothing?"
+
+Vector ledger (doctrine-active, audit queued):
+- **Water** — toffel's Finite Water approved: infinite-source creation denied
+  outside config-whitelisted biomes (oceans/rivers/beaches default).
+- **Wood** — Dynamic Trees approved WITH enforcement: no vanilla tree gen. DT
+  vanilla replacement + DT–Terralith compat (both on 1.21.1); post-install
+  fresh-chunk census scan for any vanilla trunk = failure signal. Open vectors
+  flagged for the audit: bamboo, kelp, nether trees, cave vines.
+- **Energy** — no solar/passive-gen, existing doctrine; fuel-burn chains only.
+- **Bulk water transport** — verified jar-side: Railcraft Reborn tank cart =
+  32 buckets default (config knob 4–512, transfer 32 mB/t); Little Logistics
+  Fluid Tank Train Car + Fluid Tank Barge = 10 buckets each (source-verified,
+  `CAPACITY = BUCKET_VOLUME * 10`). Doctrine-consistent scaling = convoys
+  (more cars/barges, volume bought with steel + train length), config knob held
+  in reserve. Railcraft iron tanks for static storage.
+- **Audit pending, untouched** — lava dripstone farming, cobble generators,
+  villager trade loops. Nothing installed touches them yet.
+
+**Barrel status (all seven approved 20:12Z, with conditions):** Farmer's Delight
+clean · Spice of Life Onion clean (config blocked on food math — `/fooddump`
+tool built, `minebricks_fooddump.js`, rides the next debug build) · toffel's
+Finite Water clean · Dynamic Trees + Terralith compat + DT Plus (no-vanilla-gen
+census gate) · Apotheosis conditional: spawner offering OFF, stat fixes ON,
+massive-tuning pass its own loop (if Apothic-Spawners proves a hard dep, jar
+goes in with features config-zeroed — resolved from mods.toml at add time) ·
+Cataclysm conditional: prune list = pack lead's marks · Baubley Heart
+Canisters clean. Add pass (fetch → sha512 → mods.toml inspect → packwiz add →
+verify → push) runs after food-dump math + prune marks.
+
 **Steering received 2026-10-26 02:46Z (supersedes the original menu order):**
 1. AR3 recipe pass is BLOCKED by pending mod additions. Open questions: does
    AR3 bring its full complement of old machines (answer, jar-verified: NO —
