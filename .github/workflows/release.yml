@@ -100,6 +100,12 @@ jobs:
             packwiz pack — reproducible from the tag. Modrinth-only mods ride
             `overrides/mods/` inside the CF zip (CurseForge can't reference them);
             everything else identical across formats.
+
+            **Auto-updating install (recommended):** drop
+            [packwiz-installer-bootstrap.jar](https://github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar)
+            into the instance folder and set the pre-launch command
+            `"$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://deveyus.github.io/minebricks/pack.toml`
+            — installs then track the live pack on every launch. Servers: `java -jar packwiz-installer-bootstrap.jar -g -s server https://deveyus.github.io/minebricks/pack.toml`.
           files: |
             minebricks-cf-*.zip
             minebricks-mr-*.mrpack

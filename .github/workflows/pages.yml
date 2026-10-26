@@ -1,0 +1,81 @@
+name: Pages
+
+on:
+  push:
+    branches: ['main']
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out pack
+        uses: actions/checkout@v4
+
+      # Same resolve step as release.yml: packwiz publishes no release binaries;
+      # its CI artifacts ARE the prebuilt binaries. Go-install fallback (pinned)
+      # if artifacts expire or upstream renames things.
+      - name: Resolve packwiz (upstream CI artifact, go-install fallback)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          BIN=""
+          RUN_ID=$(gh api "repos/packwiz/packwiz/actions/runs?status=success&per_page=15" \
+            --jq '[.workflow_runs[] | select(.name == "Go" and .head_branch == "main")][0].id' || true)
+          if [ -n "${RUN_ID:-}" ] && [ "$RUN_ID" != "null" ]; then
+            ART_ID=$(gh api "repos/packwiz/packwiz/actions/runs/$RUN_ID/artifacts" \
+              --jq '[.artifacts[] | select(.name == "Linux 64-bit x86")][0].id' || true)
+            if [ -n "${ART_ID:-}" ] && [ "$ART_ID" != "null" ]; then
+              mkdir -p "$RUNNER_TEMP/pw"
+              gh api "repos/packwiz/packwiz/actions/artifacts/$ART_ID/zip" > "$RUNNER_TEMP/pw/pw.zip"
+              unzip -q "$RUNNER_TEMP/pw/pw.zip" -d "$RUNNER_TEMP/pw"
+              chmod +x "$RUNNER_TEMP/pw/packwiz"
+              BIN="$RUNNER_TEMP/pw/packwiz"
+              echo "packwiz source: upstream CI artifact (run $RUN_ID)"
+            fi
+          fi
+          if [ -z "$BIN" ]; then
+            echo "artifact route unavailable — falling back to go install (pinned 170b22d7)"
+            echo "$HOME/go/bin" >> "$GITHUB_PATH"
+            go install github.com/packwiz/packwiz@170b22d785959dda5876b54b7f16e1b807a57fb6
+            BIN="$HOME/go/bin/packwiz"
+          fi
+          "$BIN" --help > /dev/null
+          echo "PW_BIN=$BIN" >> "$GITHUB_ENV"
+
+      # Refresh FIRST so the served index is the full one (mods + kubejs) —
+      # a mods-only index would give bootstrapper installs with no scripts.
+      - name: Refresh index
+        run: ${PW_BIN} refresh
+
+      - name: Stage deploy dir (packwiz-ignored files stay out)
+        run: |
+          mkdir -p pages
+          rsync -a ./ pages/ \
+            --exclude '.git' --exclude '.github' --exclude 'tools' \
+            --exclude '*.md' --exclude 'dist' --exclude 'kubejs/export' \
+            --exclude 'GROWTH-DIALS.json' --exclude 'WORLDGEN-SOURCES.json' \
+            --exclude '.packwizignore'
+          test -f pages/pack.toml && test -f pages/index.toml
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: pages
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -60,12 +60,29 @@ tag `v*` → GitHub Actions → three artifacts + SHA256SUMS on a Release:
 - `minebricks-packwiz-<ver>.zip` — raw packwiz pack (78 KB): full refreshed
   index (mods + kubejs), installer-functional.
 - Mechanics: packwiz pinned at 170b22d7 (prebuilt binaries confirmed upstream);
-  exports force `index.Refresh()` in the CI workspace only — the repo keeps its
-  mods-only index; `.packwizignore` (new) keeps tools/, docs, dials, and
-  fixtures out of all three outputs. Dry-runs: Actions "Release" dispatch →
-  artifacts without release. First release = `v0.4.1` (pack.toml version).
+  exports force `index.Refresh()` in the CI workspace only — and as of 22:26Z
+  the repo index itself is refreshed-FULL (57 mods + kubejs, 65 entries), so
+  clones and the Pages channel deliver scripts too. `.packwizignore` keeps
+  tools/, docs, dials, and fixtures out of all outputs. Dry-runs: Actions
+  "Release" dispatch → artifacts without release. First release = `v0.4.1`
+  (pack.toml version).
 - Flag: manifest/pack name still reads "Friend Pack (working title)" — branding
   stamp is one `pack.toml` edit away, pack lead's call.
+
+**Bootstrapper + GitHub Pages — LIVE 22:26Z+ (the agreed auto-update route):**
+every push to main deploys the full pack (refreshed index: 57 mods + kubejs) to
+`https://deveyus.github.io/minebricks/pack.toml`. Install once, updates flow on
+launch — releases (tag route) are for initial distribution, Pages is the live
+channel:
+- **Client (Prism/MultiMC):** `packwiz-installer-bootstrap.jar`
+  (v0.0.3, stable link: `github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar`)
+  into the instance `.minecraft` folder, pre-launch command
+  `"$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://deveyus.github.io/minebricks/pack.toml`.
+- **Server:** `java -jar packwiz-installer-bootstrap.jar -g -s server https://deveyus.github.io/minebricks/pack.toml`
+  — the `-s server` filter works because all 6 client-only mods carry side metadata.
+- Deployment = `.github/workflows/pages.yml`: packwiz refresh → stage
+  (packwiz-ignored files stay out) → actions/deploy-pages. Concurrency-guarded;
+  also hand-triggerable via dispatch.
 
 **Barrel status (all seven approved 20:12Z, with conditions):** Farmer's Delight
 clean · Spice of Life Onion clean (config blocked on food math — `/fooddump`

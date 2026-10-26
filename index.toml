@@ -1,6 +1,38 @@
 hash-format = "sha256"
 
 [[files]]
+file = "kubejs/client_scripts/.keep"
+hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+[[files]]
+file = "kubejs/server_scripts/minebricks_ar3_supply_pass.js"
+hash = "1eab0cf40725aa19fb11fad66d3f27ca7dd084885a7c6a1af73dd8484bbe8d91"
+
+[[files]]
+file = "kubejs/server_scripts/minebricks_backpack_knobs.js"
+hash = "db74a8dc9daa4ab8c5034583e6f53c4b79ec0f03491df120194de6c58e9f4571"
+
+[[files]]
+file = "kubejs/server_scripts/minebricks_fooddump.js"
+hash = "809b98a5f2445153f61329e885a3ac9676b8026396258b222ec5a30faf62d5fd"
+
+[[files]]
+file = "kubejs/server_scripts/minebricks_gps_gate.js"
+hash = "67bb38fb9a3fb747a858e9b192663b68a92d4f6306af78b7643baff5a445d427"
+
+[[files]]
+file = "kubejs/server_scripts/minebricks_lootdump.js"
+hash = "2b0dd4031fe87d4d9fc2aca80efc4f7717747f6508b583241965b9838651ceaa"
+
+[[files]]
+file = "kubejs/server_scripts/minebricks_mintdump.js"
+hash = "6b0401ab3720bc833a8d122acfb8f668513d73123341308ca2a253996ff575e6"
+
+[[files]]
+file = "kubejs/startup_scripts/.keep"
+hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+[[files]]
 file = "mods/advanced-rocketry-3.pw.toml"
 hash = "bfb09d2504b2811643f99528f4b2645e1ee3c3aae67d798fe23943b06fad9f3a"
 metafile = true
