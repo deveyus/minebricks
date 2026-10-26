@@ -47,31 +47,32 @@ parsing, because verification must run against the KubeJS-modified graph.
 insufficient. Ladder remains LL 10 / RC 32 / convoy n×32 / RC iron tank (static);
 custom entities need a Java companion mod (KubeJS can't register entities on 1.21).
 
-**Release pipeline — SHIPPED 21:49Z (her commission: "cf mr and zip as github releases"):**
-tag `v*` → GitHub Actions → three artifacts + SHA256SUMS on a Release:
-- `minebricks-mr-<ver>.mrpack` — Modrinth route: 52 mods referenced straight off
-  cdn.modrinth.com with sha1+sha512 + env flags (6 client-only marked
-  unsupported-on-server), 5 CF-sourced mods (Metalworks family, ToolBelt, PM
-  KubeJS addon) + kubejs scripts ride overrides. NeoForge dep key verified.
-- `minebricks-cf-<ver>.zip` — CurseForge route: 5 CF-metadata mods in the
-  manifest, 52 Modrinth-only mods embedded as jars in `overrides/mods/` (CF
-  can't reference them — crosswalk later if she wants CF-native tracking).
-  Manifest loader id `neoforge-21.1.265`, verified importable format.
+**Release pipeline — SHIPPED 21:49Z; TRIMMED 23:34Z by ruling:**
+tag `v*` → GitHub Actions → ONE artifact + SHA256SUMS on a Release:
+- ~~`minebricks-mr-<ver>.mrpack`~~ — KILLED 23:34Z (launcher-import format; Modrinth
+  App has no pre-launch hook, so it existed solely for that launcher).
+- ~~`minebricks-cf-<ver>.zip`~~ — KILLED 23:34Z (launcher-import format; 52 MR jars
+  embedded because CF manifests can't reference them; CF app has no pre-launch hook).
 - `minebricks-packwiz-<ver>.zip` — raw packwiz pack (78 KB): full refreshed
-  index (mods + kubejs), installer-functional.
+  index (mods + kubejs), installer-functional. The only release artifact.
 - Mechanics: packwiz pinned at 170b22d7 (prebuilt binaries confirmed upstream);
-  exports force `index.Refresh()` in the CI workspace only — and as of 22:26Z
-  the repo index itself is refreshed-FULL (57 mods + kubejs, 65 entries), so
-  clones and the Pages channel deliver scripts too. `.packwizignore` keeps
-  tools/, docs, dials, and fixtures out of all outputs. Dry-runs: Actions
-  "Release" dispatch → artifacts without release. First release = `v0.4.1`
-  (pack.toml version).
+  refresh() upgrades the workspace index to FULL in-place — the zip is
+  installer-functional by design and CI downloads zero jars (runs in seconds).
+  `.packwizignore` keeps tools/, docs, dials, and fixtures out of the output.
+  Dry-runs: Actions "Release" dispatch → artifact without release. First release =
+  `v0.4.1` (pack.toml version) — its mrpack/CF assets were pruned and body rewritten
+  bootstrapper-first.
 - Design note 23:15Z (her challenge, answered): the bootstrapper route needs ZERO
   embedded jars — the CF zip (52 embedded MR jars, 98.8 MB) and mrpack (5 embedded
   CF jars, 3.8 MB) exist solely for launchers WITHOUT pre-launch hooks (CurseForge
-  app, Modrinth App). Trim is the pack lead's call: floor = Pages URL + 78 KB raw
-  zip; mrpack buys one-click Prism onboarding + Modrinth App support; CF zip buys
-  CurseForge-app support only.
+  app, Modrinth App).
+- **RULING 23:34Z (her, verbatim: "Then we kill the releases that do not support
+  it; plain and simple."):** mrpack + CF zip are DEAD. Release matrix = raw
+  packwiz zip + SHA256SUMS; bootstrapper/Pages = THE route. release.yml rewritten
+  (no cf/mr export), v0.4.1 assets pruned, body rewritten bootstrapper-first, the
+  "Easy There" note retired with the import formats. Consequence: Prism users
+  lose one-click import but gain auto-update; Modrinth App / CF app users have
+  no route (accepted by ruling).
 - Flag: manifest/pack name still reads "Friend Pack (working title)" — branding
   stamp is one `pack.toml` edit away, pack lead's call.
 

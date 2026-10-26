@@ -49,18 +49,14 @@ jobs:
           "$BIN" --help > /dev/null
           echo "PW_BIN=$BIN" >> "$GITHUB_ENV"
 
-      # NOTE: both exports run `index.Refresh()` internally — the working dir's
-      # index.toml/pack.toml get upgraded to a FULL index in this workspace
-      # (repo stays mods-only). The raw packwiz zip below is therefore built
-      # from the post-refresh state and is installer-functional by design.
-      # Order matters: cf export warms the packwiz download cache, mr export
-      # reuses it, raw zip ships the refreshed index.
+      # Ruling 23:34Z (her): "we kill the releases that do not support it" —
+      # mrpack + CF zip are gone; the bootstrapper/Pages route is THE route.
+      # The only artifact is the raw packwiz pack. refresh() upgrades the
+      # workspace index to FULL in-place, so the zip is installer-functional
+      # by design. No jar downloads happen at all — CI runs in seconds.
 
-      - name: Export CurseForge zip
-        run: ${PW_BIN} cf export --output "minebricks-cf-${GITHUB_REF_NAME}.zip"
-
-      - name: Export Modrinth mrpack
-        run: ${PW_BIN} mr export --output "minebricks-mr-${GITHUB_REF_NAME}.mrpack"
+      - name: Refresh index
+        run: ${PW_BIN} refresh
 
       - name: Pack raw packwiz zip
         run: |
@@ -90,25 +86,22 @@ jobs:
           body: |
             **${{ github.ref_name }}** — Minecraft 1.21.1 · NeoForge 21.1.265 · 57 mods
 
-            | File | Use |
-            |---|---|
-            | `minebricks-mr-*.mrpack` | Modrinth App / Prism — import directly |
-            | `minebricks-cf-*.zip` | CurseForge launcher — import as profile |
-            | `minebricks-packwiz-*.zip` | Raw packwiz pack — `packwiz install` / manual |
+            ### Install (and auto-update) — packwiz bootstrapper
 
-            `SHA256SUMS.txt` covers all artifacts. Built by packwiz from the tagged
-            packwiz pack — reproducible from the tag. Modrinth-only mods ride
-            `overrides/mods/` inside the CF zip (CurseForge can't reference them);
-            everything else identical across formats.
+            1. Create an instance in Prism/MultiMC (MC version doesn't matter — the installer sets it).
+            2. Drop [packwiz-installer-bootstrap.jar](https://github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar) into the instance root.
+            3. Instance Settings → Custom commands → Pre-launch command:
 
-            **Auto-updating install (recommended):** drop
-            [packwiz-installer-bootstrap.jar](https://github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar)
-            into the instance folder and set the pre-launch command
-            `"$INST_JAVA" -jar packwiz-installer-bootstrap.jar https://deveyus.github.io/minebricks/pack.toml`
-            — installs then track the live pack on every launch. Servers: `java -jar packwiz-installer-bootstrap.jar -g -s server https://deveyus.github.io/minebricks/pack.toml`.
+               ```
+               "$INST_JAVA" -jar packwiz-installer-bootstrap.jar --multimc-folder . https://deveyus.github.io/minebricks/pack.toml
+               ```
+
+            4. Launch. First run installs everything — 57 mods, scripts, config — and sets MC 1.21.1 + NeoForge 21.1.265 itself (accept the version prompt). Every later launch silently re-syncs to the latest pack.
+
+            Dedicated servers: `java -jar packwiz-installer-bootstrap.jar -g -s server https://deveyus.github.io/minebricks/pack.toml` in the server directory.
+
+            `minebricks-packwiz-*.zip` is the raw packwiz pack — reference and manual/server installs. `SHA256SUMS.txt` covers it. Built by packwiz from the tag, reproducible; the same bytes ship live on Pages (pack.toml → index → every file sha256/sha512-pinned).
           files: |
-            minebricks-cf-*.zip
-            minebricks-mr-*.mrpack
             minebricks-packwiz-*.zip
             SHA256SUMS.txt
           generate_release_notes: true
