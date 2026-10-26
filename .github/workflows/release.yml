@@ -1,0 +1,85 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out pack
+        uses: actions/checkout@v4
+
+      - name: Set up Go 1.24.6
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.6'
+
+      - name: Build packwiz (pinned 170b22d7, prebuilt-binaries upstream)
+        run: |
+          go install github.com/packwiz/packwiz@170b22d785959dda5876b54b7f16e1b807a57fb6
+          echo "$HOME/go/bin" >> "$GITHUB_PATH"
+          packwiz --help > /dev/null
+
+      # NOTE: both exports run `index.Refresh()` internally — the working dir's
+      # index.toml/pack.toml get upgraded to a FULL index in this workspace
+      # (repo stays mods-only). The raw packwiz zip below is therefore built
+      # from the post-refresh state and is installer-functional by design.
+      # Order matters: cf export warms the packwiz download cache, mr export
+      # reuses it, raw zip ships the refreshed index.
+
+      - name: Export CurseForge zip
+        run: packwiz cf export --output "minebricks-cf-${GITHUB_REF_NAME}.zip"
+
+      - name: Export Modrinth mrpack
+        run: packwiz mr export --output "minebricks-mr-${GITHUB_REF_NAME}.mrpack"
+
+      - name: Pack raw packwiz zip
+        run: |
+          zip -r "minebricks-packwiz-${GITHUB_REF_NAME}.zip" . \
+            -x '.git/*' '.github/*' 'tools/*' '*.md' \
+               'GROWTH-DIALS.json' 'WORLDGEN-SOURCES.json' \
+               'kubejs/export/*' '.packwizignore' \
+               '*.zip' '*.mrpack' 'packwiz*'
+
+      - name: Checksums
+        run: sha256sum minebricks-* > SHA256SUMS.txt
+
+      - name: Attach dry-run artifacts (manual runs)
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pack-outputs-${{ github.run_id }}
+          path: |
+            minebricks-*
+            SHA256SUMS.txt
+
+      - name: Publish GitHub Release (tag runs)
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Minebricks ${{ github.ref_name }}
+          body: |
+            **${{ github.ref_name }}** — Minecraft 1.21.1 · NeoForge 21.1.265 · 57 mods
+
+            | File | Use |
+            |---|---|
+            | `minebricks-mr-*.mrpack` | Modrinth App / Prism — import directly |
+            | `minebricks-cf-*.zip` | CurseForge launcher — import as profile |
+            | `minebricks-packwiz-*.zip` | Raw packwiz pack — `packwiz install` / manual |
+
+            `SHA256SUMS.txt` covers all artifacts. Built by packwiz from the tagged
+            packwiz pack — reproducible from the tag. Modrinth-only mods ride
+            `overrides/mods/` inside the CF zip (CurseForge can't reference them);
+            everything else identical across formats.
+          files: |
+            minebricks-cf-*.zip
+            minebricks-mr-*.mrpack
+            minebricks-packwiz-*.zip
+            SHA256SUMS.txt
+          generate_release_notes: true

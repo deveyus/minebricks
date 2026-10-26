@@ -47,6 +47,26 @@ parsing, because verification must run against the KubeJS-modified graph.
 insufficient. Ladder remains LL 10 / RC 32 / convoy n×32 / RC iron tank (static);
 custom entities need a Java companion mod (KubeJS can't register entities on 1.21).
 
+**Release pipeline — SHIPPED 21:49Z (her commission: "cf mr and zip as github releases"):**
+tag `v*` → GitHub Actions → three artifacts + SHA256SUMS on a Release:
+- `minebricks-mr-<ver>.mrpack` — Modrinth route: 52 mods referenced straight off
+  cdn.modrinth.com with sha1+sha512 + env flags (6 client-only marked
+  unsupported-on-server), 5 CF-sourced mods (Metalworks family, ToolBelt, PM
+  KubeJS addon) + kubejs scripts ride overrides. NeoForge dep key verified.
+- `minebricks-cf-<ver>.zip` — CurseForge route: 5 CF-metadata mods in the
+  manifest, 52 Modrinth-only mods embedded as jars in `overrides/mods/` (CF
+  can't reference them — crosswalk later if she wants CF-native tracking).
+  Manifest loader id `neoforge-21.1.265`, verified importable format.
+- `minebricks-packwiz-<ver>.zip` — raw packwiz pack (78 KB): full refreshed
+  index (mods + kubejs), installer-functional.
+- Mechanics: packwiz pinned at 170b22d7 (prebuilt binaries confirmed upstream);
+  exports force `index.Refresh()` in the CI workspace only — the repo keeps its
+  mods-only index; `.packwizignore` (new) keeps tools/, docs, dials, and
+  fixtures out of all three outputs. Dry-runs: Actions "Release" dispatch →
+  artifacts without release. First release = `v0.4.1` (pack.toml version).
+- Flag: manifest/pack name still reads "Friend Pack (working title)" — branding
+  stamp is one `pack.toml` edit away, pack lead's call.
+
 **Barrel status (all seven approved 20:12Z, with conditions):** Farmer's Delight
 clean · Spice of Life Onion clean (config blocked on food math — `/fooddump`
 tool built, `minebricks_fooddump.js`, rides the next debug build) · toffel's

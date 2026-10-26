@@ -1,6 +1,7 @@
-# packwiz ignores (gitignore-style, pack-root relative) — saved in git, never indexed into the pack
 tools/
+.github/
 *.md
-*.zip
-*.sh
-.git/
+GROWTH-DIALS.json
+WORLDGEN-SOURCES.json
+kubejs/export/
+.packwizignore
