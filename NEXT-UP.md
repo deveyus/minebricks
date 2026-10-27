@@ -396,3 +396,44 @@ Run inside `friend-pack/`, then `packwiz refresh`:
   setup actually hold)
 - `faun.properties` per friend, per setting (client-side)
 - `packwiz refresh` after any pick above
+
+---
+
+**Pollution of the Realms × per-recipe pollution — LOOK DONE (her ask: "pollution per
+recipe, not just per machine?"); verdict: NATIVE = per-machine only, but PER-RECIPE IS
+ACHIEVABLE with zero Java via the MBd2 KubeJS bridge.** Jar-verified (PoR 9.1.13.0
+AdPother + ForgeEndertech 12.1.4.0, both native NeoForge 1.21.1 builds, dep chain
+PoR→FE≥12.1.4.0, both Edivad89/Endertech, actively maintained):
+- How PoR decides who pollutes: emitter DEFINITIONS in a config file (ForgeEmitter:
+  type BLOCK/TILE/ENTITY/FUEL, per-entry pollutant+amount, globalRate per pollutant)
+  attached to arbitrary block IDs at post-init (EmittersInit.attachToStates). Third-party
+  machine compat = hand-written mixins per mod family (Create, Mekanism, AdAstra,
+  ProductiveMetalworks, powah, bigcannons…) — NOT a generic API. BUT attachment itself
+  is config-driven → we can register emitters for OUR OWN machine blocks with zero code.
+- TILE type = polled once per second; `activeTag` = NBT key gating "considered active"
+  (0/false = silent); `identityTag` = NBT disambiguation; `relatedBlocks` = "blocks
+  considered part of this multiblock". FUEL type (per-fuel-consumption hook) is
+  furnace-shaped — MBd2 is not fuel-driven, so TILE+activeTag is our native shape.
+- Per-recipe natively: NO. `recipes/` package = PoR's own filter-change recipe only; no
+  recipe hooks; no KubeJS/CraftTweaker strings anywhere in the PoR jar.
+- THE SEAM: MBD2 ships a native KubeJS event bridge (integration/kubejs/events/
+  MBDServerEvents): MACHINE_ON_RECIPE_FINISH, ON/AFTER/BEFORE_RECIPE_WORKING,
+  RECIPE_STATUS_CHANGED, MACHINE_ON_CONSUME_INPUTS_AFTER_WORKING, STRUCTURE_FORMED,
+  TICK — all with machine context. KubeJS can listen per recipe-finish.
+- Two zero-Java architectures:
+  (A) EVENT-PULSE — /adpother debug command surface (emitAt/emitFrom/clean/chunkStats
+  + amount/quantity args in the command pool) called from KubeJS on
+  MACHINE_ON_RECIPE_FINISH with per-recipe amounts. Exact syntax = in-game probe.
+  Quieter variant: KJS direct-call of PoR's chunk-pollution write path
+  (cropscan-style Java.loadClass probe, signatures TBD).
+  (B) DEFINITION-GRANULARITY — per-route MBd2 controllers ("Sulfide Route"/"Oxide
+  Route" as distinct controller blocks with partitioned recipe subsets) → each gets
+  its own emitter config entry with its own pollutant/amount. Deterministic, no event
+  plumbing; cost = more definitions to maintain.
+  Hybrid recommended: (B) for route-level identity + (A) for per-recipe seasoning.
+- Consequences side fully config-tunable: BlockImpactList (damage/kill/replace actions),
+  FluidImpactList, EntityBlackWhiteList, per-biome reload — smog/acid severity is ours.
+- Open probes (one in-game session): (1) emitter config file path/format after first
+  boot; (2) /adpother command tree + emitAt syntax; (3) emitter entry attaching to an
+  MBd2 controller block (TILE + activeTag live test); (4) KJS direct-write probe
+  (ChunkPollution/WorldData signatures). Pack cost: +2 mods (PoR + ForgeEndertech).
