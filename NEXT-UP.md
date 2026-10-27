@@ -885,3 +885,31 @@ from cf/mr. Fix those before it works." Correct — 7 CurseForge-pinned tomls we
   branch — objection?" — good faith + license-clean + a settleWhileEmpty config key is a
   ~5-line change for him. Silence ~2 weeks -> we build. Harness scaffold can start earlier
   on her word (useful regardless).
+
+## FAKE-PLAYER SHORTCUT — CHEAPEST FIX, ONE TEST GATE (2026-10-28)
+
+- GATE CONFIRMED AGAIN, TWICE: `UpkeepService.tick:70` pauses on `getPlayerCount() <= 0`
+  (and slides `nextUpkeepTick++`); **the same check** is `UpkeepGating.isAnyPlayerOnlineOnServer`
+  → protection DEFAULT mode freezes while empty too. One login-completed warm body defeats
+  BOTH at once. The one thing a fake player can NOT fool: per-team member checks
+  (`isAnyTeamMemberOnline`, force-load DEFAULT) — a bot is in nobody's party; our
+  ALWAYS/HEAVY rulings bypass those anyway → config + warm body = airtight.
+- WHAT COUNTS (trap): only connections that complete login. Create-style in-world
+  FakePlayer entities never join the PlayerList (count stays 0); Carpet `/player` is
+  Fabric-only. So the fake must be a REAL connection.
+- RUNG 1 — protocol bot: mineflayer / MCProtocolLib, ~50 lines, systemd `Restart=always`
+  ON the server box (bot-down ⇔ server-down collapses silent divergence) + canary ping to
+  #home-channel on drop. TEST GATE: modded NeoForge may reject vanilla-protocol logins at
+  handshake — 5-min vanilla-client/bot probe decides. `online-mode=true` → bot needs a
+  real MS-account session. Check `server.properties` first.
+- RUNG 2 (handshake blocks the bot): real client left logged in on spare hardware — zero
+  code, needs a license + a machine.
+- RUNG 3: companion mod (Task 23 scope) — the scoped `@Redirect` on `PlayerList.getPlayerCount()`
+  scoped to tick IS "fake the count at one call site"; effort only wins if Rung 1's test fails.
+- SIDE EFFECTS TO OWN: mob cap +1 + spawn distribution shift; backup mods that skip empty
+  servers start running all night; `/list` + one max-players slot; sim-distance circle stays
+  loaded wherever parked (park barren — our own freeloader is the one body we can't charge);
+  bot auto-creates an empty FTB party that settles for zero (harmless).
+- VERDICT: cheapest structural fix tonight, pending the handshake probe. Upstream
+  `settleWhileEmpty` ask stays the clean endgame; bot doubles as permanent canary. Not
+  either/or with the mixin — companion mod remains the fallback ladder if the probe fails.
