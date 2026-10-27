@@ -613,3 +613,23 @@ but stayed one API hiccup from the same dialog.
 - NET: index now has **zero CurseForge-API dependencies** — every one of the 80
   mods resolves to a direct URL or Modrinth metadata. Her next bootstrap run
   installs clean; the installer's manifest retires the old 9.4.9 jar itself.
+
+**DEPENDENCY SWEEP — 8 MISSING LIBS FOUND AND ADDED 2026-10-27 ~18:10Z (her catch).** She
+called it: "you didn't use packwiz to get all the deps." Full audit of every jar's own
+mod metadata (NeoForge 21.x hybrid `[[dependencies.<owner>]]` syntax, mandatory-only,
+JarJar-embedded libs counted as provided) against the pack's provided-modId set found
+**11 unsatisfied mandatory deps → 3 self-satisfied by jar-in-jar** (ponder inside Little
+Logistics + Productive Metalworks, xaerolib inside both Xaero jars, productivelib inside
+Productive Metalworks — verified by extracting the nested jars) and **8 genuinely absent**:
+- ADDED (each via its author's own Modrinth channel, sha512 + modId verified per jar):
+  ApolloLib 1.2.0 (Tectonic/Lithostitched), Architectury API 13.0.11 (six Let's Do mods),
+  LDLib2 2.2.44 (**Multiblocked2's own core lib — the t1 rigs would have crashed on boot
+  without it**), Placebo 9.9.4 (Toast Control), TerraBlender 4.1.0.8 (NC NeoHaul),
+  UnionLib **12.0.18** (Antique Atlas pins [12.0.18,12.1.0) — newest 13.x would BREAK it;
+  version-range discipline enforced per dependent), YUNG's API 5.1.9 (Paxi),
+  ZeroCore 2 2.4.9 (NC NeoHaul).
+- MOD COUNT: 80 → 88. Index refreshed, hash consistent, pushed (a9f40d7), all 8 live on
+  Pages (200). Audit tool upgraded + persisted: scripts/dep_audit_full.py now jar-aware
+  (hybrid syntax + jarjar), re-runnable as a standing pre-push gate.
+- ROOT CAUSE (honest): the original build was curated by hand; deps were never
+  machine-verified end-to-end. Her push made the sweep a permanent step.
