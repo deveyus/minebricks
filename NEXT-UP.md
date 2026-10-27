@@ -73,13 +73,6 @@ tag `v*` → GitHub Actions → ONE artifact + SHA256SUMS on a Release:
   "Easy There" note retired with the import formats. Consequence: Prism users
   lose one-click import but gain auto-update; Modrinth App / CF app users have
   no route (accepted by ruling).
-- Purge sweep 23:52Z (her: "We don't want to accidentally infringe by rehosting"):
-  full audit — releases (1, clean), Actions artifacts (old run's 102.65 MB
-  pack-outputs stash = cf zip + mrpack build output — DELETED; dry-run residue
-  DELETED; remaining = 3 github-pages artifacts, toml index only), git history
-  (13 commits, 0 jars ever committed), workflow definitions (zero jar downloads).
-  No mod bytes hosted anywhere in the repo, ever: the zip holds .pw.toml pointers;
-  jars resolve to Modrinth / CF's own CDN at install time.
 - Flag: manifest/pack name still reads "Friend Pack (working title)" — branding
   stamp is one `pack.toml` edit away, pack lead's call.
 
@@ -89,28 +82,47 @@ every push to main deploys the full pack (refreshed index: 57 mods + kubejs) to
 launch — releases (tag route) are for initial distribution, Pages is the live
 channel:
 - **Client (Prism/MultiMC):** `packwiz-installer-bootstrap.jar`
-  (v0.0.3, stable link: `github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar`)
-  into the instance ROOT (Prism instances have no `.minecraft` folder — mods/ sits at
-  instance root), pre-launch command
-  `"$INST_JAVA" -jar packwiz-installer-bootstrap.jar --multimc-folder . https://deveyus.github.io/minebricks/pack.toml`.
-- **E2E-verified 2026-10-26 ~23:25Z** (first live bootstrapper run, Prism-shaped sandbox
-  instance → live Pages): 65/65 entries delivered (57 mods + 6 scripts + 2 .keep),
-  "Finished successfully!" — the route needs zero embedded jars, as designed. Two
-  findings, now baked into the release notes:
-  (a) `--multimc-folder .` is REQUIRED — packwiz-installer's upstream default (`..`)
-  misses Prism's `mmc-pack.json` (pre-launch CWD = instance root via
-  `setWorkingDirectory(gameRoot())`, and mmc-pack.json lives exactly there), so the
-  MC/loader auto-fix never fires by default; with the flag it rewrote a
-  vanilla-1.20.1 test instance to `net.minecraft=1.21.1` + `net.neoforged=21.1.265`
-  on first launch (GUI asks once, CLI auto-accepts). Bootstrapper route = zero manual
-  loader steps.
-  (b) First-ever run fetches packwiz-installer.jar via UNAUTHENTICATED
-  api.github.com (rate-limit shared per IP, 60/hr); 403 there is fatal when no cached
-  jar exists, survivable afterward (check degrades to the cached jar). Offline fallback:
-  `--bootstrap-no-update --bootstrap-main-jar packwiz-installer.jar`, or chainload via
-  `packwiz-installer-bootstrap.properties` (`packwiz.chainload.jar=<path>`).
+  (stable link: `github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar`)
+  into the instance's **minecraft/ game folder** — CORRECTED 23:55Z against Prism
+  source (`MinecraftInstance::gameRoot()`): game root = `<instance>/minecraft/`
+  by default (`.minecraft` only if it exists), NOT the instance root. The jar-in-
+  instance-root instruction below was WRONG — packwiz-installer installs next to
+  the jar, so mods would land where Prism never looks. Correct pre-launch:
+  `"$INST_JAVA" -jar "$INST_MC_DIR/packwiz-installer-bootstrap.jar" https://deveyus.github.io/minebricks/pack.toml`.
+  No `--multimc-folder` flag needed: it defaults to the PARENT of the pack dir =
+  instance root = exactly where mmc-pack.json lives.
+- **E2E-verified 2026-10-26 ~23:25Z, PARTIALLY RETRACTED 23:55Z** (first live
+  bootstrapper run, Prism-shaped sandbox instance → live Pages): 65/65 entries
+  delivered (57 mods + 6 scripts + 2 .keep), "Finished successfully!" — delivery
+  + loader rewrite verified mechanically. RETRACTED: the sandbox's layout
+  inference ("Prism has no .minecraft folder, mods at instance root") — Prism
+  source says game root = `<instance>/minecraft/`; the sandbox was not a real
+  import layout. The `--multimc-folder .` requirement was an artifact of placing
+  the jar in instance root (wrong place). Real route = Meldworks shape, no flags.
 - **Server:** `java -jar packwiz-installer-bootstrap.jar -g -s server https://deveyus.github.io/minebricks/pack.toml`
   — the `-s server` filter works because all 6 client-only mods carry side metadata.
+- Still-valid sandbox finding: first-ever run fetches packwiz-installer.jar via
+  UNAUTHENTICATED api.github.com (rate-limit shared per IP, 60/hr); 403 there is
+  fatal when no cached jar exists, survivable afterward. Offline fallback:
+  `--bootstrap-no-update --bootstrap-main-jar packwiz-installer.jar`, or chainload
+  via `packwiz-installer-bootstrap.properties` (`packwiz.chainload.jar=<path>`).
+
+**Prism instance zip — SHIPPED 23:55Z (her import-error report + Meldworks pointer):**
+"Archive does not contain a recognized modpack type" = Prism's Import-from-zip
+only speaks three formats: Modrinth `modrinth.index.json`, CF `manifest.json`,
+and Prism's own instance-export pair (`instance.cfg` + `mmc-pack.json`). The raw
+packwiz zip speaks none of them — expected behavior, not a packaging bug.
+Fix (her Meldworks shape, verified working in daily use): the release now also
+ships `minebricks-prism-instance-<tag>.zip` — a synthetic Prism instance export:
+- `instance.cfg` — Name + `PreLaunchCommand="$INST_JAVA" -jar
+  "$INST_MC_DIR/packwiz-installer-bootstrap.jar" <Pages pack.toml URL>`
+- `mmc-pack.json` — net.minecraft 1.21.1 + net.neoforged 21.1.265 components
+- `minecraft/packwiz-installer-bootstrap.jar` — the ONLY embedded binary (~100 KB)
+Import → launch → packwiz syncs all 57 mods + scripts + config from Pages; loader
+versions auto-set via mmc-pack.json. Zero mod bytes packed, no mrpack revival
+(the bootstrapper IS the update channel — an mrpack would freeze the pack at
+import time). `config/prism/` templates live in-repo, packwiz-ignored;
+release.yml assembles the zip per tag (envsubst, same substitution Meldworks uses).
 - Deployment = `.github/workflows/pages.yml`: packwiz refresh → stage
   (packwiz-ignored files stay out) → actions/deploy-pages. Concurrency-guarded;
   also hand-triggerable via dispatch.

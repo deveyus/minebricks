@@ -51,9 +51,10 @@ jobs:
 
       # Ruling 23:34Z (her): "we kill the releases that do not support it" —
       # mrpack + CF zip are gone; the bootstrapper/Pages route is THE route.
-      # The only artifact is the raw packwiz pack. refresh() upgrades the
+      # Artifacts: the raw packwiz pack + the Prism instance zip (import
+      # wrapper, zero mods — her Meldworks shape). refresh() upgrades the
       # workspace index to FULL in-place, so the zip is installer-functional
-      # by design. No jar downloads happen at all — CI runs in seconds.
+      # by design. No mod jar downloads happen at all — CI runs in seconds.
 
       - name: Refresh index
         run: ${PW_BIN} refresh
@@ -62,9 +63,37 @@ jobs:
         run: |
           zip -r "minebricks-packwiz-${GITHUB_REF_NAME}.zip" . \
             -x '.git/*' '.github/*' 'tools/*' '*.md' \
+               'config/prism/*' \
                'GROWTH-DIALS.json' 'WORLDGEN-SOURCES.json' \
                'kubejs/export/*' '.packwizignore' \
                '*.zip' '*.mrpack' 'packwiz*'
+
+      # Prism import route (her pointer: Meldworks ships exactly this shape).
+      # The zip is a synthetic Prism instance export — instance.cfg +
+      # mmc-pack.json at the root, bootstrapper jar at minecraft/ — so
+      # "Add Instance -> Import from zip" recognizes it natively instead of
+      # dying with "Archive does not contain a recognized modpack type".
+      # packwiz-installer installs to the JAR directory by default, so the
+      # jar lives in $INST_MC_DIR and the pre-launch command needs no path
+      # flags. Only embedded binary is the ~100 KB bootstrapper; every mod
+      # byte still comes from Pages at first launch.
+      - name: Assemble Prism instance zip
+        env:
+          PACK_NAME: Minebricks ${{ github.ref_name }}
+          PACK_URL: https://deveyus.github.io/minebricks/pack.toml
+        run: |
+          set -euo pipefail
+          MC_VERSION=$(grep -m1 'minecraft = ' pack.toml | cut -d '"' -f 2)
+          NEOFORGE_VERSION=$(grep -m1 'neoforge = ' pack.toml | cut -d '"' -f 2)
+          STAGE="$RUNNER_TEMP/prism-instance"
+          mkdir -p "$STAGE/minecraft"
+          curl -L --fail --silent --show-error \
+            -o "$STAGE/minecraft/packwiz-installer-bootstrap.jar" \
+            https://github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar
+          export PACK_NAME PACK_URL MC_VERSION NEOFORGE_VERSION
+          envsubst '$PACK_NAME $PACK_URL' < config/prism/instance.cfg > "$STAGE/instance.cfg"
+          envsubst '$MC_VERSION $NEOFORGE_VERSION' < config/prism/mmc-pack.json > "$STAGE/mmc-pack.json"
+          (cd "$STAGE" && zip -qr "$GITHUB_WORKSPACE/minebricks-prism-instance-${GITHUB_REF_NAME}.zip" .)
 
       - name: Checksums
         run: sha256sum minebricks-* > SHA256SUMS.txt
@@ -86,22 +115,29 @@ jobs:
           body: |
             **${{ github.ref_name }}** — Minecraft 1.21.1 · NeoForge 21.1.265 · 57 mods
 
-            ### Install (and auto-update) — packwiz bootstrapper
+            ### Install (and auto-update) — Prism/MultiMC
 
-            1. Create an instance in Prism/MultiMC (MC version doesn't matter — the installer sets it).
-            2. Drop [packwiz-installer-bootstrap.jar](https://github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar) into the instance root.
-            3. Instance Settings → Custom commands → Pre-launch command:
+            1. Add Instance → Import from zip → pick `minebricks-prism-instance-${{ github.ref_name }}.zip` (or paste its release download URL).
+            2. Launch. Pre-launch runs the [packwiz-installer](https://github.com/packwiz/packwiz-installer) bootstrapper: first launch pulls all 57 mods + scripts + config from [Pages](https://deveyus.github.io/minebricks/pack.toml) and sets MC 1.21.1 + NeoForge 21.1.265 itself (accept the version prompt). Every later launch silently re-syncs to the latest pack — the zip never goes stale.
+
+            The zip contains zero mods: just the Prism instance definition and the ~100 KB bootstrapper jar (same distribution shape as Meldworks).
+
+            ### Manual (any launcher)
+
+            1. Create an instance, drop [packwiz-installer-bootstrap.jar](https://github.com/packwiz/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar) into the instance's **minecraft** folder (not the instance root — the installer installs next to the jar).
+            2. Instance Settings → Custom commands → Pre-launch command:
 
                ```
-               "$INST_JAVA" -jar packwiz-installer-bootstrap.jar --multimc-folder . https://deveyus.github.io/minebricks/pack.toml
+               "$INST_JAVA" -jar "$INST_MC_DIR/packwiz-installer-bootstrap.jar" https://deveyus.github.io/minebricks/pack.toml
                ```
 
-            4. Launch. First run installs everything — 57 mods, scripts, config — and sets MC 1.21.1 + NeoForge 21.1.265 itself (accept the version prompt). Every later launch silently re-syncs to the latest pack.
+            3. Launch — same first-run install and auto-sync as above.
 
             Dedicated servers: `java -jar packwiz-installer-bootstrap.jar -g -s server https://deveyus.github.io/minebricks/pack.toml` in the server directory.
 
-            `minebricks-packwiz-*.zip` is the raw packwiz pack — reference and manual/server installs. `SHA256SUMS.txt` covers it. Built by packwiz from the tag, reproducible; the same bytes ship live on Pages (pack.toml → index → every file sha256/sha512-pinned).
+            `minebricks-packwiz-*.zip` is the raw packwiz pack — reference and manual/server installs. `SHA256SUMS.txt` covers both zips. No mrpack on purpose: the bootstrapper is the update mechanism, so a platform manifest would only freeze the pack at import time. Built by packwiz from the tag, reproducible; the same bytes ship live on Pages (pack.toml → index → every file sha256/sha512-pinned).
           files: |
             minebricks-packwiz-*.zip
+            minebricks-prism-instance-*.zip
             SHA256SUMS.txt
           generate_release_notes: true

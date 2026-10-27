@@ -1,0 +1,18 @@
+{
+    "components": [
+        {
+            "cachedName": "Minecraft",
+            "cachedVersion": "${MC_VERSION}",
+            "important": true,
+            "uid": "net.minecraft",
+            "version": "${MC_VERSION}"
+        },
+        {
+            "cachedName": "NeoForge",
+            "cachedVersion": "${NEOFORGE_VERSION}",
+            "uid": "net.neoforged",
+            "version": "${NEOFORGE_VERSION}"
+        }
+    ],
+    "formatVersion": 1
+}

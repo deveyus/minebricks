@@ -1,5 +1,6 @@
 tools/
 .github/
+config/prism/
 *.md
 GROWTH-DIALS.json
 WORLDGEN-SOURCES.json
