@@ -34,7 +34,7 @@ hash = "6b0401ab3720bc833a8d122acfb8f668513d73123341308ca2a253996ff575e6"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_por_probe.js"
-hash = "556797374d57d5f07e120fddc0cc95c0fc772ba7b264c719ca496c5961443814"
+hash = "ba99ac405d4b9350afccb03d2ac0c7e8cdf9148ee39b3f8cc70fcfdd7144e481"
 
 [[files]]
 file = "kubejs/startup_scripts/.keep"
@@ -158,6 +158,11 @@ metafile = true
 [[files]]
 file = "mods/immersive-aircraft.pw.toml"
 hash = "69238da11940041d01207ab7b55c54b40eaf709b943b7e6023ab8521d31557e5"
+metafile = true
+
+[[files]]
+file = "mods/immersiveengineering.pw.toml"
+hash = "91875c996a9958aeea794843fb449915218625f52aaf0234ccd1faffa887e277"
 metafile = true
 
 [[files]]

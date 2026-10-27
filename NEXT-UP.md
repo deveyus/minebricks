@@ -514,3 +514,31 @@ water reclaim = infinity-doctrine-clean; sluice = anti-deadlock pair for the sca
   degenerate in iron audit), slow trickle, "core metals" = unification base set.
 - **O6 material backbone:** Emendatus Enigmatica (worldgen disabled) vs hand-rolled
   KubeJS tags — her call; default EE.
+
+**O-DIAL RULINGS — received 2026-10-27 ~12:57Z (msg 1564623984459522153):**
+- **O1 (sourcing):** ground-up MBd2 building — no leaning on NC machines (NC stays
+  ambient). Her technical pointer: definitions are "a textual final form wrapped up
+  as an NBT" → dive ordered + notes demanded → delivered same day as **MDB2-NOTES.md**
+  (jar-verified: definitions = uncompressed NBT state-machine trees; KubeJS
+  `MBDRegistryEvents.machine/recipeType` = full script-only authoring path;
+  per-type EMI/JEI categories confirmed in-jar).
+- **O2 (pollution):** FLIPPED — emissions at ALL stages, not T4-only; sulfur-heavy
+  ores scale the hazard. Plus custom pollution types wanted for the **"Biters"
+  analog** (pollution drives enemy pressure, Factorio-shaped): custom PoR pollutant
+  + KubeJS chunk-level read → spawn logic = probe item 7 (Pollutants registry +
+  ChunkPollution read path already in the reflection dump).
+- **O4 (math):** FLIPPED — mining is slow and infra-heavy, so LARGE outputs are the
+  feel-good reward ("more likely to go up than down"). The ≈1:1 position retired;
+  audit job = no loops + per-ore consistency only.
+- **O6 (backbone):** FLIPPED — likely NO EE; unification done ourselves (KubeJS
+  tags first), EE only if authoring pain says otherwise.
+- O3 (real fluids) + O5 (deterministic sluice) unobjected → defaults stand.
+- **FORTUNE RULING:** constrain it — keep it working, less variable than vanilla;
+  per-block loot functions fix the curve at definition time. First sketch: fixed
+  small steps, at most +1 at Fortune III.
+- **IMMERSIVE ENGINEERING RESTORED 2026-10-27 ~13:05Z:** she flagged IE as one of
+  the first adds — verified it never survived the 10-25 roster consolidation into
+  the pack tree (first commit 7412c52 carried only immersive-aircraft; every census
+  since repeated the gap — the roster list was read as complete). Re-staged IE
+  1.21.1-12.4.2-194 (uNRARSH2) via packwiz → index 78→79, rides next launch.
+  Immersive Petroleum (same lost pair) = one-word opt-in, not staged.
