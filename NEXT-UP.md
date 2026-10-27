@@ -913,3 +913,23 @@ from cf/mr. Fix those before it works." Correct — 7 CurseForge-pinned tomls we
 - VERDICT: cheapest structural fix tonight, pending the handshake probe. Upstream
   `settleWhileEmpty` ask stays the clean endgame; bot doubles as permanent canary. Not
   either/or with the mixin — companion mod remains the fallback ladder if the probe fails.
+
+## ROUTE DECISION — PR-FIRST, MIXIN SHELVED (2026-10-28, her call)
+
+- HER RULING: fake-player route "more annoying than the mod" → mod route wins; skip the
+  probe; go upstream-first: issue + PR that fixes it FOR them (not just for us).
+- LICENSE DISCOVERY THAT UNLOCKS IT: LICENSE.md §1 literally says "Want a feature added?
+  Open a pull request ... A feature request opened as an issue with no pull request
+  attached may simply never get built"; §5 = standard contribution grant (original work,
+  perpetual license to holder, contributor keeps copyright). PR is the blessed route.
+- SPEC BUILT (download/lc-ftb-hook-settle-while-empty-spec.md), self-contained agent brief:
+  repo facts (Malik-Aljazzar/lc-ftb-hook @ acd912b; license links PRs to ManOfKott/lc-ftb-hook
+  — confirm tracker on CF page), bug mechanics (tick:70 pause + slide, ALWAYS/HEAVY contract
+  violation, force_upkeep swallowed, restart re-arm noted out-of-scope), fix = opt-in
+  `settleWhileEmpty` (default false; config key + tick gate flip + javadoc + RuntimeConfigCommand
+  Entry — ENTRIES map is hand-built, NOT auto-discovered), do-not-touch list (UpkeepGating
+  semantics, no retro-billing, no client payload), headless RCON verification matrix on the
+  `ftb-lc` dev env (settlement is log-quiet → assert balances not logs), issue draft skeleton,
+  house-style CHANGELOG entry, fallback posture = Task 23 companion mixin stays shelved.
+- NEXT: she hands spec to her build agent; PR opens from fork; our mixin only if declined/
+  ~2wk silence.
