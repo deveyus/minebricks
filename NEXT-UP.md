@@ -704,3 +704,51 @@ worldspike_minecart_disassembly). Items stay visible in creative/EMI for admin t
 Zero worlds booted yet → no existing spikes to clean up; breaking a spike always
 releases its chunks (preRemoveSideEffects), so no orphan loads ever. Rollback: one file
 or the KILL_SWITCH const. Chunk loading now sells for tokens only.
+
+**LC-FTB-HOOK FIND (her hunch, 2026-10-27 ~19:00Z) — THE OPAC-ADDON ROUTE IS SUPERSEDED.**
+CF slug `lc-ftb-chunks` = **"Economy: Currency & Chunks"** (ManOfKott / Malik Aljazzar),
+latest lc_ftb_hook-4.4.2, 1.21/1.21.1 NeoForge only, updated Oct 26 2026. Source dived:
+github.com/Malik-Aljazzar/lc-ftb-hook (HEAD "Test against OPAC 0.33.0" — our exact OPAC
+pin). She was mid-rant about KubeJS bypassing a custom mod when the search found it.
+Verdict: **this is the economy pass's claims layer, already built and better-engineered
+than what we'd have written.** Our own OPAC addon plan (Task 18 route) is retired.
+- **THE COMBO IS THEIR TESTED COMBO.** Backends are swappable via adapters — claim backends
+  FTB or **OPAC**, currency backends **Lightman's Currency** or Numismatics. Pin both
+  explicitly in `[backends]` (claimBackend=OPAC, currencyBackend=LIGHTMANS_CURRENCY).
+  ARCHITECTURE.md: OPAC adapter signatures verified via javap against real jars (our own
+  discipline, mirrored); dev matrix ships an `opac-lc` server; OPAC claims are
+  player-owned so a "team" = OPAC party, solo = player UUID.
+- **HER EXPONENTIAL CURVE IS THE DEFAULT.** `claimPricingMode = EXPONENTIAL`:
+  price = base × (1+growth)^increment, increment = floor(owned/20), growth% capped
+  [0..1] (max +100%/tier), computed in tenths-of-copper, rounded down. Tier follows
+  CURRENT count — unclaim de-tiers instantly, no running-total ratchet. Base price,
+  growth %, tier size all dials.
+- **OPEN SEMANTICS RESOLVED BY CONSTRUCTION:** (a) tokens split into land = capital
+  price at claim + forceload = **recurring upkeep** (per chunk per period, 5-min default;
+  mode ALWAYS or member-online); (b) curve = the three dials above; (d) refunds =
+  `unclaimRefundRatio` default 0.8 (her no-refund lean → set 0); (e) party pooling =
+  pooled by construction (party = team under OPAC). (c) reset scope = per party/player;
+  per-dimension counting unverified — check at install.
+- **NON-PAYMENT IS A DISMANTLE ORDER, NOT A DEBT SPIRAL:** wars first, then force-loads,
+  then protections, until affordable. Self-correcting, no runaway balances.
+- **EXTRAS BEYOND HER SKELETON (her call):** War system (default ON, incoming wars
+  surcharge exponentially l^n, `warEnabled=false` kills it); **chunk marketplace** +
+  expropriation (no server-config off switch found — per-region selling toggles only);
+  per-OPAC-protection-field prices in `lc_ftb_hook-protection-prices.toml` (dismantle
+  for non-payment); Xaero World Map buyable-chunk highlights (we run both Xaero maps);
+  `LcTransactionLog` = transaction history we can mine for the dials books.
+- **OPAC WIRING (their words + our Task 18 verification agree):** OpacClaimListener on
+  the claim-action API — money moves only in the success callback, unaffordable claims
+  undo silently; OpacPartyWatcher diffs party snapshots every 100 ticks; protection via
+  auto-managed per-owner sub-configs + config lock, one fail-soft mixin (require=0).
+- **LICENSE (her kind of fine print):** proprietary source-available, NOT OSI. §2
+  explicitly grants modpack inclusion of the unmodified officially-distributed jar —
+  from CF/GitHub Releases distribution, link back, no rehosting. Our direct CF-CDN pin
+  (metalworks pattern) + credit in this file complies; not on Modrinth.
+- **STAYS OURS:** LMC rate dials (MasterCoinList.json + reload events → dials books);
+  spark archetype census to set base prices on record; World Spike murder (correct —
+  free loading would undercut metered loading); dial discipline on every new edge.
+  Token ITEM concept (pass item 3) is likely replaced by metered forceload — her ruling.
+- STATUS: candidate adopted in principle, nothing installed. Sequencing still hers:
+  SS/seasons pass v0.5.0 front of queue; economy pass = install LMC + hook, then rate
+  JSON + curve dials into the books before first boot.
