@@ -234,6 +234,14 @@ is settled, not conditional.** Jar-verified:
   MBd2 IO hatches → auto-processing → AutoIO out → back to warehouse. Nobody
   "works at" the machine; the system works.
 
+**RULING 00:49Z — AW3 DROPPED.** Her call, on the worksite verdict: "Then we
+drop AW3." With the worksite seam closed by hard-typed BE classes + ARR license,
+the entire integration value would have been logistics-only — not worth two
+modules and the Age-of-Steam core dependency. All analysis above stays on
+record as the reference: any future labor/companion mod gets the worksite-API
+question asked BEFORE evaluation time (typed site registry vs capability-based
+site discovery), not after a jar dive.
+
 **Emendatus Enigmatica — LOOK DONE (her call: "absolutely worth a look");
 verdict: worth prototyping, gated on a materials audit.** Jar-verified (EE
 2.2.0-alpha-3, neoforge 21.1.172+ ⇒ ours 21.1.265 OK, MC 1.21.1 only dep):
