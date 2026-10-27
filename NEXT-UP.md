@@ -933,3 +933,30 @@ from cf/mr. Fix those before it works." Correct — 7 CurseForge-pinned tomls we
   house-style CHANGELOG entry, fallback posture = Task 23 companion mixin stays shelved.
 - NEXT: she hands spec to her build agent; PR opens from fork; our mixin only if declined/
   ~2wk silence.
+
+## INSTALL BLOCKER FIX — metadata:modrinth MODE UNSUPPORTED BY INSTALLER (2026-10-27, pack 0.4.4)
+
+Her third report + screenshot: launch line correct (Pages URL), dialog
+"Failed file downloads", 9/101 errored, all identical:
+`java.lang.Exception: Unsupported download mode metadata:modrinth` (metadata.DownloadMode).
+
+- ROOT CAUSE: packwiz-installer does not implement the `metadata:modrinth`
+  download mode — it throws before any resolution. The 10-27 detangle removed
+  the CurseForge flavor (that mode IS implemented, embedded CF key) but moved
+  Tombstone to Modrinth in metadata mode, and the 10-27 dep sweep added its 8
+  deps in the same mode: apollib, architectury, corail-tombstone, ldlib2,
+  placebo, terrablender, unionlib, yungsapi, zerocore. Her dialog listed
+  exactly those 9.
+- AUDIT BLINDSPOT (owned): the rebuilt runtime verify resolved the 9 pins
+  through the MR API itself — modeling a smarter installer than the one that
+  actually runs. Pins were fine; the MODE was the bug. New standing gate:
+  pw_full_audit.py now fails on ANY `mode = "metadata:"` in the pack.
+- FIXED (9): every entry converted to a direct pinned CDN URL
+  (primary file resolved via MR API, filename + sha512 verified against the
+  pin before writing; all 9 matched byte-identical). Index re-hashed for the
+  9, pack.toml index pin recomputed, version 0.4.3 -> 0.4.4.
+- VERIFICATION: static audit 0 problems; 88 metafiles all direct-URL
+  (78 cdn.modrinth.com + 10 mediafilez.forgecdn.net), zero metadata modes.
+- Installer note: the dialog's Continue/Ignore routes install 92/101 — LDLib2
+  is mandatory (MBD2 t1 rigs crash without it). Relaunch after Pages updates
+  instead; the definition now installs 101/101.

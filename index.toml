@@ -69,7 +69,7 @@ metafile = true
 
 [[files]]
 file = "mods/apollib.pw.toml"
-hash = "c6568f2bf770dbf46c97faf81e1046e137b0bf59549c09e9023cf7980ed4f5bc"
+hash = "2b475fe027a305f43df744a24aede71978cd7beca3c772aa2c4f99ab4547bcc4"
 metafile = true
 
 [[files]]
@@ -79,7 +79,7 @@ metafile = true
 
 [[files]]
 file = "mods/architectury.pw.toml"
-hash = "b237b3e7fd652035cea32bee8cef9cf1a56f1796b64cb267f72a675ac91140d8"
+hash = "872ccbee22f85a9ff8b8e3597a7c3d3f07e97c076770deed8110a93d886024f3"
 metafile = true
 
 [[files]]
@@ -104,7 +104,7 @@ metafile = true
 
 [[files]]
 file = "mods/corail-tombstone.pw.toml"
-hash = "540ba97ff1d495b68330088e4cae08734b01154d44cc06b617b466835690742a"
+hash = "09af6d011fa210ee50c554856cf9b1485aa1ce4c2d435a2e79b68e9dd414002c"
 metafile = true
 
 [[files]]
@@ -214,7 +214,7 @@ metafile = true
 
 [[files]]
 file = "mods/ldlib2.pw.toml"
-hash = "724770b09a9274c4db44f4b3489234b1b787fe4b517880e3cd8dbfab0f236309"
+hash = "62edcd1453ae966151e139c74ef12ac945afaae39e52bde09dfb5e060c47878d"
 metafile = true
 
 [[files]]
@@ -334,7 +334,7 @@ metafile = true
 
 [[files]]
 file = "mods/placebo.pw.toml"
-hash = "07b12ecfac172ab8b33c33589fb77dccc178ab7bd7d59001ba5a147ffb6aec16"
+hash = "d7a704904752bf7ad2d73ed22687c4de8c6dc772783287a7bd7ca8ba353f1972"
 metafile = true
 
 [[files]]
@@ -434,7 +434,7 @@ metafile = true
 
 [[files]]
 file = "mods/terrablender.pw.toml"
-hash = "43b49bb2168c5d9089d10c717e52b69ab04642e428b87225c461457757746da6"
+hash = "5b80ecb32c64ea8eb374a335cf61cdaedee00847416cdf9d1695e588ed3c23aa"
 metafile = true
 
 [[files]]
@@ -459,7 +459,7 @@ metafile = true
 
 [[files]]
 file = "mods/unionlib.pw.toml"
-hash = "aa78c7f7759ddd7af6b05423cd78ab52c2969b748d7bf37b6ea9b41e7461d238"
+hash = "c845455dcccc60edebe6b560324e0720a1cd709f5ebfe0cd126b9ef09ce54e85"
 metafile = true
 
 [[files]]
@@ -484,10 +484,10 @@ metafile = true
 
 [[files]]
 file = "mods/yungsapi.pw.toml"
-hash = "3d347cb588ed38ffbc4488e34ffb1b5d1583a7e2bfd1fd26b26ee804ca583fad"
+hash = "26bbb44602d69eab8fbd0d41788afb8e7e589332e19a736ac306e0ab956b2edb"
 metafile = true
 
 [[files]]
 file = "mods/zerocore.pw.toml"
-hash = "74177164f50b2b99d3f2702d1a37aecd2f358c954353ece97465296a346017da"
+hash = "ce603d52501bf33432a197ad4f2bbe63ff49241656f0f2b8a7c2d774bd04b3c9"
 metafile = true

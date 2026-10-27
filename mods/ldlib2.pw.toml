@@ -3,9 +3,9 @@ filename = "ldlib2-neoforge-1.21.1-2.2.44-all.jar"
 side = "both"
 
 [download]
+url = "https://cdn.modrinth.com/data/B1CBVXHX/versions/s7Uru4V0/ldlib2-neoforge-1.21.1-2.2.44-all.jar"
 hash-format = "sha512"
 hash = "232e7e5ffcadbcd660894c055d7f53443c7b9105658229875b936a8c5eb8587f3ed9ef51b2897084709d4cd2873172ee4e34101e1e8c88aade1d837c63c67883"
-mode = "metadata:modrinth"
 
 [update]
 [update.modrinth]
