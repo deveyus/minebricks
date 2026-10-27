@@ -794,3 +794,40 @@ from cf/mr. Fix those before it works." Correct — 7 CurseForge-pinned tomls we
     others play; forceLoad stays DEFAULT. Belt-and-suspenders: seed the account anyway.
   - OPAC party edge to test at install: party-with-no-members persistence (keep one
     admin member in "Server" if it collapses empty).
+
+## FORCELOAD UPKEEP — HER "OTHER WAY" RULING (2026-10-28, supersedes the DEFAULT suggestion above)
+
+- HER CALL: "Bill people for the loaded chunks, online or not." -> `forceLoadUpkeepMode = ALWAYS`
+  is a built-in enum value, javadoc verbatim: "Charge every period regardless of whether
+  anyone is online." My DEFAULT suggestion had exactly the hole she named (offline = free
+  factory time). Superseded. Protection mode stays open — same logic says HEAVY (land tax
+  while asleep), DEFAULT is the middle road; her ruling pending.
+- FINE PRINT VERIFIED IN SOURCE (UpkeepSettlementService / UpkeepService / LightmansCurrencyPort):
+  1. Upkeep draws from the TEAM BANK ACCOUNT (`account.withdraw(costCopper, "Upkeep Payment")`),
+     never the player wallet — that's WHY offline billing works. Install card for players:
+     keep the bank funded; pocket coins don't pay upkeep.
+  2. Every upkeep payment LANDS IN THE SERVER SINK ACCOUNT
+     (`ServerAccountDeposit.deposit(... teamName + " (upkeep)")`). The drain is a treasury,
+     not a void. Server-group funding closed loop: ops view it via `/lc_ftb_hook server_account`
+     (op-gated; focuses the account in the op's LC ATM UI for transfers). World-owned chunks
+     can be paid from the pool the players feed — no infinity hack needed, just sink -> Server
+     team account top-ups via LC's own bank UI.
+  3. ONE HARD BOUNDARY: the settlement loop "Pauses while no players are online" (UpkeepService
+     comment, hard-coded, no config key). ALWAYS mode bills every period while >= 1 player is
+     online (any team, online or not); on a fully EMPTY server billing pauses and loads persist
+     until next restart. Residual free window = last-logout -> restart. Mod author's fail-safe;
+     accept + note, revisit only if it bites.
+  4. Non-payment path: dismantle runs BEFORE the afford check — wars cut first, then
+     force-loads ONE CHUNK AT A TIME until affordable, protections last; if still
+     unaffordable -> protections locked + managers notified ("upkeep_unpaid_frozen"). No debt,
+     no spiral, enforcement happens while the payer sleeps (that's the teeth she wants).
+  5. WARS OFF — use the runtime command, not a toml hand-edit: settlement skips all war
+     processing only via the toggle path (WarService#setWarSystemEnabled purges war state);
+     direct config edit + restart leaves stale war data reporting as queued. Fresh install =
+     clean either way, but `/lc_ftb_hook config set warEnabled false` is the sanctioned path.
+  6. Defaults for the dial sheet: forceLoadUpkeepPrice = 1,000,000 copper (deliberately absurd
+     placeholder — tune DOWN), upkeepPeriodMinutes = 5 (1..10080), both modes DEFAULT.
+     ForceUpkeepCommand exists = op can force a settlement pass on demand (testing lever).
+- INSTALL SEQUENCE UNCHANGED, config card now reads: warEnabled=false (runtime command),
+  forceLoadUpkeepMode=ALWAYS, protectionUpkeepMode=<her ruling>, prices + period = her dials,
+  Server party + bank account seeded (or sink-funded), protectionUpkeep LIGHT/HEAVY note.
