@@ -477,3 +477,40 @@ PoR→FE≥12.1.4.0, both Edivad89/Endertech, actively maintained):
   chunk-pollution accounting follow the chimney or stay at the machine). /porprobe
   extended: config walk now matches adch|chimney, reflection list gained
   ISmokeContainer + AdChimneys Emitters/Emitter.
+
+**ORE TEMPLATE — RECEIVED 2026-10-27 ~12:43Z (msg 1564620620283519167).** Her six-tier
+generic ore-processing workup — the EE-unification input this lane was waiting on:
+T1 Jaw Crusher (1 raw → 2 crushed) → T1.5 Wash Trommel (barren aggregate → civil
+engineering/ballast; generic slurry → sedimentation SAFETY NET: reclaimed saline
+water → evaporation → flux salts; heavy mud → sluice → core metals, anti
+vein-finding-deadlock) → T3 Ball Mill + Separator (physical matrix fraction →
+cleaved secondary: magnetite/quartz) → T4 Rotary Roaster + Scrubber (volatile
+off-gas → pollution hazard → wet scrubber → industrial acids) → T5 Pressurized
+Autoclave + acid (insoluble anode sludge → Au/Ag/PGM concentrate) → T6 Electrolytic
+Bath + chemical fractionation (ultra-pure primary 32x + precious byproducts 32x =
+64 TOTAL). Counts explicitly TEMPORARY ("generic template meant to give you an
+idea"). Design reads: anode sludge = real electrorefining chemistry; sedimentation
+water reclaim = infinity-doctrine-clean; sluice = anti-deadlock pair for the scanner.
+
+**DIAL SHEET D-O — delivered 12:47Z (defaults live unless vetoed by number):**
+- **O1 machine sourcing:** roster check (78 mods) has NO IE/Create/Mekanism/GTCEu;
+  RC crusher verified ore-blind; AR3 zero processing machines → nearly the whole
+  chain is Multiblocked2 build-out (trommel, sluice, evaporation, ball mill,
+  separator, roaster, scrubber, autoclave, bath). NC NeoHaul electrolyzer = jar
+  check before leaning on it. Phasing: spine first (crusher → ball mill → roaster →
+  bath), sedimentation second, scrubber-acids third (waits on probe session). PM
+  foundry stays = early 2x dirty lane the chain outclasses.
+- **O2 pollution:** hazard lives at T4 only. Hybrid wiring (as ruled 10-27): real
+  exhaust byproduct on roaster recipes (renders in EMI/JEI) + Route A emission
+  derived from that same byproduct; Route B per-route controllers as categories.
+  Scrubber self-enforces — its acids feed T5, skipping it starves leaching;
+  unscrubbed roasting accrues native chunk smog.
+- **O3 fluids:** slurry + PLS as real fluids (pipes, tank convoys); item fallback
+  only if authoring bites.
+- **O4 math:** 64x placeholder would be the largest mint in the pack (mintscan flag;
+  iron-audit ceiling was Fortune III ≈ 4.4 ingots/ore). Position: full chain nets
+  ≈1:1 primary metal — purity + byproducts do the rewarding, multiplication doesn't.
+- **O5 sluice:** deterministic weighted yields, NO RNG lotto (gravel lotto flagged
+  degenerate in iron audit), slow trickle, "core metals" = unification base set.
+- **O6 material backbone:** Emendatus Enigmatica (worldgen disabled) vs hand-rolled
+  KubeJS tags — her call; default EE.
