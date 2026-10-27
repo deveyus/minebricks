@@ -11,6 +11,11 @@
 //       controller; no listener ever mutates anything
 //   (4) KJS direct-write surface    -> reflection dump of Emissions / WorldData /
 //       ChunkPollution / AbstractPollution / Emitter / Pollutants / Emitters / Fuels
+//   (5) chimney configs             -> config walk matches adch|chimney too;
+//       reflection list includes ISmokeContainer + AdChimneys Emitters/Emitter
+//   (6) KJS interface adapters      -> suite tries JavaAdapter on Runnable (gate:
+//       does the Rhino fork still generate adapter classes in KubeJS?) then on
+//       ISmokeContainer itself (auto-generated no-op handler + best-effort Type)
 //
 // House rules honored: writes only to kubejs/export/por-probe/, requires
 // permission 2, changes nothing in-world, no config file is edited.
@@ -202,6 +207,62 @@ try {
   porAppend('POR-MBD-EVENTS.log', '[init] MBDServerEvents group not reachable: ' + String(e).split('\n')[0])
 }
 
+// --- suite 4: KJS interface-adapter viability -----------------------------------
+// Question: can a KubeJS script implement a Java interface (JavaAdapter) at all?
+// Gate 1 = Runnable (pure mechanism). Gate 2 = ISmokeContainer (the real contract).
+// Handlers are auto-generated no-ops from reflection, so missing-method errors
+// can't hide; getType() returns the first discoverable Type instance if possible.
+function porSuiteAdapter(log) {
+  let adapterWorks = false
+  try {
+    const Runnable = Java.loadClass('java.lang.Runnable')
+    const r = new JavaAdapter(Runnable, { run: function () {} })
+    adapterWorks = true
+    log.push('ADAPTER Runnable OK: ' + porDescribe(r))
+  } catch (e) {
+    log.push('ADAPTER Runnable FAILED (fork blocks adapter generation): ' + String(e).split('\n')[0])
+    return
+  }
+  try {
+    const ISC = Java.loadClass('com.endertech.minecraft.forge.blocks.ISmokeContainer')
+    let TypeCls = null
+    try { TypeCls = Java.loadClass('com.endertech.minecraft.forge.blocks.ISmokeContainer$Type') } catch (e) {}
+    let typeVal = null
+    if (TypeCls) {
+      try {
+        const ec = TypeCls.getEnumConstants()
+        if (ec != null && ec.length > 0) typeVal = ec[0]
+      } catch (e) {}
+      if (typeVal == null) {
+        try {
+          const fs = TypeCls.getDeclaredFields()
+          for (let i = 0; i < fs.length && typeVal == null; i++) {
+            try { typeVal = fs[i].get(null) } catch (e2) {} // static-only probe: instance fields throw, we skip
+          }
+        } catch (e3) {}
+      }
+    }
+    const handler = {}
+    const ms = ISC.getMethods()
+    for (let i = 0; i < ms.length; i++) {
+      const name = String(ms[i].getName())
+      if (name === 'getType' && typeVal != null) {
+        handler.getType = function () { return typeVal }
+      } else if (/^(is|has|can)/.test(name)) {
+        handler[name] = function () { return false }
+      } else {
+        handler[name] = function () { return null }
+      }
+    }
+    const isc = new JavaAdapter(ISC, handler)
+    log.push('ADAPTER ISmokeContainer OK: ' + porDescribe(isc))
+    log.push('  type resolved: ' + (typeVal != null ? String(typeVal) : 'null (Type not enum/static-visible)'))
+    try { log.push('  roundtrip: getType()=' + String(isc.getType()) + ' isVent()=' + String(isc.isVent())) } catch (e2) { log.push('  roundtrip FAILED: ' + String(e2).split('\n')[0]) }
+  } catch (e) {
+    log.push('ADAPTER ISmokeContainer FAILED: ' + String(e).split('\n')[0])
+  }
+}
+
 // --- /porprobe -------------------------------------------------------------------
 ServerEvents.commandRegistry((event) => {
   const { commands: Commands } = event
@@ -219,6 +280,7 @@ ServerEvents.commandRegistry((event) => {
 
         porSuiteConfig(log, cfgDump)
         porSuiteClasses(log, clsDump)
+        porSuiteAdapter(log)
 
         // suite 3 status: did the live listeners land?
         try {
