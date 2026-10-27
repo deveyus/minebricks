@@ -752,3 +752,45 @@ than what we'd have written.** Our own OPAC addon plan (Task 18 route) is retire
 - STATUS: candidate adopted in principle, nothing installed. Sequencing still hers:
   SS/seasons pass v0.5.0 front of queue; economy pass = install LMC + hook, then rate
   JSON + curve dials into the books before first boot.
+
+---
+
+## INSTALL PATH FIX — EDGE CDN ROT (2026-10-28, pack 0.4.3)
+
+Her report: "latest pack definition tries to download our recently added *.pw.toml
+from cf/mr. Fix those before it works." Correct — 7 CurseForge-pinned tomls were
+404ing on download.
+
+- ROOT CAUSE: CurseForge retired the `edge.forgecdn.net` download host. All 7 pins
+  404 there; identical paths alive on `mediafilez.forgecdn.net` (206).
+- FIXED (7): toolbelt, toast-control, antique-atlas, do-api, lets-do-vinery,
+  lets-do-meadow, lets-do-herbal-brews — host swap only. Every jar re-downloaded
+  from mediafilez and sha512 re-verified BYTE-IDENTICAL to the pinned hash
+  (same files, new host). Index rebuilt (101 entries, 0 mismatches).
+- FULL AUDIT GATE (new standing tools in /scripts): pw_url_audit.py (range-check
+  every URL + sha512 verify + index re-hash), pw_edge_host_fix.py (the fixer),
+  pw_metadata_check.py (all metadata:modrinth pins resolve by version-id, primary
+  file alive, sha512 matches MR API). Verdict: 79 metadata + 9 direct-URL entries
+  ALL verified. Zero edge.forgecdn.net references remain in the pack.
+- pack.toml 0.4.2 -> 0.4.3. Pushed 7b7623ef48; Pages verified 200 on all 7.
+
+## E:C&C SERVER-GROUP + WARS RULINGS (2026-10-28, from her — config plan for install)
+
+- WARS OFF (her call, source confirms): `warEnabled` ships **true** by default
+  (LCFtbHookConfig.java:197). Kill switch: `/lc_ftb_hook config set warEnabled false`
+  (runtime command persists) or the server toml. Takes the whole war subsystem with
+  it — declarations, l^n incoming surcharge, war-first dismantle priority.
+- SERVER GROUP (her "own things on behalf of the world with infinite money"):
+  - Funding lever verified in LMC source: `/lcbank give team <team> <money>` (+ take/
+    view, player|team|allPlayers|allTeams scopes), op-gated. Seed the "Server" team
+    bank account with a fat grant; top up anytime. True infinity not needed — see next.
+  - UpkeepGating.java (their javadoc, verbatim): when a category isn't chargeable its
+    cost "is treated as zero everywhere... simply frozen until someone relevant comes
+    online again" — frozen, NOT dismantled. ForceLoad upkeep DEFAULT mode charges only
+    while a team member is online -> an empty Server party's force-loads never bill and
+    never get torn down. World-owned spawn forceload = free and safe by construction.
+  - Recommendation on record (her veto reserved): `protectionUpkeepMode = LIGHT`
+    (team-member-online) — nobody bills while asleep, Server group pays zero even while
+    others play; forceLoad stays DEFAULT. Belt-and-suspenders: seed the account anyway.
+  - OPAC party edge to test at install: party-with-no-members persistence (keep one
+    admin member in "Server" if it collapses empty).
