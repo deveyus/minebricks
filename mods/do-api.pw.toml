@@ -3,7 +3,7 @@ filename = "letsdo-API-forge-1.3.0-beta-release-forge.jar"
 side = "both"
 
 [download]
-url = "https://edge.forgecdn.net/files/5730/908/letsdo-API-forge-1.3.0-beta-release-forge.jar"
+url = "https://mediafilez.forgecdn.net/files/5730/908/letsdo-API-forge-1.3.0-beta-release-forge.jar"
 hash-format = "sha512"
 hash = "3445342aa4366b1b8d58b9e9e0f60a3c8df66fe30ca6c91fd9e4cc1101ca6f1aa35f5e969932da85aa088265a9a046d448a8e91fbefa099346653f6967f319a2"
 
