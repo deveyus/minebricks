@@ -64,8 +64,18 @@ hash = "b205dffed163712290ac45bf2948e731242ce6d0d3c40622d6a430e63c051155"
 metafile = true
 
 [[files]]
+file = "mods/apollib.pw.toml"
+hash = "c6568f2bf770dbf46c97faf81e1046e137b0bf59549c09e9023cf7980ed4f5bc"
+metafile = true
+
+[[files]]
 file = "mods/appleskin.pw.toml"
 hash = "b79bd430bfb569a549f6490ea08bb7b1e3e6bcee75c35f76769578550ba699a8"
+metafile = true
+
+[[files]]
+file = "mods/architectury.pw.toml"
+hash = "b237b3e7fd652035cea32bee8cef9cf1a56f1796b64cb267f72a675ac91140d8"
 metafile = true
 
 [[files]]
@@ -199,6 +209,11 @@ hash = "aef60c1b79959b5a56afaf0f35962ce090ce6d2f028259429056cc5516da0217"
 metafile = true
 
 [[files]]
+file = "mods/ldlib2.pw.toml"
+hash = "724770b09a9274c4db44f4b3489234b1b787fe4b517880e3cd8dbfab0f236309"
+metafile = true
+
+[[files]]
 file = "mods/lets-do-brewery-neoforge.pw.toml"
 hash = "76206b73adbd9f12d88b22b5dced67e2a4a8823b22781d46ca7f78821b438656"
 metafile = true
@@ -314,6 +329,11 @@ hash = "b02997143ba06ec7a7e4ab96a40f046b2bc1b8a5f52494463f0667a30a80f764"
 metafile = true
 
 [[files]]
+file = "mods/placebo.pw.toml"
+hash = "07b12ecfac172ab8b33c33589fb77dccc178ab7bd7d59001ba5a147ffb6aec16"
+metafile = true
+
+[[files]]
 file = "mods/pollution-of-the-realms.pw.toml"
 hash = "1aeb92aa54858828b7db638a0631277ea0b8743cf13caf05520bfa9855c15799"
 metafile = true
@@ -409,6 +429,11 @@ hash = "273c62cd98f0f151a5404f36219d426fc12c3542d394626cb1073ae65c0cd397"
 metafile = true
 
 [[files]]
+file = "mods/terrablender.pw.toml"
+hash = "43b49bb2168c5d9089d10c717e52b69ab04642e428b87225c461457757746da6"
+metafile = true
+
+[[files]]
 file = "mods/terralith.pw.toml"
 hash = "84e6b87b8ff2570674fe8fca91115c2efef44cf135fe190db24cfbf3bbccdd25"
 metafile = true
@@ -429,6 +454,11 @@ hash = "03a55cd9b72625ca62fefb0f0556d7f16835436f579f3d768dc4295fd09ecf8a"
 metafile = true
 
 [[files]]
+file = "mods/unionlib.pw.toml"
+hash = "aa78c7f7759ddd7af6b05423cd78ab52c2969b748d7bf37b6ea9b41e7461d238"
+metafile = true
+
+[[files]]
 file = "mods/via-romana.pw.toml"
 hash = "80068027ac96d780015866c87ed16eefb7c12c5f3f383d1c98397ffbffffa0ef"
 metafile = true
@@ -446,4 +476,14 @@ metafile = true
 [[files]]
 file = "mods/xaeros-world-map.pw.toml"
 hash = "3c7fff3f6ea2550dc9892955c37159dff6f242bacff92bb2388b5dfcdafcc70e"
+metafile = true
+
+[[files]]
+file = "mods/yungsapi.pw.toml"
+hash = "3d347cb588ed38ffbc4488e34ffb1b5d1583a7e2bfd1fd26b26ee804ca583fad"
+metafile = true
+
+[[files]]
+file = "mods/zerocore.pw.toml"
+hash = "74177164f50b2b99d3f2702d1a37aecd2f358c954353ece97465296a346017da"
 metafile = true
