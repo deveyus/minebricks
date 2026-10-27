@@ -13,6 +13,10 @@ file = "kubejs/server_scripts/minebricks_backpack_knobs.js"
 hash = "db74a8dc9daa4ab8c5034583e6f53c4b79ec0f03491df120194de6c58e9f4571"
 
 [[files]]
+file = "kubejs/server_scripts/minebricks_cropscan.js"
+hash = "c28c5ef7ac3ee565f8a13eb9fa06d9560d59b6e4d4586e1e9761fd4c3aabaa2c"
+
+[[files]]
 file = "kubejs/server_scripts/minebricks_fooddump.js"
 hash = "809b98a5f2445153f61329e885a3ac9676b8026396258b222ec5a30faf62d5fd"
 

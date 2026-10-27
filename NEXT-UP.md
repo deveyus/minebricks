@@ -146,21 +146,39 @@ diff, packwiz-refreshed, shipped as v0.4.2:
 - 6 of the 18 ride CF metadata (Tombstone, Toast Control, do-api, Herbal Brews,
   Meadow, Vinery) — consistent with the 5 CF mods already in the pack.
 
-**Serene Seasons + Spoiled — PROPOSED (her question: "isn't the worst idea... thoughts?")**
-Recommendation: **yes, but as its own version (v0.5.0 "seasons pass"), not
-bolted onto v0.4.2.** Seasons are what turn the food suite from sticker pack
-into a system — crop calendars, preservation pressure, and Spoiled's rot as a
-season-tuned economy. The remap is bounded, not open-ended:
-1. Crop season tags: every suite crop gets an explicit season via datapack
-   tags; untagged crops default to grow-anywhere, so we opt crops INTO seasons
-   deliberately — no silent crop death.
-2. Biome audit: Tectonic/Terralith/custom biomes get a seasons-blacklist pass
-   (else tropical biomes snow over); vanilla categories handle themselves.
-3. Config dials: SS crop growth = slow-not-destroy; winter stays survivable;
-   Spoiled rates keyed to season multipliers.
-4. Free starting point: Meldworks runs exactly this pairing (SS + Spoiled, both
-   mods + tuned configs in their repo) — we crib their configs as the base.
-Green-light needed before install; one-tag revert if friends hate winter.
+**Serene Seasons + Spoiled — SEASONS PASS PLAN v0.5.0 (direction blessed 00:39Z;
+her amendments folded in):** her question "isn't the worst idea... thoughts?"
+answered YES — seasons are what turn the food suite from sticker pack into a
+system — with two rulings attached:
+- **RULING (her, verbatim): "we've failed if we have untagged crops."** The
+  grow-anywhere default is NOT an acceptable fallback. Every crop we ship gets
+  an explicit season. Enforcement = instrument, not vibes (below).
+- **RULING: "this is another case for a debug script, clearly."** SHIPPED:
+  `kubejs/server_scripts/minebricks_cropscan.js` — `/cropscan` (perm 2) walks
+  the block registry, detects crops in three tiers (strict = CropBlock
+  instance; extended = integer age property; special = class-name hints), maps
+  each to seed item, reads its tags, and writes
+  `kubejs/export/cropscan/{CROP-SCAN.json, CROP-INDEX.txt, CROP-LOG.txt}`.
+  Phase A (pre-SS) = authoring corpus for the season datapack. Phase B
+  (post-SS) = the gate: any strict crop with zero `sereneseasons:*` tags lands
+  on the UNTAGGED failure list. v0.5.0 does not ship with a non-empty gate.
+
+The pass itself (in ship order):
+1. **Crop census first** — `/cropscan` phase A run on the current pack (+ again
+   after every food-suite wave) — every detected crop gets a season assignment
+   written into our datapack tags. Zero-untagged by construction, verified by
+   the phase-B gate.
+2. **Biome audit** — Tectonic/Terralith/custom biomes get a seasons-blacklist
+   pass (else tropics snow over); vanilla categories handle themselves.
+3. **Config dials** — SS crop growth = slow-not-destroy; winter pressures,
+   doesn't kill; Spoiled rates keyed to season multipliers (summer rot up,
+   winter down — the preservation economy).
+4. **Free starting point** — Meldworks runs exactly this pairing (SS + Spoiled,
+   both mods + tuned configs in their repo) — we crib their configs as the
+   base, then turn our dials.
+5. **Ship as its own tag (v0.5.0)** — seasons change worldgen FEEL; one-tag
+   revert if the friends hate winter. Gate for shipping: cropscan phase-B
+   failure list EMPTY.
 
 **Ancient Warfare 3 × Multiblocked2 — ANALYZED (her ask: "can we work out a way
 to make AW NPCs work on MBd2 machines?"):** Verdict: **yes — native capability
@@ -185,6 +203,37 @@ aw_worksite 0.2.3 + MBD2 21.1.2):
   (non-AW) block positions as dump targets; (c) decide AW3 in vs its weight —
   it's TWO modules (npcs + worksites) and a big identity add.
 
+**AW3 FOLLOW-UP 00:39Z — her correction: "That handles moving. I want to know
+if they can WORK at MBd2 machines as a worksite." Verdict: NO — and this one
+is settled, not conditional.** Jar-verified:
+- Worksite binding is hard-typed to AW's own block entities:
+  `MainFarmingProgram` carries the descriptor `LWorkSites/CropFarm/EntityCropFarm`
+  in its constant pool; `UseMillStoneProgram` targets
+  `LAOSWorkshopExpansion/MillStone/EntityMillStone`. NPCs discover and service
+  sites by concrete BE class (per-type known-sites lists), never by capability
+  or interface.
+- `WorkSites/Registry` = 7 static BE types (crop farm, fish farm, quarry, tree
+  farm, warehouse, warehouse crafter, warehouse interface). No registration
+  API surfaced anywhere in either jar.
+- License is **All Rights Reserved**, no source link on Modrinth — no addon
+  path, no companion worksite, nothing to crib. An "MBd2 machine as worksite"
+  would need the author to build it.
+- Side discovery: `EntityWorkSiteBase` extends `AgeOfSteam/Core/AbstractMechanicalBlock`
+  — this AW3 is built on the Age of Steam mechanical-power core (same author
+  family; also explains the millstone expansion hook). Worksites are
+  steam/mechanical machines, not just inventory blocks.
+- `EntityWarehouseCrafter` autocrafts VANILLA `CraftingRecipe` entries from
+  warehouse stock (RecipeManager/asCraftInput in pool) — MBd2 recipes are not
+  vanilla crafting recipes, so the crafter cannot drive MBd2 either.
+- **The architecture that actually exists:** AW3 owns LABOR (farms, quarry,
+  fishing, vanilla-shape autocrafting — all AW blocks, NPC-serviced), MBd2
+  owns PROCESSING (capability-fed, RecipeLogic auto-run), and the only native
+  seam between the two families is LOGISTICS — which is the part verified
+  working. Practical chain: AW quarry works the ore field → warehouse stock →
+  NPC routing/ferry (or auto warehouse-interface where adjacency allows) →
+  MBd2 IO hatches → auto-processing → AutoIO out → back to warehouse. Nobody
+  "works at" the machine; the system works.
+
 **Emendatus Enigmatica — LOOK DONE (her call: "absolutely worth a look");
 verdict: worth prototyping, gated on a materials audit.** Jar-verified (EE
 2.2.0-alpha-3, neoforge 21.1.172+ ⇒ ours 21.1.265 OK, MC 1.21.1 only dep):
@@ -203,6 +252,14 @@ verdict: worth prototyping, gated on a materials audit.** Jar-verified (EE
 - Risks: alpha-3 (config validation API still churning — but they ship their
   own validators); duplicate-metals overlap with our existing custom metal set
   — the audit decides which side owns each metal. NOT auto-added.
+- **GOAL AMENDED 00:39Z (her): "For materials the goal is full unification."**
+  Not partial tag-bridging — the whole metal set lives in one registry/tag
+  system. And the sequencing changed: she owes the **ore-processing front-to-
+  back workup tonight (after dinner)** — the pinned-but-undesigned chain (per-
+  metal crushed, wash split, slurries, molten). The EE prototype + the
+  materials audit FOLD INTO that workup as its materials layer, they are not a
+  parallel track. Ready inputs on record: `scratch/materials_scan.json`,
+  `WORLDGEN-SOURCES.json`, ore palette scans, `MACHINE-INVENTORY.md`.
 
 **Barrel status (remaining five approved 20:12Z, with conditions):**
 Farmer's Delight PROMOTED to shipped in v0.4.2 (see mod dump above) · Spice of
