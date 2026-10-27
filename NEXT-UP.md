@@ -77,7 +77,8 @@ tag `v*` → GitHub Actions → ONE artifact + SHA256SUMS on a Release:
   stamp is one `pack.toml` edit away, pack lead's call.
 
 **Bootstrapper + GitHub Pages — LIVE 22:26Z+ (the agreed auto-update route):**
-every push to main deploys the full pack (refreshed index: 57 mods + kubejs) to
+every push to main deploys the full pack (refreshed index: 75 mods as of v0.4.2
++ kubejs) to
 `https://deveyus.github.io/minebricks/pack.toml`. Install once, updates flow on
 launch — releases (tag route) are for initial distribution, Pages is the live
 channel:
@@ -127,8 +128,85 @@ release.yml assembles the zip per tag (envsubst, same substitution Meldworks use
   (packwiz-ignored files stay out) → actions/deploy-pages. Concurrency-guarded;
   also hand-triggerable via dispatch.
 
-**Barrel status (all seven approved 20:12Z, with conditions):** Farmer's Delight
-clean · Spice of Life Onion clean (config blocked on food math — `/fooddump`
+**Mod dump v0.4.2 — SHIPPED (her call 00:0xZ, msg 1564432106233397329):** "The no
+question tier is an easy include. Do it." — 18 mods staged from the Meldworks
+diff, packwiz-refreshed, shipped as v0.4.2:
+- Tier-1 QoL: Corail Tombstone · Jade · Mouse Tweaks · Toast Control ·
+  Controlling + Searchables · spark · Lootr.
+- Easy wins: Supplementaries (moonlight stays OURS at 3.7.2 — newer than
+  Meldworks' 3.0.6, same lib line) · NuclearCraft Neohaul ("extremely fitting").
+- Food suite: Farmer's Delight (PROMOTED from barrel — Cultural Delights
+  hard-depends on it, and her "Lets do" blesses the suite FD anchors) ·
+  Cultural Delights · [Let's Do] API + Brewery + Farm & Charm + Herbal Brews +
+  Meadow + Vinery (Meldworks' exact family set).
+- Helms-deep review (her words, parked): **BOMD** + **Relics** — need a
+  fine-grained balance pass before any add.
+- Moonlight version note: we run 3.7.2 (ours, newer); Meldworks pins 3.0.6.
+  Supplementaries 3.6.4 runs on both; no bump needed.
+- 6 of the 18 ride CF metadata (Tombstone, Toast Control, do-api, Herbal Brews,
+  Meadow, Vinery) — consistent with the 5 CF mods already in the pack.
+
+**Serene Seasons + Spoiled — PROPOSED (her question: "isn't the worst idea... thoughts?")**
+Recommendation: **yes, but as its own version (v0.5.0 "seasons pass"), not
+bolted onto v0.4.2.** Seasons are what turn the food suite from sticker pack
+into a system — crop calendars, preservation pressure, and Spoiled's rot as a
+season-tuned economy. The remap is bounded, not open-ended:
+1. Crop season tags: every suite crop gets an explicit season via datapack
+   tags; untagged crops default to grow-anywhere, so we opt crops INTO seasons
+   deliberately — no silent crop death.
+2. Biome audit: Tectonic/Terralith/custom biomes get a seasons-blacklist pass
+   (else tropical biomes snow over); vanilla categories handle themselves.
+3. Config dials: SS crop growth = slow-not-destroy; winter stays survivable;
+   Spoiled rates keyed to season multipliers.
+4. Free starting point: Meldworks runs exactly this pairing (SS + Spoiled, both
+   mods + tuned configs in their repo) — we crib their configs as the base.
+Green-light needed before install; one-tag revert if friends hate winter.
+
+**Ancient Warfare 3 × Multiblocked2 — ANALYZED (her ask: "can we work out a way
+to make AW NPCs work on MBd2 machines?"):** Verdict: **yes — native capability
+interop, no Java bridge, no fake player needed.** Jar-verified (aw_npc 0.3.6 +
+aw_worksite 0.2.3 + MBD2 21.1.2):
+- AW3's `UnloadInventoryProgram` is a generic capability mover: NPC extracts
+  from its own hands (`canExtract`/`extractItem`) and inserts into whatever
+  IItemHandler sits at the routing target (`targetPos`/`targetInventory`,
+  `insertStackIntoInventory`) — machine-agnostic by construction.
+- MBd2 machines expose standard item caps via `ItemSlotCapabilityTrait` on IO
+  parts (per-trait filter + auto-io toggles built into the trait definition).
+- MBd2 `RecipeLogic` runs GT-style: `findAndHandleRecipe` auto-searches from
+  whatever inputs are present — items an NPC drops in START processing, no GUI
+  click, no right-click interaction required.
+- Closed loop available: AW3 WarehouseInterface auto-push/pulls adjacent caps
+  (config: `automatic_warehouse_interface`) — so the static path is
+  warehouse ⇄ interface ⇄ MBd2 IO hatch, and NPCs are the walking middle mile
+  via routing orders where adjacency fails.
+- Open items before declaring victory: (a) our MBd2 multiblock definitions need
+  item IO parts with the capability trait — definition-side work in our
+  machine JSONs; (b) in-game probe: confirm routing-order UI accepts arbitrary
+  (non-AW) block positions as dump targets; (c) decide AW3 in vs its weight —
+  it's TWO modules (npcs + worksites) and a big identity add.
+
+**Emendatus Enigmatica — LOOK DONE (her call: "absolutely worth a look");
+verdict: worth prototyping, gated on a materials audit.** Jar-verified (EE
+2.2.0-alpha-3, neoforge 21.1.172+ ⇒ ours 21.1.265 OK, MC 1.21.1 only dep):
+- What it is: a material-registrar hub — define materials in config JSONs, it
+  registers ore/ingot/dust/gem blocks + items and tags everything under common
+  `c:` namespaces; plugin API (`IEmendatusPlugin`) lets other mods hook in.
+- The kicker for us: EE 2.x ships its OWN worldgen feature kit — DenseOre,
+  DikeOre, GeodeOre, SphereOre + `MultiStrataRuleTest` — all data-driven, so
+  its ore placement can be pointed directly at our `minebricks:has_<metal>_fields`
+  biome tags. Its Sphere/Dense feature shapes read like field-shaped deposits.
+- Two integration modes: (A) EE worldgen scoped to field biomes — EE features
+  become the field fill for EE metals; (B) EE worldgen OFF per material — EE
+  as pure registry/tag/item-form layer, our features stay the sole placement.
+- Bonus fit: tool-material validators in-jar ⇒ Silent Gear material bridge
+  potential (we run SG + Silent Gems + sgearmetalworks).
+- Risks: alpha-3 (config validation API still churning — but they ship their
+  own validators); duplicate-metals overlap with our existing custom metal set
+  — the audit decides which side owns each metal. NOT auto-added.
+
+**Barrel status (remaining five approved 20:12Z, with conditions):**
+Farmer's Delight PROMOTED to shipped in v0.4.2 (see mod dump above) · Spice of
+Life Onion clean (config blocked on food math — `/fooddump`
 tool built, `minebricks_fooddump.js`, rides the next debug build) · toffel's
 Finite Water clean · Dynamic Trees + Terralith compat + DT Plus (no-vanilla-gen
 census gate) · Apotheosis conditional: spawner offering OFF, stat fixes ON,
@@ -182,9 +260,9 @@ double-log. One design, no flip-flop.
 5. None of the original menu items stand as-is — sequencing now flows through
    the machine inventory + ore work + her 5-point plan.
 
-**Staging note:** the `kubejs/` folder is staged but deliberately NOT indexed
-(no `packwiz refresh` yet). The moment picks land, refresh + verify ships them
-to everyone.
+**Staging note:** the `kubejs/` folder is staged and indexed (8 files ride the
+index). Every pick lands via `packwiz refresh` + push — that IS the ship
+button, it goes to everyone on next launch.
 
 ---
 

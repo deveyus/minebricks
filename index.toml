@@ -63,8 +63,28 @@ hash = "86c02c5cdeabc6d8a99e453f4059103b6daa904d8c8715dd18f20efee7299d62"
 metafile = true
 
 [[files]]
+file = "mods/controlling.pw.toml"
+hash = "65c8086d2ec3d39acc7bd36c7a0306ccc43b602b38fa07d13291bc478ef7dfff"
+metafile = true
+
+[[files]]
+file = "mods/corail-tombstone.pw.toml"
+hash = "511aa6d67e0f1443ea96acc1f4b947f21b5099318821a14f8c8e309966b4448c"
+metafile = true
+
+[[files]]
+file = "mods/cultural-delights.pw.toml"
+hash = "654bbb4dfe9d87548babc27258c7e79d92ffbb36a7a4039708d79267256b11a9"
+metafile = true
+
+[[files]]
 file = "mods/data-anchor.pw.toml"
 hash = "ae8553be69c0d60c06a1bf65f051e0b3240b8e0bc7efab8ab94b0ae0c6367613"
+metafile = true
+
+[[files]]
+file = "mods/do-api.pw.toml"
+hash = "488c916a519935ea70a04ae507400bfcaf794cbbf108acb1a3e213db2a15058b"
 metafile = true
 
 [[files]]
@@ -80,6 +100,11 @@ metafile = true
 [[files]]
 file = "mods/entityculling.pw.toml"
 hash = "d83841dac850773dde350a5cb6b725d2033a5a4379ebfa71c7a2791d704bf41b"
+metafile = true
+
+[[files]]
+file = "mods/farmers-delight.pw.toml"
+hash = "74a9c6f2f890649eb693c9f48c3d99148b5526e23371cf1a9a6276bd3b21b214"
 metafile = true
 
 [[files]]
@@ -118,6 +143,11 @@ hash = "69238da11940041d01207ab7b55c54b40eaf709b943b7e6023ab8521d31557e5"
 metafile = true
 
 [[files]]
+file = "mods/jade.pw.toml"
+hash = "b6e0a61fea06f8d6d8e1672cf07b682625c4b74efd548d5093cd9c1fed167eec"
+metafile = true
+
+[[files]]
 file = "mods/kilagraph.pw.toml"
 hash = "7f8cf9a5d1520173451153c1ae84957d6e4042a3ad39150b7d8b9157ea22c225"
 metafile = true
@@ -133,6 +163,31 @@ hash = "aef60c1b79959b5a56afaf0f35962ce090ce6d2f028259429056cc5516da0217"
 metafile = true
 
 [[files]]
+file = "mods/lets-do-brewery-neoforge.pw.toml"
+hash = "76206b73adbd9f12d88b22b5dced67e2a4a8823b22781d46ca7f78821b438656"
+metafile = true
+
+[[files]]
+file = "mods/lets-do-farm-charm.pw.toml"
+hash = "139243c0b47a2d89147289b8d9ef91178c1c2511f3060e00e3699d0e3adb226b"
+metafile = true
+
+[[files]]
+file = "mods/lets-do-herbal-brews.pw.toml"
+hash = "1fc98affc9830a4f23ca858d16014cd04655341f519418c1b9e38be588c6518a"
+metafile = true
+
+[[files]]
+file = "mods/lets-do-meadow.pw.toml"
+hash = "f3eb4cc1b5250c35ddb14963e77e941efa2ca1dc0916b104916a6430facb4742"
+metafile = true
+
+[[files]]
+file = "mods/lets-do-vinery.pw.toml"
+hash = "4588e9d94ce9adad3db306fb29558782b1db12156d506a60667794fcb23248a7"
+metafile = true
+
+[[files]]
 file = "mods/lithostitched.pw.toml"
 hash = "1f1f169cd6bdc4c23b97659c8764d283b18932003d37bd20ee5408d6222d07e8"
 metafile = true
@@ -140,6 +195,11 @@ metafile = true
 [[files]]
 file = "mods/little-logistics.pw.toml"
 hash = "7a6a6848a42910b7d28169c3c3e79c20991e395928a7563666874008b07ad229"
+metafile = true
+
+[[files]]
+file = "mods/lootr.pw.toml"
+hash = "988377a2fb2346223a83b6545ec52f5b22ebd0e26b63d141427ad389bedfe4f0"
 metafile = true
 
 [[files]]
@@ -188,6 +248,11 @@ hash = "a12819c9f0ab424ca15cdda3be4c703256981cb4cbeeea9676669d86cfd4edfe"
 metafile = true
 
 [[files]]
+file = "mods/mouse-tweaks.pw.toml"
+hash = "6bc414cc0f2d4c078fe83f384d786343f701f371d657c5279b5b0df1595804bd"
+metafile = true
+
+[[files]]
 file = "mods/multiblocked2.pw.toml"
 hash = "c6d22c2d6024634ec84e36f9244f914e01f4eddd1e82fabf09de279db709c648"
 metafile = true
@@ -195,6 +260,11 @@ metafile = true
 [[files]]
 file = "mods/no-chat-reports.pw.toml"
 hash = "fb9372a473677708db4111075274c6fc1616b89b988d95c9595cd1868b9a1902"
+metafile = true
+
+[[files]]
+file = "mods/nuclearcraft-neohaul.pw.toml"
+hash = "35dd97d6e0465930cb299481c407de0e38694e5db6d481ff7974978a3ec10ea1"
 metafile = true
 
 [[files]]
@@ -238,6 +308,11 @@ hash = "78108dd9502bb40a8fd5e0cffda7c17356260adf27765a0154330cc689a19252"
 metafile = true
 
 [[files]]
+file = "mods/searchables.pw.toml"
+hash = "ce9ddada6ffd55a512149cc474c6a453281a997a5fdf1b7b4a2cc73f875e704a"
+metafile = true
+
+[[files]]
 file = "mods/silent-gear-metalworks.pw.toml"
 hash = "e8791e21951e0b42dd25b7284274e4d1fdaa8eacaf5144dc6445b2465c2c7fba"
 metafile = true
@@ -268,6 +343,11 @@ hash = "5268556ee47f5f05cb74b86e3228b64e0435759ae7b9b0caa2f00f3c7463ffdf"
 metafile = true
 
 [[files]]
+file = "mods/spark.pw.toml"
+hash = "593fa7b30ab016aa45be07bd6bef3a9f160ed0f24689850d60bf84995d69b843"
+metafile = true
+
+[[files]]
 file = "mods/supermartijn642s-config-lib.pw.toml"
 hash = "dd4d3321696c2a0814fab54fbd22c6bb04ab17be73a2d5388e62abdb3b58b1c3"
 metafile = true
@@ -278,6 +358,11 @@ hash = "509d44a1eef1aa9dffd5904959dcf7e9b8c26cf6a5f9deec40870b23cf39bf22"
 metafile = true
 
 [[files]]
+file = "mods/supplementaries.pw.toml"
+hash = "084ba00d5d41d76f4975935f3ada0fb1fce41bce59dd3901f54684c3588cb9f6"
+metafile = true
+
+[[files]]
 file = "mods/tectonic.pw.toml"
 hash = "273c62cd98f0f151a5404f36219d426fc12c3542d394626cb1073ae65c0cd397"
 metafile = true
@@ -285,6 +370,11 @@ metafile = true
 [[files]]
 file = "mods/terralith.pw.toml"
 hash = "84e6b87b8ff2570674fe8fca91115c2efef44cf135fe190db24cfbf3bbccdd25"
+metafile = true
+
+[[files]]
+file = "mods/toast-control.pw.toml"
+hash = "29d1e04030fcbdad4ee91eb9bc0b0d6b8907ffe967c9bd0543e8bb7e3dab5282"
 metafile = true
 
 [[files]]

@@ -1,0 +1,13 @@
+name = "Corail Tombstone"
+filename = "tombstone-neoforge-1.21.1-9.4.9.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "b2b6e918554954e5f22dce6cff9154c289cac6ba"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 7951535
+project-id = 243707

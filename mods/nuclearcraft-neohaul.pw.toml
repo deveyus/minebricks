@@ -1,0 +1,13 @@
+name = "Nuclearcraft Neohaul"
+filename = "nuclearcraftneohaul-1.21.1-0.9.13.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/7hvoLzay/versions/IwSDvmSh/nuclearcraftneohaul-1.21.1-0.9.13.jar"
+hash-format = "sha512"
+hash = "15df7917e9f831a4ee9b355f72c0e3e5c9c3c774a91b819174c9440a05cca3669ee21263b8af0e4a70ba855a3403b564c4ca673cc1771556510d5d0fbbad3470"
+
+[update]
+[update.modrinth]
+mod-id = "7hvoLzay"
+version = "IwSDvmSh"
