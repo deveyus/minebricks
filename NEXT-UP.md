@@ -658,3 +658,49 @@ Not iron-priced: a currency layer between production and land. Skeleton as she s
   consumption from inside the listener (thread); behavior of loaded chunks on unclaim.
 - STATUS: design recorded, nothing built. SS/seasons pass remains v0.5.0 front of queue;
   economy pass sequencing = her call after /cropscan.
+
+**LMC SOURCE DIVE — DYNAMIC RATES CONFIRMED + HOOK MAP (2026-10-28).**
+Lightman's Currency pinned candidate: 1.21-2.3.0.6 (NeoForge, Oct 3 2026, Apache-2.0,
+5.1M downloads; source branch LC-1.21.1 = the exact shipped build). Dived, not guessed:
+- **RATES ARE LIVE-DIALABLE.** All coin values + exchange rates live in
+  `config/lightmanscurrency/MasterCoinList.json` (CoreChain ladder + SideChains, each
+  edge an `exchangeRate`). Registered as a custom *reloadable*: `/lcconfig reload
+  lightmanscurrency:master_coin_list` re-reads + re-syncs to clients, no restart. Also
+  editable in-game (config screen, MutableMasterCoinList) and via `/lcconfig edit …
+  set/add/replace/remove`. Codebase is reload-aware (CoinEntry javadoc warns values go
+  stale on reload). Addons even get ChainDataReloadedEvent.Pre/Post on every reload.
+  → Dial discipline fits verbatim: every rate edge on record, versionable, /reload hot.
+- **CLAIM/LOAD PURCHASE EXISTS AS A MOD-COMPAT LAYER.** `/lcclaims buy claim|forceload N`
+  charges a config price (MoneyValueOption) against the player's wallet+bank and grants
+  bonus claims via `IClaimPurchaseHandler`. Shipped handlers: cadmus, flan, ftbchunks —
+  **no OPAC**. Default prices: 100 gold coins/claim, 1M netherite/forceload, flat until a
+  hard cap (1M claims / 100 forceload). Flat ≠ her exponential curve: our OPAC addon
+  implements the handler (SavedData pattern, per LCBonusClaimData) and owns the curve;
+  keep LMC's native purchase OFF (`claimingAllowClaimPurchase=false` default) so there's
+  one pricing authority — ours.
+- **MONEY API SURFACE.** `MoneyAPI.getApi().GetPlayersMoneyHandler(player)` →
+  `extractMoney(value, simulate)` (wallet + bank auto-resolve). `RegisterCurrencyType`
+  for custom currencies. `TradeEvent.Pre (cancellable)/TradeCost/Post` = free census
+  feed for the dials books. Bank accounts + team bank accounts with permission tiers =
+  built-in answer to the party-pooling open semantic. Tax Collector block = server-side
+  money sink (rate capped by config, default 25%) — borrowable for sinks, off by default.
+- **TRUST NOTE (checked, on record):** the Feb 2024 "backdoor" thread (r/feedthebeast)
+  accused a hidden author-only command path in an old Fabric build. Current 2.3.0.6
+  source shows no hardcoded author UUID: admin = `LCAdminMode` server op list + permission
+  level 2. Visible-source Apache-2.0; we ship from source-matched branch.
+- **ENDERPAY = the other one she remembered** (kamildanak, dead since 2018, 1.12.2):
+  its famous mechanics are **basic income + demurrage** — 1% daily balance tax, banknotes
+  lose 1% of face value per day. That's the anti-hoarder, anti-compound lever she liked.
+  LMC has NO demurrage; if she wants it, it's an addon mechanic on the bank layer
+  (scheduled shave). Borrowable into the economy pass as a second brake dial.
+- WIKI NAMESAKE NOTE: RC Reborn renamed World Anchors → **World Spikes**; see murder below.
+
+**WORLD SPIKE MURDER — EXECUTED (her call, 2026-10-28: "murder with the violence").**
+RC Reborn 1.2.14 World Spikes = permanent free 3×3 chunk loads (no fuel, no upkeep, no
+config gate — verified in source + jar strings). Free loading undercuts token pricing,
+so every survival path is removed via `kubejs/server_scripts/minebricks_anchor_murder.js`
+(KubeJS recipe removal: world_spike, personal_world_spike, world_spike_minecart +
+worldspike_minecart_disassembly). Items stay visible in creative/EMI for admin testing.
+Zero worlds booted yet → no existing spikes to clean up; breaking a spike always
+releases its chunks (preRemoveSideEffects), so no orphan loads ever. Rollback: one file
+or the KILL_SWITCH const. Chunk loading now sells for tokens only.

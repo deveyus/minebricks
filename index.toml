@@ -9,6 +9,10 @@ file = "kubejs/client_scripts/.keep"
 hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 [[files]]
+file = "kubejs/server_scripts/minebricks_anchor_murder.js"
+hash = "ab6f76e74664b5dcba7c3fec145cf2e8f1da5a68ebe2c03e3964144d94fe5a4c"
+
+[[files]]
 file = "kubejs/server_scripts/minebricks_ar3_supply_pass.js"
 hash = "1eab0cf40725aa19fb11fad66d3f27ca7dd084885a7c6a1af73dd8484bbe8d91"
 
