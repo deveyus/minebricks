@@ -65,6 +65,18 @@ all: **KubeJS can build definitions directly**.
 - `PatternSnapshot` / `MultiblockWorldSavedData` = formed-structure state.
 - Structure files are vanilla-format `.nbt` under `data/<ns>/structure/`
   (shipped: `empty_multiblock.nbt`, `empty_simple.nbt`).
+- **VARIABLE-SIZE STRUCTURES (source-verified in the repo clone, 2026-10-27
+  afternoon):** `FactoryBlockPattern.aisleRepeatable(min, max, rows...)` (and
+  `.setRepeatable(min, max)` on the last aisle) repeats a Z-layer between min
+  and max times; `BlockPattern` runs a retreat-search over the window, so the
+  structure forms at ANY size in range. The mod's own
+  `test/tests/multiblock/PatternRepetitionFixtures` is the reference idiom:
+  repeatable wall / fixed controller aisle / repeatable wall. Repetition grows
+  ONE axis only (the aisle/Z axis), so square growth = repeat one axis + a
+  soft-edge row for the other (required core flanked by `Predicates.any()`
+  wings, iron-or-air/terrain tolerated). Live use: settling pool 5x5..17x17 in
+  `minebricks_mbd2_t1.js`. Axis convention (default `start()`): aisle = Z,
+  string = Y, char = X — a FLOOR is one row per aisle, many aisles.
 
 ## Recipes (the Route B backbone, jar-confirmed)
 

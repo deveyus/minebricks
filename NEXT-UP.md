@@ -553,8 +553,13 @@ TestMachineBuilder / MBDSmokeFixtures were the literal templates). Deliverables:
   ×2 @ 100t.
 - `minebricks:wash_trommel` — 3x3x3 iron box; in/out slots + 4B water tank;
   placeholder raw_iron + 100mB water → sand + gravel @ 60t.
-- `minebricks:settling_pool` — 3x3x1 open floor (a pool is not a box — her
-  exemption); water tank + out-slot; placeholder sand + 250mB water → clay @ 80t.
+- `minebricks:settling_pool` — VARIABLE flat floor, 5x5 up to 17x17 (her
+  13:40Z ruling "variable size structures ... for the settling pool? 5x5 to
+  say 17x17"); water tank + out-slot; placeholder sand + 250mB water → clay @ 80t.
+  NOTE: the first staged version (~13:50Z) had the pool as one aisle × three
+  rows = a WALL standing on edge, not a floor — caught during the variable-size
+  pass (~13:55Z), fixed in the same edit (floor = one row per aisle), before her
+  next launch. Nothing ran with the wall shape.
 - Recipes are deliberately VANILLA-ONLY placeholders: startup scripts run before
   mod items register (IE dusts unreachable there); real I/O taxonomy = the DIY
   unification pass. Route B shape intact — one recipe type per controller →
@@ -565,6 +570,17 @@ TestMachineBuilder / MBDSmokeFixtures were the literal templates). Deliverables:
 - First launch = the test: script isolation means a bad definition logs and
   skips instead of crashing. Watch "MBD2 t1: ... registered" lines in the log.
 - IP RESTORED ~13:20Z: ImmersivePetroleum-1.21.1-4.5.0-39 (1nu6ZI52). Index 79→80.
+- **POOL VARIABLE-SIZE RULING ~13:40Z:** "one of the awesome features of mbd2 is
+  that you can make variable size structures. Can you make that happen for the
+  settling pool? 5x5 to say 17x17." Implemented same hour, source-verified:
+  depth via `aisleRepeatable(2, 8, row)` each side of the controller aisle
+  (mod's own PatternRepetitionFixtures idiom) = 5..17 deep; width via required
+  5-wide iron core + soft `any()` wings out to 17 across (terrain-tolerant —
+  she can build flush into ground). Min footprint enforced by the core;
+  controller must sit ≥2 blocks from every edge. Size is FORMATION-ONLY for
+  now — bigger pool doesn't yet process faster/more; the scaling hook is
+  MBD2 `RecipeModifier` (noted for the dial when the real pool workup lands —
+  fits her O4 large-output ruling).
 - GHOST FILE INCIDENT (resolved pre-push): 5 stale pre-consolidation metafiles
   (create, create-deco, athena-ctm, chipped, traveler-tool-belt) resurfaced in the
   workspace with original 10-25 mtimes + exec-bit flips on the PoR trio —

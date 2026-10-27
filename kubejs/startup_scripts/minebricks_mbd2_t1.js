@@ -53,11 +53,28 @@ const BOX_333 = FactoryBlockPattern.start()
     .where('S', IRON_CASING)
     .build();
 
-// Settling pool: 3x3x1 open floor, controller center — a pool is not a box.
-const POOL_FLOOR = FactoryBlockPattern.start()
-    .aisle('SSS', 'SCS', 'SSS')
+// Settling pool: VARIABLE flat floor, 5x5 up to 17x17 (Fina 2026-10-27:
+// "variable size structures ... for the settling pool? 5x5 to say 17x17").
+// Convention recap: aisle = Z layer, string = Y row, char = X cell — so a
+// floor is ONE row per aisle, MANY aisles (the old one-aisle/three-rows
+// attempt was actually a wall standing on edge — fixed here).
+//   depth: aisleRepeatable 2..8 layers each side of the controller layer
+//          -> 5..17 deep (same idiom as PatternRepetitionFixtures' walls,
+//          source-verified against the repo's own repetition tests).
+//   width: a REQUIRED 5-wide iron core (minimum enforced) flanked by soft
+//          wings 'o' = any (grow with iron up to 17 across; air/terrain
+//          tolerated so building flush into ground doesn't block formation).
+// Controller must sit >=2 layers and >=2 core cells from every edge.
+const POOL_ROW   = 'ooooooSSSSSoooooo';  // 17 cells: 6 soft + 5 required + 6 soft
+const POOL_ROW_C = 'ooooooSSCSSoooooo';  // controller in the core center
+
+const POOL_VARIABLE = FactoryBlockPattern.start()
+    .aisleRepeatable(2, 8, POOL_ROW)    // depth behind: 2..8 layers
+    .aisle(POOL_ROW_C)                  // controller layer
+    .aisleRepeatable(2, 8, POOL_ROW)    // depth in front: 2..8 layers
     .where('C', CONTROLLER_ANY)
     .where('S', IRON_CASING)
+    .where('o', Predicates.any())       // soft growth wing
     .build();
 
 // --- trait helpers ----------------------------------------------------------
@@ -160,8 +177,9 @@ MBDRegistryEvents.machine((event) => {
         fluidTank('wash_water'),
     ], 'minebricks:wash_trommel');
 
-    // T2 — settling pool: flat floor, not a box. Water tank + out slot.
-    registerMultiblock('minebricks:settling_pool', POOL_FLOOR, [
+    // T2 — settling pool: VARIABLE floor 5x5..17x17 (pools scale; everything
+    // else stays a generic 3x3x3 test box for now). Water tank + out slot.
+    registerMultiblock('minebricks:settling_pool', POOL_VARIABLE, [
         fluidTank('pool_water'),
         itemSlot('item_output', IO.OUT),
     ], 'minebricks:settling_pool');
