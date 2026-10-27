@@ -1009,3 +1009,27 @@ all 9 previously-errored mods loaded): `adv_rocketry` FATAL at mod construction,
   sha512 verified vs API before writing; jar self-check: its own deps =
   minecraft only. Index 91 metafiles, pack.toml re-pinned, 0.4.5 -> 0.4.6.
   Static audit 0 problems.
+- SCRIPT BLOCKER (fixed, 0.4.7): startup script failed with Rhino
+  "redeclaration of var IO." -> 0/1 startup scripts loaded -> MBD2 t1
+  machines + recipe types never registered. Root cause: MBD2's blueprint
+  type-handle bootstrap (com.lowdragmc.mbd2.common.blueprint.MBDTypeHandles)
+  injects named top-level bindings into every KubeJS scope, including
+  literal 'IO' -> com.lowdragmc.mbd2.api.capability.recipe.IO. Our
+  `const IO` collided. Fix: renamed to MBD_IO (explicit loadClass kept —
+  the injected binding is a nodegraph TypeHandle, not the raw enum).
+- RESERVED WORDS in pack KubeJS scopes (MBDTypeHandles + builtin plugin
+  bindings; audit tool: scripts/pw_reserved_name_audit.py): IO, MACHINE,
+  RECIPE, TRAIT, CONTENT, CONTENT_MODIFIER, MACHINE_STATE, MACHINE_EVENT,
+  MACHINE_DEFINITION, MULTIBLOCK_MACHINE, MULTIBLOCK_STATE,
+  MULTI_CONTROLLER, MULTI_PART, PART_MACHINE, RECIPE_TYPE, RECIPE_LOGIC,
+  RECIPE_STATUS, RECIPE_CAPABILITY, BLOCK_HIT_RESULT, INTERACTION_HAND,
+  INTERACTION_RESULT, ITEM_INTERACTION_RESULT, MAIN_HAND, ALL, BOTH, PASS,
+  IDLE, BlockEvents, ItemEvents, StartupEvents, ServerEvents, ClientEvents,
+  plus BuiltinKubeJSPlugin names. Never use as top-level const/let/var/
+  function names in kubejs scripts. NOTE: audit heuristic over-captures
+  (flagged Blocks/Items which provably do NOT collide at runtime — Rhino
+  reports the FIRST collision in file order; ours was IO at line 38, after
+  clean const Blocks/Items at 22/23). Runtime behavior is authoritative.
+- Non-crash lesson: KubeJS script errors are NOT fatal — the file is
+  skipped and the game loads without its content. A "benign" boot with
+  missing machines = check the KubeJS log lines first.

@@ -35,7 +35,11 @@ const MultiblockMachineDefinition = Java.loadClass('com.lowdragmc.mbd2.common.ma
 const MBDRegistries = Java.loadClass('com.lowdragmc.mbd2.api.registry.MBDRegistries');
 const FactoryBlockPattern = Java.loadClass('com.lowdragmc.mbd2.api.pattern.FactoryBlockPattern');
 const Predicates = Java.loadClass('com.lowdragmc.mbd2.api.pattern.Predicates');
-const IO = Java.loadClass('com.lowdragmc.mbd2.api.capability.recipe.IO');
+// Named MBD_IO, NOT IO: MBD2's blueprint type-handle bootstrap injects a
+// top-level `IO` binding into every KubeJS scope (MBDTypeHandles -> 'IO' ->
+// com.lowdragmc.mbd2.api.capability.recipe.IO). `const IO` collides with it
+// and Rhino kills the whole file with "redeclaration of var IO".
+const MBD_IO = Java.loadClass('com.lowdragmc.mbd2.api.capability.recipe.IO');
 const ItemSlotTraitDef = Java.loadClass('com.lowdragmc.mbd2.common.trait.item.ItemSlotCapabilityTraitDefinition');
 const FluidTankTraitDef = Java.loadClass('com.lowdragmc.mbd2.common.trait.fluid.FluidTankCapabilityTraitDefinition');
 
@@ -165,15 +169,15 @@ MBDRegistryEvents.recipeType((event) => {
 MBDRegistryEvents.machine((event) => {
     // T1 — jaw crusher: 3x3x3 box. In slot -> out slot.
     registerMultiblock('minebricks:jaw_crusher', BOX_333, [
-        itemSlot('item_input', IO.IN),
-        itemSlot('item_output', IO.OUT),
+        itemSlot('item_input', MBD_IO.IN),
+        itemSlot('item_output', MBD_IO.OUT),
     ], 'minebricks:jaw_crusher');
 
     // T1.5 — wash trommel: 3x3x3 box (real wet-classification shape later).
     // In slot + out slot + water tank.
     registerMultiblock('minebricks:wash_trommel', BOX_333, [
-        itemSlot('item_input', IO.IN),
-        itemSlot('item_output', IO.OUT),
+        itemSlot('item_input', MBD_IO.IN),
+        itemSlot('item_output', MBD_IO.OUT),
         fluidTank('wash_water'),
     ], 'minebricks:wash_trommel');
 
@@ -181,7 +185,7 @@ MBDRegistryEvents.machine((event) => {
     // else stays a generic 3x3x3 test box for now). Water tank + out slot.
     registerMultiblock('minebricks:settling_pool', POOL_VARIABLE, [
         fluidTank('pool_water'),
-        itemSlot('item_output', IO.OUT),
+        itemSlot('item_output', MBD_IO.OUT),
     ], 'minebricks:settling_pool');
 
     console.info('MBD2 t1: 3 multiblocks registered (jaw_crusher / wash_trommel / settling_pool)');
