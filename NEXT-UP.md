@@ -587,3 +587,29 @@ TestMachineBuilder / MBDSmokeFixtures were the literal templates). Deliverables:
   platform-side restore quirk; push script verified one-directional and clean.
   Deleted, modes restored, refresh re-run → index exactly 80. Nothing shipped
   in that state.
+
+**CURSEFORGE-API DETANGLE 2026-10-27 ~17:30Z (her find, her question).** During the
+first v0.4.2 launch she spotted "the failure path asks for it twice" on Corail
+Tombstone and asked: ride it along directly, or would that violate the author's
+wishes? Source-verified against packwiz-installer (main branch): 6 of our 80 mods
+rode `metadata:curseforge` — the installer resolves those through
+api.curseforge.com with its embedded key; Tombstone file 7951535 returns
+downloadUrl NULL (Corail31 disabled external downloads on CF) → "excluded from
+the CurseForge API, must be downloaded manually" exception → its CONTINUE button
+re-runs the resolve = the literal double-ask she watched. The other 5 resolved
+but stayed one API hiccup from the same dialog.
+- FIX APPLIED: Tombstone → **Modrinth** (author's own MR page, YT5K34AB);
+  9.4.9 is not carried on MR → patch bump to 9.5.6 (neoforge-1.21.1-9.5.6,
+  sha512 from MR API). Other 5 (Let's Do API/HerbalBrews/Meadow/Vinery, Toast
+  Control) → **direct official CDN URLs pinned** (sha512 computed from the jars
+  themselves; same pattern as Antique Atlas/ToolBelt). All five verified
+  1.21.1+NeoForge via CF gameVersions (Vinery's "FORGE" filename is their
+  naming quirk; the metadata says NeoForge).
+- LICENSE RULING (her question, answered): pinning API-returned CDN URLs =
+  sanctioned hotlinking, file still served by the author's own CurseForge CDN,
+  nothing rehosted; MR switch = the author's own distribution channel; actually
+  vendoring jars onto our Pages = real rehosting and for Tombstone would cross
+  the author's explicit no-external-downloads setting — NOT done.
+- NET: index now has **zero CurseForge-API dependencies** — every one of the 80
+  mods resolves to a direct URL or Modrinth metadata. Her next bootstrap run
+  installs clean; the installer's manifest retires the old 9.4.9 jar itself.

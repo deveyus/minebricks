@@ -3,9 +3,9 @@ filename = "ToastControl-1.21.1-9.0.1.jar"
 side = "both"
 
 [download]
-hash-format = "sha1"
-hash = "33477c2db0479c9be33d1ca3b2fa47cf6c97988c"
-mode = "metadata:curseforge"
+url = "https://edge.forgecdn.net/files/6751/464/ToastControl-1.21.1-9.0.1.jar"
+hash-format = "sha512"
+hash = "c4f3a8c755a493e5c2de89c7175bc687141e8689a0faf6ecac8f397dec416f68fe64a33a07088f128f521fca803954575f928f059ec0199419f1a807e54f53af"
 
 [update]
 [update.curseforge]

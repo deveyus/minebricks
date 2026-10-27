@@ -3,9 +3,9 @@ filename = "letsdo-meadow-neoforge-1.4.8.jar"
 side = "both"
 
 [download]
-hash-format = "sha1"
-hash = "a203a4b5180a55a3c97d32acf6299579ea45ad9f"
-mode = "metadata:curseforge"
+url = "https://edge.forgecdn.net/files/7672/847/letsdo-meadow-neoforge-1.4.8.jar"
+hash-format = "sha512"
+hash = "a45a42b1789c3c979e91bc65c422bf5832d514005a82def3860d812a9bf02a2a6d5079d53f625d976b09585cecda8f1d26802b310ce2e44751c5f5c930efe50d"
 
 [update]
 [update.curseforge]

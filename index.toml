@@ -1,6 +1,10 @@
 hash-format = "sha256"
 
 [[files]]
+file = "kubejs/assets/minebricks/lang/en_us.json"
+hash = "87ed0ccbd6971d25e58f34e6806cb676fd7cd2d920d1603bf0420d84e9ee6094"
+
+[[files]]
 file = "kubejs/client_scripts/.keep"
 hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
@@ -42,7 +46,7 @@ hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 [[files]]
 file = "kubejs/startup_scripts/minebricks_mbd2_t1.js"
-hash = "d27880fb0c2d583d27904b6446d89b0a4e0bbda97697d5ae009975097f199a7b"
+hash = "87482a0fb62d4afeaf0c1ad580df97256078d9c5f50aeb4d0cf1f4ca60de4368"
 
 [[files]]
 file = "mods/advanced-chimneys.pw.toml"
@@ -86,7 +90,7 @@ metafile = true
 
 [[files]]
 file = "mods/corail-tombstone.pw.toml"
-hash = "511aa6d67e0f1443ea96acc1f4b947f21b5099318821a14f8c8e309966b4448c"
+hash = "540ba97ff1d495b68330088e4cae08734b01154d44cc06b617b466835690742a"
 metafile = true
 
 [[files]]
@@ -101,7 +105,7 @@ metafile = true
 
 [[files]]
 file = "mods/do-api.pw.toml"
-hash = "488c916a519935ea70a04ae507400bfcaf794cbbf108acb1a3e213db2a15058b"
+hash = "9c9c497db86a10173b87eb391802b10a2ddaf52dc6aa9b9500d173bb4e24656f"
 metafile = true
 
 [[files]]
@@ -206,17 +210,17 @@ metafile = true
 
 [[files]]
 file = "mods/lets-do-herbal-brews.pw.toml"
-hash = "1fc98affc9830a4f23ca858d16014cd04655341f519418c1b9e38be588c6518a"
+hash = "17d95e2538ddde3ea9da2791e8949cb4b93f65068207154702381ed8e4473d93"
 metafile = true
 
 [[files]]
 file = "mods/lets-do-meadow.pw.toml"
-hash = "f3eb4cc1b5250c35ddb14963e77e941efa2ca1dc0916b104916a6430facb4742"
+hash = "eed4ce29e1e5f88ed9683d9a65a93d293b48a2780a624e2ca8bb11dae361537a"
 metafile = true
 
 [[files]]
 file = "mods/lets-do-vinery.pw.toml"
-hash = "4588e9d94ce9adad3db306fb29558782b1db12156d506a60667794fcb23248a7"
+hash = "139945c364bfbeedea4b6f27017366b74c37ffc9c09459f075549406a56cbcae"
 metafile = true
 
 [[files]]
@@ -411,7 +415,7 @@ metafile = true
 
 [[files]]
 file = "mods/toast-control.pw.toml"
-hash = "29d1e04030fcbdad4ee91eb9bc0b0d6b8907ffe967c9bd0543e8bb7e3dab5282"
+hash = "28ed05ce70e2c878b71f15a51af4c7623d762847db7a902fea73a13a905ba58e"
 metafile = true
 
 [[files]]
