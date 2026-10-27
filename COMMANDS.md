@@ -4,7 +4,7 @@ Every command that ships in the pack, what it produces, and what to hand back.
 Master copy lives in the repo (rides Pages with every push); this file is the
 source of truth — new commands get added HERE first.
 
-All four are KubeJS server commands, registered `perm 2` (op-level):
+All are KubeJS server commands, registered `perm 2` (op-level):
 - single-player: Enable Cheats on the world (or Open to LAN with Cheats) — one time
 - server: `/op <you>` — one time
 
@@ -12,7 +12,7 @@ Each writes ONLY under `<instance>/kubejs/export/` — read-only on the world,
 touches no recipes, no tags, no growth, no loot. Run the command in chat, then
 grab the named folder and send it to Zee (zip is fine).
 
-## THE FOUR — all live on the update channel
+## THE CORE FOUR — all live on the update channel
 
 - `/fooddump` - full food + nutrition corpus: every edible item with nutrition,
   saturation, eat-time, effects (component probe, not guesses)
@@ -38,6 +38,16 @@ grab the named folder and send it to Zee (zip is fine).
     (B) after SS lands — the UNTAGGED list in CROP-LOG.txt must be EMPTY or
     v0.5.0 does not ship. Policy: "we've failed if we have untagged crops."
 
+## PROBE KIT — one PoR session (v0.4.3 work)
+
+- `/porprobe` - PoR probe kit (one session): walks `config/` for the
+  emitter-config format, reflection-dumps PoR's Commands/Emissions/ChunkPollution/
+  WorldData classes (syntax without guessing), and logs live MBd2 recipe events
+  → deliver `kubejs/export/por-probe/` (POR-LOG.txt, POR-PROBE.json,
+  POR-MBD-EVENTS.log — the last one AFTER running a recipe on any MBd2 machine)
+  - Run when: the one PoR probe session. Pair it with the in-game steps in
+    NEXT-UP.md (emitter attach test on an MBd2 controller + `/adpother` usage).
+
 ## CADENCE (when to run what)
 
 | Trigger                              | Commands                          |
@@ -45,6 +55,7 @@ grab the named folder and send it to Zee (zip is fine).
 | Any mod add / remove / bump          | `/mintdump` + `/lootdump`         |
 | Food mods touched                    | + `/fooddump`                     |
 | Seasons pass work (v0.5.0)           | `/cropscan` — A before, B after   |
+| PoR probe session (once, v0.4.3 work)| `/porprobe` (+ `/adpother` usage) |
 | Fresh install / brand-new world      | all four once, send all folders   |
 
 ## NOT COMMANDS (staged KubeJS drafts — nothing to run yet)
@@ -63,6 +74,7 @@ grab the named folder and send it to Zee (zip is fine).
 
 ## FOOTNOTE
 
-`/cropscan` joined after the v0.4.2 tag, so it rides the update channel (Pages)
-but not the v0.4.2 release zip — it lands in the next tagged release. The other
-three shipped with v0.4.2.
+`/cropscan` and `/porprobe` joined after the v0.4.2 tag, so they ride the update
+channel (Pages) but not the v0.4.2 release zip — they land in the next tagged
+release. The other three shipped with v0.4.2. Same for the PoR + ForgeEndertech
+mods themselves (staged 10-27): bootstrapper delivers on next launch.

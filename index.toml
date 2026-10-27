@@ -33,6 +33,10 @@ file = "kubejs/server_scripts/minebricks_mintdump.js"
 hash = "6b0401ab3720bc833a8d122acfb8f668513d73123341308ca2a253996ff575e6"
 
 [[files]]
+file = "kubejs/server_scripts/minebricks_por_probe.js"
+hash = "fe081a631bf0107005b1b0e736761a9cb5ad23d07922649a3e9092b4dd7fcc40"
+
+[[files]]
 file = "kubejs/startup_scripts/.keep"
 hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
@@ -119,6 +123,11 @@ metafile = true
 [[files]]
 file = "mods/ferrite-core.pw.toml"
 hash = "5cd0d036bc0ead8c74dea045136e9b7a789a7a41954c56fd2189b2be224acfcd"
+metafile = true
+
+[[files]]
+file = "mods/forgeendertech.pw.toml"
+hash = "ab734f97a68bdfce5a1356752abd462d3ba990fcf769e15b872f91fa15bfa6db"
 metafile = true
 
 [[files]]
@@ -279,6 +288,11 @@ metafile = true
 [[files]]
 file = "mods/paxi.pw.toml"
 hash = "b02997143ba06ec7a7e4ab96a40f046b2bc1b8a5f52494463f0667a30a80f764"
+metafile = true
+
+[[files]]
+file = "mods/pollution-of-the-realms.pw.toml"
+hash = "1aeb92aa54858828b7db638a0631277ea0b8743cf13caf05520bfa9855c15799"
 metafile = true
 
 [[files]]

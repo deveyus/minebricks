@@ -437,3 +437,22 @@ PoR→FE≥12.1.4.0, both Edivad89/Endertech, actively maintained):
   boot; (2) /adpother command tree + emitAt syntax; (3) emitter entry attaching to an
   MBd2 controller block (TILE + activeTag live test); (4) KJS direct-write probe
   (ChunkPollution/WorldData signatures). Pack cost: +2 mods (PoR + ForgeEndertech).
+- STAGED 10-27 (~10:58Z, her green-light): PoR AdPother 1.21.1-9.1.13.0 NF build.1236
+  + ForgeEndertech 1.21.1-12.1.4.0 NF build.1161 — the exact builds analyzed — added
+  via packwiz, Modrinth CDN + sha512 pinned, index +2 (75→77 mods). Rides Pages;
+  bootstrapper delivers on next launch; lands in the next tagged release.
+- Probe kit staged: `minebricks_por_probe.js` — `/porprobe` (perm 2) walks config/
+  for the emitter format, reflection-dumps Commands/Emissions/WorldData/ChunkPollution/
+  Emitter/Pollutants/Emitters (syntax without guessing), + always-on log-only MBd2
+  KubeJS listeners (MACHINE_ON_RECIPE_FINISH, BEFORE/AFTER_RECIPE_WORKING,
+  RECIPE_STATUS_CHANGED, MACHINE_ON_CONSUME_INPUTS_AFTER_WORKING, STRUCTURE_FORMED)
+  writing kubejs/export/por-probe/POR-MBD-EVENTS.log. Covers probes (1)+(2)+(4)
+  offline; (3) stays a live test on an MBd2 controller.
+- EMI/JEI visibility ruling (her question, answered 10-27): (A) invisible — recipes
+  untouched, emission is a side-effect on recipe-finish events; recipe viewers render
+  declared I/O only. (B) also NOT auto-shown — emitters live in PoR config keyed to
+  controller block IDs, no recipe viewer reads mod configs; what (B) DOES surface is
+  route identity (each route controller = its own recipe category, nameable). If
+  in-recipe numbers are ever wanted: hybrid display trick — a real exhaust byproduct
+  on the recipe (renders in EMI/JEI) + (A) emission derived from that same byproduct
+  (one source of truth).
