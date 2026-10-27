@@ -856,3 +856,32 @@ from cf/mr. Fix those before it works." Correct — 7 CurseForge-pinned tomls we
   (UpkeepService.tick empty-server branch, nextUpkeepTick++ slide), three fix options
   (settle on empty / back-bill elapsed periods on next settlement / config key), offer to
   test builds. Status: awaiting her filing (she owns the GitHub identity).
+
+## SELF-PATCH ASSESSMENT: EMPTY-SERVER PAUSE (2026-10-28, her question: "how hard with a mixin?")
+
+- VERDICT: the patch is trivial — the harness is the cost. One mixin, ~25 lines:
+  `@Redirect` on `PlayerList.getPlayerCount()` scoped to `UpkeepService.tick`
+  (exactly ONE call site, line 70 — the early-out) -> return 1. Branch never fires:
+  settlement runs on schedule while empty, AND the `nextUpkeepTick++` slide dies with it
+  (both bugs live in that one branch). Fail-loud on upstream refactor (redirect target
+  mismatch = boot crash, not silent unbilled drift) — correct failure mode for a pack.
+- DEAD ENDS VERIFIED (why the mixin is the only self-patch route):
+  1. RCON / ForceUpkeepCommand: forceNextUpkeep() sets nextUpkeepTick = now, but the
+     empty-server early-out runs BEFORE the due-check — forced passes get swallowed on an
+     empty server. Every road runs through that branch.
+  2. KubeJS: cannot rewrite another mod's bytecode; reflection can't swap method bodies.
+  3. Editing their jar: violates §2 (modpack grant = unmodified official jar). Off the table.
+  4. Forking the whole mod: 10x maintenance for the same outcome; proprietary license gray.
+  The companion-mod mixin is the ecosystem-normal shape — their own mod does exactly this
+  to FTB Chunks (9 mixins + BackendMixinPlugin, required=true). Our jar: minebricks-economy-fix,
+  their jar stays unmodified + updatable. One mapping subtlety (@At target is vanilla
+  PlayerList -> refmap), handled once in the build.
+- COSTS: first NeoForge mod project for the pack (ModDevGradle skeleton + mixin config +
+  compileOnly: their jar + neoforge; MixinExtras bundled in NeoForge) — one session, mostly
+  Gradle cold cache. Recurring tax: rebuild + boot-verify on every hook update (they ship
+  fast). e2e boot infra exists (scratch/bootstrap-test).
+- SEQUENCING (recommended, pending her call): file the drafted issue FIRST with a PS line —
+  "if this isn't on your roadmap, we'll ship a small local mixin bypassing the empty-server
+  branch — objection?" — good faith + license-clean + a settleWhileEmpty config key is a
+  ~5-line change for him. Silence ~2 weeks -> we build. Harness scaffold can start earlier
+  on her word (useful regardless).
