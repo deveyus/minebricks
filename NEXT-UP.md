@@ -960,3 +960,39 @@ Her third report + screenshot: launch line correct (Pages URL), dialog
 - Installer note: the dialog's Continue/Ignore routes install 92/101 — LDLib2
   is mandatory (MBD2 t1 rigs crash without it). Relaunch after Pages updates
   instead; the definition now installs 101/101.
+
+## CRASH FIX — AR3's UNDECLARED ARLib DEP (2026-10-27, pack 0.4.5)
+
+Her crash report (19:20 ET, after the 0.4.4 install fix — sync phase now passes,
+all 9 previously-errored mods loaded): `adv_rocketry` FATAL at mod construction,
+`NoClassDefFoundError: ARLib/network/SimpleNetworkPacket$SimpleNetworkDataReceiver`.
+
+- ROOT CAUSE: the AR3 author re-uploaded "3.0.beta" on 2026-08-19 (OA08w9Vk,
+  33.5MB) at 1/3 the size of the 2026-03-29 original (xnWPtaRN, 107MB) and WIPED
+  the dependency declarations — jar mods.toml (an unedited example template, no
+  ARLib entry) and MR version dependencies (empty). The March original declared
+  two required companions: ARLib (IY6pSlUL) + Dynamic Dimensions AR Edition
+  (qbUzidyB). Undeclared hard class dep = NoClassDefFoundError instead of a
+  "missing mods" error — invisible to the jar-side dep sweep, which audits
+  DECLARED mandatory deps only. Blind spot noted; no fix tooling can catch
+  undeclared class deps short of a boot test.
+- CLASS-REFERENCE PROBE (new tool pattern): extracted every ARLib/* and
+  dynamicdimensions/* class reference from AR3's constant pools, checked against
+  each candidate lib jar. ARLib 1.0.33 covers 46/47 refs incl. the boot-crash
+  class (older builds miss up to 11 — 1.0.33 is the only viable one). DynDims
+  0.9.1 covers 2/2. No other undeclared third-party namespaces in AR3.
+- ADDED (0.4.5): mods/arlib.pw.toml (arlib-1.0.33, J40YrFd1) +
+  mods/dynamic-dimensions-ar-edition.pw.toml (0.9.1+75e1622e-dirty, WJizUdAu) —
+  both direct-URL pinned, sha512 verified against MR API before writing. Index
+  +2 (90 metafiles), pack.toml re-pinned, 0.4.4 -> 0.4.5. Static audit 0 problems.
+- RESIDUAL LANDMINE (known, accepted for now): ARLib/gui/ModularScreen$ToolTip
+  exists in NO published ARLib build (ModularScreen ships with zero inner
+  classes in 1.0.33). Lazy classload — only fires if an AR3 modular GUI
+  constructs a ToolTip. AR3 currently ships no recipes (supply pass deferred),
+  so those GUIs are mostly unreachable. Revisit at supply-pass time or if the
+  author publishes an ARLib with the class.
+- ROSTER OPTION (pack lead's call, not made): shelve AR3 until its packaging is
+  fixed = delete 3 metafiles (advanced-rocketry-3, arlib,
+  dynamic-dimensions-ar-edition) + refresh + bump.
+- Paxi note: pack ships no Paxi datapacks — her "Paxi bitched" is likely
+  downstream noise of the failed load; re-check after 0.4.5 boots.

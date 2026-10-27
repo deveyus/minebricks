@@ -1,0 +1,13 @@
+name = "Dynamic Dimensions AR Edition"
+filename = "dynamicdimensions-neoforge-0.9.1+75e1622e-dirty.jar"
+side = "both"
+
+[download]
+url = "https://cdn.modrinth.com/data/qbUzidyB/versions/WJizUdAu/dynamicdimensions-neoforge-0.9.1%2B75e1622e-dirty.jar"
+hash-format = "sha512"
+hash = "62f8a800efa08c88f80f86a3412415908d76275fbe83c2ab1ada5c0327ed33afedea081302f9fe29e7864986790314cd9b7396e492c7bb81a7ff254388ba2d6a"
+
+[update]
+[update.modrinth]
+mod-id = "qbUzidyB"
+version-id = "WJizUdAu"

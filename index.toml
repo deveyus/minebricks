@@ -78,6 +78,11 @@ hash = "b79bd430bfb569a549f6490ea08bb7b1e3e6bcee75c35f76769578550ba699a8"
 metafile = true
 
 [[files]]
+file = "mods/arlib.pw.toml"
+hash = "60438cfa68394226a09967c896ffd32026defeb2941c0621352373a6663750c2"
+metafile = true
+
+[[files]]
 file = "mods/architectury.pw.toml"
 hash = "872ccbee22f85a9ff8b8e3597a7c3d3f07e97c076770deed8110a93d886024f3"
 metafile = true
@@ -120,6 +125,11 @@ metafile = true
 [[files]]
 file = "mods/do-api.pw.toml"
 hash = "3d5fa8dca6d177b432f4981f7ce12fab8f42933fb00d1ab1da11a77a6330e79f"
+metafile = true
+
+[[files]]
+file = "mods/dynamic-dimensions-ar-edition.pw.toml"
+hash = "0853e8016554eb83cd3c8b5e1a153c64d1a35b4c1b77be6e7f84fe77763ba538"
 metafile = true
 
 [[files]]
