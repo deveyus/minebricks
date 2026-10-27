@@ -76,5 +76,5 @@ grab the named folder and send it to Zee (zip is fine).
 
 `/cropscan` and `/porprobe` joined after the v0.4.2 tag, so they ride the update
 channel (Pages) but not the v0.4.2 release zip — they land in the next tagged
-release. The other three shipped with v0.4.2. Same for the PoR + ForgeEndertech
-mods themselves (staged 10-27): bootstrapper delivers on next launch.
+release. The other three shipped with v0.4.2. Same for the staged mods (10-27):
+PoR + ForgeEndertech + Advanced Chimneys — bootstrapper delivers on next launch.

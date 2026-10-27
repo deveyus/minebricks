@@ -456,3 +456,24 @@ PoR→FE≥12.1.4.0, both Edivad89/Endertech, actively maintained):
   in-recipe numbers are ever wanted: hybrid display trick — a real exhaust byproduct
   on the recipe (renders in EMI/JEI) + (A) emission derived from that same byproduct
   (one source of truth).
+- ADVANCED CHIMNEYS STAGED 10-27 (~11:20Z, her call: "we'll want Advanced Chimneys
+  too, if we have PoR"): AdChimneys 1.21.1-11.1.14.0 NF build.1236 (r2rWUhnP/A2wTbGn9),
+  dep = ForgeEndertech only (already staged). Same build lineage as PoR build.1236.
+  Index 77→78.
+- Chimney×PoR seam (jar-verified): AdChimneys has ZERO knowledge of PoR; PoR knows
+  chimneys via the shared ForgeEndertech interface `ISmokeContainer` (Chimney/Pipe/
+  Duct/Pump/Container all implement it) — PoR's gas entities duck-check isChimney/
+  getTopPassableChimneys/getSidePassableChimneys/getPumpedChimneyAirflow/isVentDuct,
+  so pollution gas ROUTES THROUGH chimney geometry and pumped airflow. Pump = FE-
+  powered extractor (energyStorage + getConnectedHopper + getTopmostChimney) = the
+  soot-collection loop. Chimneys go sooty via mixins (visual pollution feedback).
+- Chimney source list: config-driven via the same FE UnitConfig framework as PoR's
+  emitters (AdChimneys init/Emitters + getConfigFile). Hand-written compat defaults
+  for Create/Mekanism/GTCEu/IE/Railcraft/ProductiveMetalworks/vanilla — NO MBd2 entry.
+  OPEN: can we add our MBd2 controllers as smoke sources by config unit alone?
+- Probe list updated (probe 5): AdChimneys smoke-config file path/format + custom
+  unit for `multiblocked2:*` controllers + TILE-emitter × chimney-top interplay
+  (does a config emitter on the controller vent via chimney column, and does PoR's
+  chunk-pollution accounting follow the chimney or stay at the machine). /porprobe
+  extended: config walk now matches adch|chimney, reflection list gained
+  ISmokeContainer + AdChimneys Emitters/Emitter.

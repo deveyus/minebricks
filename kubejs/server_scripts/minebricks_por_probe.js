@@ -102,7 +102,7 @@ function porSuiteConfig(log, cfgDump) {
       const full = String(p.toString())
       if (!/\.toml$|\.json$/i.test(name)) continue
       if (i < 400) log.push('  ' + full)
-      if (/adpo|pollut|endertech/i.test(full)) {
+      if (/adpo|adch|chimney|pollut|endertech/i.test(full)) {
         let body = ''
         try { body = String(Files.readString(p)) } catch (e) { body = '<read failed: ' + e + '>' }
         if (body.length > 24000) body = body.slice(0, 24000) + '\n...<truncated>'
@@ -131,7 +131,10 @@ const POR_CLASSES = [
   'com.endertech.minecraft.mods.adpother.sources.EmitterWithCustomRate',
   'com.endertech.minecraft.mods.adpother.init.Pollutants',
   'com.endertech.minecraft.mods.adpother.init.Emitters',
-  'com.endertech.minecraft.mods.adpother.init.Fuels'
+  'com.endertech.minecraft.mods.adpother.init.Fuels',
+  'com.endertech.minecraft.forge.blocks.ISmokeContainer',
+  'com.endertech.minecraft.mods.adchimneys.init.Emitters',
+  'com.endertech.minecraft.mods.adchimneys.smoke.Emitter'
 ]
 
 function porSuiteClasses(log, clsDump) {
