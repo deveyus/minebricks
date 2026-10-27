@@ -41,6 +41,10 @@ file = "kubejs/startup_scripts/.keep"
 hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 [[files]]
+file = "kubejs/startup_scripts/minebricks_mbd2_t1.js"
+hash = "d27880fb0c2d583d27904b6446d89b0a4e0bbda97697d5ae009975097f199a7b"
+
+[[files]]
 file = "mods/advanced-chimneys.pw.toml"
 hash = "5b2e84733aff59997b6a8dcb11747c5d2d090bec22d0dd4ff131a62a7c4368fd"
 metafile = true
@@ -163,6 +167,11 @@ metafile = true
 [[files]]
 file = "mods/immersiveengineering.pw.toml"
 hash = "91875c996a9958aeea794843fb449915218625f52aaf0234ccd1faffa887e277"
+metafile = true
+
+[[files]]
+file = "mods/immersivepetroleum.pw.toml"
+hash = "07deb48161a03d4e701eb50da02343b06585fc04f2328aee5a9ad4bc62c2686a"
 metafile = true
 
 [[files]]

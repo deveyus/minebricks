@@ -542,3 +542,32 @@ water reclaim = infinity-doctrine-clean; sluice = anti-deadlock pair for the sca
   since repeated the gap — the roster list was read as complete). Re-staged IE
   1.21.1-12.4.2-194 (uNRARSH2) via packwiz → index 78→79, rides next launch.
   Immersive Petroleum (same lost pair) = one-word opt-in, not staged.
+
+**TIER-1 TEST MACHINES — STAGED 2026-10-27 ~13:50Z (her go: "get the first couple
+of tiers of machines in for a rudimentary test").** Built FROM SOURCE — cloned
+Low-Drag-MC/Multiblocked2 (her tip: pull source, skip jar-diving; the repo's own
+TestMachineBuilder / MBDSmokeFixtures were the literal templates). Deliverables:
+`kubejs/startup_scripts/minebricks_mbd2_t1.js` + `kubejs/assets/minebricks/lang/en_us.json`.
+- `minebricks:jaw_crusher` — 3x3x3 iron box, controller center; 1 in-slot +
+  1 out-slot; recipe type `minebricks:jaw_crusher`; placeholder raw_iron ×1 →
+  ×2 @ 100t.
+- `minebricks:wash_trommel` — 3x3x3 iron box; in/out slots + 4B water tank;
+  placeholder raw_iron + 100mB water → sand + gravel @ 60t.
+- `minebricks:settling_pool` — 3x3x1 open floor (a pool is not a box — her
+  exemption); water tank + out-slot; placeholder sand + 250mB water → clay @ 80t.
+- Recipes are deliberately VANILLA-ONLY placeholders: startup scripts run before
+  mod items register (IE dusts unreachable there); real I/O taxonomy = the DIY
+  unification pass. Route B shape intact — one recipe type per controller →
+  own EMI/JEI category.
+- Registration is MANUAL (build → set blockPatternFactory → MBDRegistries.
+  MACHINE_DEFINITIONS.register) because the KubeJS event's afterPosted
+  auto-register cannot set blockPatternFactory (source-verified gap).
+- First launch = the test: script isolation means a bad definition logs and
+  skips instead of crashing. Watch "MBD2 t1: ... registered" lines in the log.
+- IP RESTORED ~13:20Z: ImmersivePetroleum-1.21.1-4.5.0-39 (1nu6ZI52). Index 79→80.
+- GHOST FILE INCIDENT (resolved pre-push): 5 stale pre-consolidation metafiles
+  (create, create-deco, athena-ctm, chipped, traveler-tool-belt) resurfaced in the
+  workspace with original 10-25 mtimes + exec-bit flips on the PoR trio —
+  platform-side restore quirk; push script verified one-directional and clean.
+  Deleted, modes restored, refresh re-run → index exactly 80. Nothing shipped
+  in that state.
