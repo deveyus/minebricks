@@ -633,3 +633,28 @@ Productive Metalworks — verified by extracting the nested jars) and **8 genuin
   (hybrid syntax + jarjar), re-runnable as a standing pre-push gate.
 - ROOT CAUSE (honest): the original build was curated by hand; deps were never
   machine-verified end-to-end. Her push made the sweep a permanent step.
+
+**ECONOMY PASS — CURRENCY → TOKENS → EXPONENTIAL CLAIMS (her design, 2026-10-27 ~18:20Z).**
+Not iron-priced: a currency layer between production and land. Skeleton as she stated it:
+1. **Exchange**: produced items → currency. Every producible is already dial-gated
+   (mint doctrine, 0 ungated mints on record) — exchange RATES become the new pricing
+   instrument and inherit the same discipline: each conversion edge on record with a gate.
+2. **Shop**: currency → curated buy-list. Each purchasable = a conversion edge with its
+   own price dial. Candidate ride: an MBD2 trading machine (t1 framework exists) or a
+   KubeJS shop surface — implementation open.
+3. **Chunk Loading Tokens**: KubeJS-registered item (rides the DIY unification pass).
+4. **Exponential claim cost**: tokens pay for claims via the OPAC 0.30+ addon hook
+   (IClaimActionListenerAPI — intercept claim attempt, charge, veto or wave through).
+   **The curve is the anti-compound brake**: chunk loading → automation → production →
+   exchange → more tokens is the biggest compound loop the pack would ever mint; the
+   exponential price IS its dial. Fits the doctrine verbatim — growth gated, on record.
+- OPEN SEMANTICS (her dials, not mine): (a) token = claim-only, forceload-only, or
+  claim+load bundled (OPAC 0.33 gates them independently); (b) curve base and exponent
+  (2^n vs e^kN), floor and cap; (c) reset scope — per player / party / dimension; (d)
+  refund on unclaim (default lean: no refund, land value stays spent); (e) whether
+  parties pool the curve or each member runs their own.
+- PROBE ADDITIONS: KubeJS-vs-Java for OPACServerAddonRegisterEventContext registration;
+  server API exposure of per-player/per-party claim + forceload counts; safe inventory
+  consumption from inside the listener (thread); behavior of loaded chunks on unclaim.
+- STATUS: design recorded, nothing built. SS/seasons pass remains v0.5.0 front of queue;
+  economy pass sequencing = her call after /cropscan.
