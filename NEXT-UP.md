@@ -996,3 +996,16 @@ all 9 previously-errored mods loaded): `adv_rocketry` FATAL at mod construction,
   dynamic-dimensions-ar-edition) + refresh + bump.
 - Paxi note: pack ships no Paxi datapacks — her "Paxi bitched" is likely
   downstream noise of the failed load; re-check after 0.4.5 boots.
+- INSTALL BLOCKER #2 (fixed, 0.4.6): Dynamic Dimensions AR Edition 0.9.1
+  DECLARES badpackets (required, [0.8,)) in neoforge.mods.toml — was missing
+  from the pack -> NeoForge missing-dependency screen on launch. Lesson: the
+  0.4.5 dep sweep audited what the NEW jars need from the pack only via class
+  probe (undeclared wires), not their DECLARED deps. Both sides must be
+  checked for every jar added to the pack from now on (scope script:
+  scripts/pw_depscope_045.py).
+- ADDED (0.4.6): mods/badpackets.pw.toml — badpackets-neo-0.8.2.jar
+  (MR ftdbN0KK, version RNyYl9M3), only two neoforge+1.21.1
+  builds exist (0.8.1, 0.8.2); 0.8.2 satisfies [0.8,). Direct-URL pinned,
+  sha512 verified vs API before writing; jar self-check: its own deps =
+  minecraft only. Index 91 metafiles, pack.toml re-pinned, 0.4.5 -> 0.4.6.
+  Static audit 0 problems.

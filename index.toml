@@ -88,6 +88,11 @@ hash = "872ccbee22f85a9ff8b8e3597a7c3d3f07e97c076770deed8110a93d886024f3"
 metafile = true
 
 [[files]]
+file = "mods/badpackets.pw.toml"
+hash = "717ffae71ac3918d58e7f335662aec9f0e8632b473e9284c49cd4c8a9834f8ab"
+metafile = true
+
+[[files]]
 file = "mods/better-advanced-tooltips.pw.toml"
 hash = "e3c9cbb59f9da94264a16ddcddbad8be63f8b3cc688a35a9b3e3a39e9bc8866b"
 metafile = true
