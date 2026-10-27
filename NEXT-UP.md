@@ -831,3 +831,28 @@ from cf/mr. Fix those before it works." Correct — 7 CurseForge-pinned tomls we
 - INSTALL SEQUENCE UNCHANGED, config card now reads: warEnabled=false (runtime command),
   forceLoadUpkeepMode=ALWAYS, protectionUpkeepMode=<her ruling>, prices + period = her dials,
   Server party + bank account seeded (or sink-funded), protectionUpkeep LIGHT/HEAVY note.
+
+## PROTECTION RULING + EMPTY-SERVER RECLASSIFICATION (2026-10-28)
+
+- HER RULING: `protectionUpkeepMode = HEAVY` (billed always, for consistency with ALWAYS
+  forceload) — priced cheap; loading is where the real money lives. Dial sheet for install
+  is now: warEnabled=false (runtime command), forceLoadUpkeepMode=ALWAYS,
+  protectionUpkeepMode=HEAVY, protection prices low, forceload price/period + curve = hers.
+- RECLASSIFIED: my "acceptable rounding error" framing of the empty-server pause was too
+  generous. Timer logic (UpkeepService.tick): on empty ticks `nextUpkeepTick++` — the
+  settlement deadline SLIDES FORWARD with real time. Empty-server time is never billed AND
+  never made up retroactively (login resumes the pre-existing remainder, not wall-clock).
+  Unbounded free window: last logout -> first post-login settlement. Her "oversight/bug"
+  read is correct. (Also softens my restart claim: the hook tracks paid force-loads in its
+  own saved data and restores them — a restart does not cleanly wipe the window.)
+- RESPONSIVENESS RECON (before filing): author states on CF "Please report issues on the
+  Github page" — GitHub IS the sanctioned channel. Tracker health: 6 issues ever (2 open,
+  4 closed); both open issues (#5 Oct 10 support complaint, #3 Sep 26 enhancement, labeled)
+  unanswered 2.5-4+ weeks. Counter-signal: very active development (4.4.2 shipped Oct 26,
+  HEAD "Test against OPAC 0.33.0" = our pin), closes things eventually, no Discord found.
+  Verdict: file the precise issue; low triage speed expected; we are their tested combo
+  (OPAC 0.33.0 + LC 2.3.0.6 + 1.21.1) which gives the report weight.
+- ISSUE DRAFTED + DELIVERED TO HER (this chat): title + body with code citations
+  (UpkeepService.tick empty-server branch, nextUpkeepTick++ slide), three fix options
+  (settle on empty / back-bill elapsed periods on next settlement / config key), offer to
+  test builds. Status: awaiting her filing (she owns the GitHub identity).
