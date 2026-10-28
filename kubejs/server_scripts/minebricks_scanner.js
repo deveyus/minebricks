@@ -1,143 +1,185 @@
 // ===========================================================================
-// Minebricks — the Scanner: use-event wiring + placeholder recipe, v1
-// Spec: Fina 2026-10-28 (Building). Vehicle = standalone generic item
-// (kubejs:scanner, registered in minebricks_scanner_item.js). The hammer is
-// untouched; this script never references it.
+// Minebricks — the Scanner: reads the chunk ledger, v1.1 (2026-10-29)
 //
-// WHAT V1 DOES, HONESTLY:
-//   right-click (main hand, server side) -> cube scan of SCANNER_RANGE
-//   around the player -> count blocks in minebricks:scanner_targets ->
-//   grouped report in chat. That is all. No ledger, no seeded weighted
-//   pick, no triangulation — those ride the ore/metal matrix conversation
-//   (her sequencing: scanner vehicle first, metal matrix next).
+// FUNCTION (hers, re-stated 2026-10-29 after the v1 misbuild): right-click
+// makes a CALL TO THE PERSISTENT DATA TABLE built during chunk generation
+// (minebricks_chunkledger.js) and reports what generation recorded for the
+// chunks around you. It does NOT probe blocks — that was the v1 mistake,
+// a prospector-hammer clone; the hammer stays the hammer, untouched, and
+// this item reads the generation ledger instead.
 //
-// THE FIXED RANGE DIAL:
-//   SCANNER_RANGE = 8. One number, hers to turn. 8 = a 17-wide cube
-//   (4,913 block probes through KubeJS wrappers) — light enough to click
-//   freely. Bigger numbers cost real time per click; if she wants deep
-//   survey ranges later, that's the second-item/bigger-dial conversation
-//   or the ledger design, not a free re-tune of this loop.
+// Vehicle (unchanged, 2026-10-28 ruling): standalone generic item
+// kubejs:scanner, registered in minebricks_scanner_item.js. Icon = vanilla
+// wooden pickaxe placeholder (art retrofit hers); name "Scanner" is a
+// stand-in — THE NAME IS HERS. Recipe = 9 planks placeholder (retrofit
+// hers). No material scaling, no other functions.
 //
-// TARGET SET — minebricks:scanner_targets (kubejs/data/minebricks/tags/
-// block/scanner_targets.json): #c:ores + ancient debris. Deliberately the
-// SAME membership shape as Silent's Gear's own prospector_hammer_targets
-// (jar-verified 2026-10-28: ["minecraft:ancient_debris", "#c:ores"]) —
-// the "free scanner" design: every ore that self-tags c:ores (silentgear,
-// silentgems, whatever the metal matrix adds) is visible automatically.
-// The tag is ours to grow; swapping the report to a richer payload later
-// touches only this file.
+// THE DIALS (file top, hers to turn):
+//   SCANNER_RADIUS_CHUNKS = 0 — how many chunks in each direction beyond
+//   yours the table query covers (0 = just your chunk, 1 = 3x3, ...). The
+//   table, not a block walk, pays the cost: radius only widens the lookup.
+//   THROTTLE_TICKS = 10 — click-hold guard, carried over from v1.
+//   REPORT_CAP = 8 — kinds shown per read before the "+n more" line.
 //
-// Verification trail (jar-verified against pinned kubejs 2101.7.2-build.377
-// + vanilla 1.21.1 client mappings, 2026-10-28):
-//   ItemEvents.rightClicked         — ItemEvents.class <clinit> strings
-//                                     (group 'common': fires both sides)
-//   event.hand/entity/item          — ItemClickedKubeEvent.class surface
-//                                     (getHand/getEntity/getItem)
-//   stack.id                        — ItemStackKJS kjs$getId -> JS .id
-//   entity.level                    — EntityKJS kjs$getLevel -> net.minecraft
-//                                     Level (LevelKJS mixin on the same object)
-//   level.getBlock(x,y,z)           — LevelKJS kjs$getBlock(III) -> LevelBlock
-//   blockState / .block             — LevelBlock.class getBlockState/getBlock
-//   state.is(TagKey)                — mappings: BlockBehaviour$BlockStateBase
-//                                     boolean is(net.minecraft.tags.TagKey)
-//   TagKey.create                   — net.minecraft.tags.TagKey (vanilla)
-//   Registries.BLOCK / BuiltInRegistries.BLOCK — vanilla constants; the
-//                                     BuiltInRegistries loadClass chain is
-//                                     ALSO runtime-proven in her instance
-//                                     (cropscan 0.4.13, mint lineage)
-//   reg.getKey(block).toString()    — runtime-proven (cropscan/mint, 0.4.13)
-//   level.isClientSide()            — mappings: LevelReader boolean isClientSide()
-//   level.getGameTime()             — mappings: long getGameTime()
-//   entity.persistentData           — NeoForge Entity extension; best-effort
-//                                     throttle, wrapped so its absence can
-//                                     never block a scan
-//   event.shaped                    — runtime-proven house pattern
-//                                     (minebricks_ar3_supply_pass.js)
+// Report shape (honest to the source): what the LEDGER says, grouped by
+// block id, plus how many chunks in the queried square have no record yet
+// (they index on their first save/load). Empty-string records are real
+// "indexed, zero ore" chunks, not gaps.
+//
+// Three-ping triangulation is NOT in this file — it stays parked with the
+// ore/metal matrix conversation per her sequencing. The report payload
+// evolves with that matrix (the table already stores per-block counts to
+// feed it).
+//
+// Verification trail (2026-10-29): ItemEvents.rightClicked / event.hand /
+// entity / item / stack.id / entity.level / level.isClientSide() /
+// entity.persistentData putLong/contains/getLong / event.shaped — all
+// runtime-proven in this pack (scanner v1 + cropscan/mint lineage).
+// SERVER.persistentData getString/contains — vanilla CompoundTag surface,
+// mappings-verified; written by minebricks_chunkledger.js.
 //
 // House rules honored: IIFE scope isolation; declarations at function-body
-// top ONLY, loops/try assign (0.4.12 scope doctrine, harness-proven); no
-// array spread (0.4.10 parse doctrine); ES3-safe throughout; every failure
-// path lands in console.info (latest.log) — no silent content loss.
+// top ONLY, loops/try assign; no array spread; ES3-safe; failure paths to
+// console.info — no silent content loss.
 // ===========================================================================
 
 ;
 (function () {
 
   var SCANNER_ID = 'kubejs:scanner'
-  var SCANNER_RANGE = 8
-  var TAG_ID = 'minebricks:scanner_targets'
-  var REPORT_CAP = 8
+  var SCANNER_RADIUS_CHUNKS = 0
   var THROTTLE_TICKS = 10
+  var REPORT_CAP = 8
+  var INDEX_ROOT = 'mb_ledger' // must match minebricks_chunkledger.js
 
-  // --- one TagKey, built lazily, reused for the life of the server --------
-  var TAG_KEY = null
+  var SERVER = null
 
-  function buildTagKey() {
-    var RLc = null
-    var TagKeyC = null
-    var RegsC = null
-    RLc = Java.loadClass('net.minecraft.resources.ResourceLocation')
-    TagKeyC = Java.loadClass('net.minecraft.tags.TagKey')
-    RegsC = Java.loadClass('net.minecraft.core.registries.Registries')
-    return TagKeyC.create(RegsC.BLOCK, RLc.parse(TAG_ID))
+  // --- table access -----------------------------------------------------------
+  function indexKeyOf(dim, cx, cz) {
+    return INDEX_ROOT + ':' + dim + '|' + cx + ',' + cz
   }
 
-  // --- the scan: cube walk, tag filter, per-id counts ----------------------
-  function scan(entity) {
-    var tag = null
-    var blockReg = null
-    var lvl = null
-    var px = 0
-    var py = 0
-    var pz = 0
-    var r = SCANNER_RANGE
-    var total = 0
-    var counts = {}
-    var dx = 0
-    var dy = 0
-    var dz = 0
-    var lb = null
-    var st = null
-    var hit = false
-    var id = ''
-
-    tag = TAG_KEY
-    if (!tag) {
-      tag = buildTagKey()
-      TAG_KEY = tag
+  function playerDim(entity) {
+    var d = ''
+    try {
+      d = String(entity.level.dimension().location().toString())
+    } catch (eDim1) {
+      try {
+        d = String(entity.level.getDimension().location().toString())
+      } catch (eDim2) {
+        d = ''
+      }
     }
-    blockReg = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries').BLOCK
-    lvl = entity.level
-    px = Math.floor(entity.x)
-    py = Math.floor(entity.y)
-    pz = Math.floor(entity.z)
+    return d
+  }
 
+  function parseRecord(rec, counts) {
+    var parts = null
+    var i = 0
+    var kv = null
+    var id = ''
+    var n = 0
+    if (!rec) return
+    parts = rec.split('|')
+    for (i = 0; i < parts.length; i++) {
+      kv = parts[i].split(':')
+      if (kv.length !== 2) continue
+      id = kv[0]
+      n = parseInt(kv[1], 10)
+      if (isNaN(n)) continue
+      if (!counts[id]) counts[id] = 0
+      counts[id] = counts[id] + n
+    }
+  }
+
+  function ledgerQuery(entity) {
+    var res = { found: 0, missing: 0, counts: {}, chunks: 0, dim: '', cx: 0, cz: 0 }
+    var pd = null
+    var r = SCANNER_RADIUS_CHUNKS
+    var cx = 0
+    var cz = 0
+    var dx = 0
+    var dz = 0
+    var key = ''
+    var has = false
+
+    res.dim = playerDim(entity)
+    cx = Math.floor(entity.x / 16)
+    cz = Math.floor(entity.z / 16)
+    res.cx = cx
+    res.cz = cz
+    if (res.dim === '') return res
+    if (!SERVER) return res
+    try {
+      pd = SERVER.persistentData
+    } catch (ePd) {
+      return res
+    }
     for (dx = -r; dx <= r; dx++) {
-      for (dy = -r; dy <= r; dy++) {
-        for (dz = -r; dz <= r; dz++) {
-          lb = lvl.getBlock(px + dx, py + dy, pz + dz)
-          st = lb.blockState
-          hit = false
-          if (st) {
-            try {
-              hit = st.is(tag)
-            } catch (eTag) {
-              hit = false
-            }
+      for (dz = -r; dz <= r; dz++) {
+        res.chunks = res.chunks + 1
+        key = indexKeyOf(res.dim, cx + dx, cz + dz)
+        has = false
+        try {
+          has = pd.contains(key)
+        } catch (eC) {
+          has = false
+        }
+        if (has) {
+          res.found = res.found + 1
+          try {
+            parseRecord(String(pd.getString(key)), res.counts)
+          } catch (eG) {
+            console.info('[scanner] record read failed: ' + eG)
           }
-          if (hit) {
-            total = total + 1
-            id = String(blockReg.getKey(lb.block).toString())
-            if (!counts[id]) counts[id] = 0
-            counts[id] = counts[id] + 1
-          }
+        } else {
+          res.missing = res.missing + 1
         }
       }
     }
-    return { total: total, counts: counts }
+    return res
   }
 
-  // --- best-effort right-click-hold throttle --------------------------------
+  // --- report -------------------------------------------------------------------
+  function report(entity, res) {
+    var lines = []
+    var rows = []
+    var id = ''
+    var total = 0
+    var cap = 0
+    var i = 0
+    var j = 0
+
+    for (id in res.counts) {
+      total = total + res.counts[id]
+      rows.push([id, res.counts[id]])
+    }
+    rows.sort(function (a, b) { return b[1] - a[1] })
+
+    if (res.found === 0) {
+      lines.push('Scanner: no ledger records for chunk (' + res.cx + ', ' + res.cz + ') yet.')
+      lines.push('  The table indexes each chunk on its first save/load — move on and re-check.')
+    } else {
+      lines.push('Scanner — ledger read, chunk (' + res.cx + ', ' + res.cz + '):')
+      if (total === 0) {
+        lines.push('  no tagged ore in the indexed record(s).')
+      } else {
+        cap = rows.length < REPORT_CAP ? rows.length : REPORT_CAP
+        for (i = 0; i < cap; i++) lines.push('  ' + rows[i][0] + ' x' + rows[i][1])
+        if (rows.length > cap) lines.push('  ...+' + (rows.length - cap) + ' more kind(s)')
+      }
+      if (res.missing > 0) lines.push('  (' + res.missing + ' of ' + res.chunks + ' chunk(s) here not indexed yet)')
+    }
+    for (j = 0; j < lines.length; j++) {
+      try {
+        entity.tell(lines[j])
+      } catch (eTell) {
+        console.info('[scanner] ' + lines[j])
+      }
+    }
+  }
+
+  // --- best-effort click-hold throttle (carried from v1) ------------------------
   function throttleOK(entity) {
     var pd = null
     var now = 0
@@ -150,45 +192,23 @@
       if (now - last < THROTTLE_TICKS) return false
       pd.putLong('minebricks_scanner_last', now)
     } catch (eThrottle) {
-      // throttle is cosmetic; its failure must never block a scan
+      // throttle is cosmetic; its failure must never block a read
     }
     return true
   }
 
-  // --- report ----------------------------------------------------------------
-  function report(entity, res) {
-    var lines = []
-    var rows = []
-    var id = ''
-    var cap = 0
-    var i = 0
-    var j = 0
+  // --- wiring --------------------------------------------------------------------
+  ServerEvents.loaded(function (event) {
+    SERVER = event.server
+  })
+  ServerEvents.unloaded(function (event) {
+    SERVER = null
+  })
 
-    if (res.total === 0) {
-      lines.push('Scanner (' + SCANNER_RANGE + ' m): no tagged ore in range.')
-    } else {
-      lines.push('Scanner (' + SCANNER_RANGE + ' m): ' + res.total + ' ore block(s).')
-      for (id in res.counts) rows.push([id, res.counts[id]])
-      rows.sort(function (a, b) { return b[1] - a[1] })
-      cap = rows.length < REPORT_CAP ? rows.length : REPORT_CAP
-      for (i = 0; i < cap; i++) lines.push('  ' + rows[i][0] + ' x' + rows[i][1])
-      if (rows.length > cap) lines.push('  ...+' + (rows.length - cap) + ' more kind(s)')
-    }
-    for (j = 0; j < lines.length; j++) {
-      try {
-        entity.tell(lines[j])
-      } catch (eTell) {
-        console.info('[scanner] ' + lines[j])
-      }
-    }
-  }
-
-  // --- the use-event seam -----------------------------------------------------
   ItemEvents.rightClicked(function (event) {
     var hand = ''
     var entity = null
     var stackId = ''
-    var lvl = null
     var res = null
     try {
       hand = String(event.hand)
@@ -200,17 +220,17 @@
       stackId = String(event.item.id)
       if (stackId !== SCANNER_ID) return
       if (!throttleOK(entity)) return
-      res = scan(entity)
+      res = ledgerQuery(entity)
       report(entity, res)
     } catch (eScan) {
-      console.info('[scanner] scan failed: ' + eScan)
+      console.info('[scanner] read failed: ' + eScan)
       try {
         if (entity) entity.tell('Scanner malfunction: ' + eScan)
       } catch (eTell) {}
     }
   })
 
-  // --- placeholder recipe: 9 planks (retrofit on her word) --------------------
+  // --- placeholder recipe: 9 planks (retrofit on her word) -------------------------
   ServerEvents.recipes(function (event) {
     event.shaped(SCANNER_ID, [
       'PPP',

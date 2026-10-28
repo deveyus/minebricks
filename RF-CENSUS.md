@@ -77,3 +77,24 @@ Doctrine notes (her IRL-lossy framing, 2026-10-28):
   buffers need to be lossy and bad" becomes a build item, the levers are:
   IE wire loss config, metering/splitting rules, and whatever the metal
   matrix decides machines should tolerate. Nothing lossy ships today.
+
+## CULL ROUND 1 — ruled by her 2026-10-29, executed in 0.4.17 (see NEXT-UP for full record)
+
+- NC Solar Panels (4 tiers): REMOVED — recipes out + EMI-hidden + config
+  solar_power zeroed.
+- NC Cobblestone Generators (3 tiers): REMOVED — recipes out + EMI-hidden
+  (the cobble mint vector dies with the power question).
+- NC Decay Generator: KEPT for its decay function; POWER zeroed at the
+  recipe layer (9 overrides, efficiency = 0.0 — jar-verified power term).
+- IE Thermoelectric Generator: REMOVED — recipes out + EMI-hidden.
+- IE Windmill: KEPT (her call: ballache, little power).
+- AR3 Solar Panel: KEPT — satellite-chain hardware; ground-placement FE
+  generation (jar-verified in EntitySolarPanel) is a recorded dial for the
+  planet-conditions conversation.
+- NC RTGs (4 tiers): KEPT — "I'm ok with the various RTGs"; rtg_power
+  untouched.
+- Open cosmetic: creative-tab entries for the removed 8 remain visible
+  (uncraftable + EMI-hidden is the survival truth); tab polish later.
+
+Passive-fleet count after round 1: RTGs x4 + windmill + decay gen (inert
+power-wise) + AR3 solar (dial pending). Fuel-burn families unchanged.

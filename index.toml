@@ -5238,7 +5238,7 @@ hash = "0f1415d7fef6d7f6194275501d500b633dd3310aea40d64128edd1b096372f60"
 
 [[files]]
 file = "config/nuclearcraftneohaul-common.toml"
-hash = "7b1afc3b213e38171fbfb4329230669d34bf75141ab88a8c607efb59de91c85f"
+hash = "512a94055a0b691ff64947348d9be48f8d9c24a73cb4620f1f6daaf8be452167"
 
 [[files]]
 file = "config/nuclearcraftneohaul.ncpf.json"
@@ -5469,8 +5469,48 @@ file = "kubejs/client_scripts/minebricks_lang_tweaks.js"
 hash = "9209b1f27d137af5dc7587b3c32647547c5f35e2a10659b00e3768aad3825a9f"
 
 [[files]]
+file = "kubejs/data/c/tags/item/hidden_from_recipe.json"
+hash = "e553813a5d142132b9adbed96cff132c594b0ac862edc46db00cff8b8a146fd8"
+
+[[files]]
 file = "kubejs/data/minebricks/tags/block/scanner_targets.json"
 hash = "8bf05d42f1c93b0ab53e41fee9f108a4127fcbe1f058b1e239e398ba3e4d99d7"
+
+[[files]]
+file = "kubejs/data/nuclearcraftneohaul/recipe/decay_generator/fertile_isotope_americium_block.json"
+hash = "2e16c4b8f6442e39827e1378bc34a0ee2770c42710a945d62e9cdf170f895247"
+
+[[files]]
+file = "kubejs/data/nuclearcraftneohaul/recipe/decay_generator/fertile_isotope_plutonium_block.json"
+hash = "96daed7d060c3957d9d3d1cf67d61fff1a7de2574bdd5f58c794b5620f924967"
+
+[[files]]
+file = "kubejs/data/nuclearcraftneohaul/recipe/decay_generator/fertile_isotope_uranium_block.json"
+hash = "8c1f496552d0791071058d80022f6782d79d31cf5a13356db872b1b751669ff5"
+
+[[files]]
+file = "kubejs/data/nuclearcraftneohaul/recipe/decay_generator/lead_from_americium.json"
+hash = "4eead9c634839b4975be517ff635af442406bf694cc3445dfa313e65f539803f"
+
+[[files]]
+file = "kubejs/data/nuclearcraftneohaul/recipe/decay_generator/lead_from_californium.json"
+hash = "23733245ad17447e8436c3686449496fc4a1d159fb17633870c2606ff5b4de5f"
+
+[[files]]
+file = "kubejs/data/nuclearcraftneohaul/recipe/decay_generator/lead_from_neptunium.json"
+hash = "add3c753c50d82bb8e0a1063e1b3b7e971425909391addec13328d56828ba948"
+
+[[files]]
+file = "kubejs/data/nuclearcraftneohaul/recipe/decay_generator/lead_from_thorium.json"
+hash = "3915942cae6277f6aee28dd89a3070b8ae56cace3cb4a02c00c23cb42a58e9c9"
+
+[[files]]
+file = "kubejs/data/nuclearcraftneohaul/recipe/decay_generator/lead_from_uranium.json"
+hash = "cf1f5454770e6de2ae78daddf0b284168e9b7ea2a4720b76895b063bad71e4c5"
+
+[[files]]
+file = "kubejs/data/nuclearcraftneohaul/recipe/decay_generator/uranium_from_plutonium.json"
+hash = "d4579464cdc5b706f53541e12b8a1c6f942d6f99450138ba7fafe8ca87f23525"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_anchor_murder.js"
@@ -5483,6 +5523,10 @@ hash = "1eab0cf40725aa19fb11fad66d3f27ca7dd084885a7c6a1af73dd8484bbe8d91"
 [[files]]
 file = "kubejs/server_scripts/minebricks_backpack_knobs.js"
 hash = "db74a8dc9daa4ab8c5034583e6f53c4b79ec0f03491df120194de6c58e9f4571"
+
+[[files]]
+file = "kubejs/server_scripts/minebricks_chunkledger.js"
+hash = "db63cff1bea724919d9a99b5c8269a2531319b3d37074ca1d806e492329c889c"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_cropscan.js"
@@ -5509,8 +5553,12 @@ file = "kubejs/server_scripts/minebricks_por_probe.js"
 hash = "d666139a2391c2ee0a6c5679514c0ffd1fe2fb4d691bf92e66720fdfc4c6b3c9"
 
 [[files]]
+file = "kubejs/server_scripts/minebricks_rf_cull.js"
+hash = "2a7d559c875cd2d93fa8634cb00d448bb517720d62678a317ac1181058aabc43"
+
+[[files]]
 file = "kubejs/server_scripts/minebricks_scanner.js"
-hash = "da73daf83daf7c98b4c57b5afbb6540c61fcd5660a988f4fefe1fb63a5634cc1"
+hash = "177d8288d815d039ba246ac6a0451f754b99f67dc7e42acc3dd98a197efdf0fc"
 
 [[files]]
 file = "kubejs/startup_scripts/.keep"

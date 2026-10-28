@@ -1,0 +1,14 @@
+{
+  "__comment": "RF cull round 1 (her rulings 2026-10-29): passive/infinite-class producers, survival-removed. EMI honors this C-tag convention.",
+  "replace": false,
+  "values": [
+    "nuclearcraftneohaul:solar_panel_basic",
+    "nuclearcraftneohaul:solar_panel_advanced",
+    "nuclearcraftneohaul:solar_panel_elite",
+    "nuclearcraftneohaul:solar_panel_du",
+    "nuclearcraftneohaul:cobblestone_generator",
+    "nuclearcraftneohaul:cobblestone_generator_compact",
+    "nuclearcraftneohaul:cobblestone_generator_dense",
+    "immersiveengineering:thermoelectric_generator"
+  ]
+}

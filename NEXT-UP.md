@@ -1152,29 +1152,61 @@ all 9 previously-errored mods loaded): `adv_rocketry` FATAL at mod construction,
 
 ---
 
-**Scanner v1 — STAGED 2026-10-28 (0.4.16, unpushed; rides with the 0.4.15 adpother fix at her word):**
-Vehicle ruling (her, Building mode): SG prospector hammer untouched; scanner = standalone
-generic item, fixed range, no other functions. Built:
-- `kubejs:scanner` (startup_scripts/minebricks_scanner_item.js): maxStackSize 1, icon =
-  vanilla wooden pickaxe via parentModel + byte-identical vanilla texture
-  (assets/kubejs/textures/item/scanner.png, extracted from Mojang 1.21.1 client jar).
-  Placeholder name "Scanner" — THE NAME IS HERS (open item). Art retrofit hers.
-- server_scripts/minebricks_scanner.js: right-click (main hand, server side) cube scan,
-  SCANNER_RANGE = 8 dial at file top, tag-filtered, grouped chat report (top 8 kinds),
-  10t persistentData throttle, 9-plank shaped recipe (#minecraft:planks).
-- kubejs/data/minebricks/tags/block/scanner_targets.json = `#c:ores` + ancient debris —
-  the SAME membership shape as SG's own prospector_hammer_targets (jar-verified), so the
-  scanner sees everything the hammer sees, minus touching the hammer.
-- API surfaces jar-verified (kubejs 2101.7.2-build.377 + 1.21.1 mappings): ItemEvents
-  .rightClicked, ItemClickedKubeEvent, ItemStackKJS .id, LevelKJS kjs$getBlock, LevelBlock
-  .blockState/.block, BlockStateBase.is(TagKey), TagKey.create, registries (also
-  runtime-proven cropscan/mint lineage), event.shaped (supply-pass lineage).
-- Gates: node --check 2/2, RhinoParseGate 13/13, scope gate 0 hard (39 warns = documented
-  pre-existing patterns), pw_full_audit 0 problems, index 1471 entries re-pinned 7a270b1f.
-- Next conversation (hers): ore/metal matrix — "Chalcopyrite gives copper and iron and
-  sulfur and gold and silver in various quantities through various steps", base-metals
-  decisions, planet visit conditions. The scanner's target tag + report payload evolve
-  with that matrix.
+**Scanner v1.1 — REBUILT ON THE CHUNK LEDGER 2026-10-29 (pushed as 0.4.17):**
+CORRECTION OF RECORD: the 10-28 "Scanner v1" build implemented the wrong function —
+a live block-scan (an SG prospector clone). Root cause: rebuilt from a compressed
+session summary instead of re-reading the 03:06Z ruling above. Her correction, 10-29:
+"We explicitly ARE NOT that scanner, it should make a call to our persistent data
+table that we build during chunk generation." The cube-scan code is deleted; standing
+rule now in aide/profile.md: pack work re-reads the repo ledger/spec files first,
+never memory. What ships — function per the 03:06Z ruling, every API name re-verified
+10-29 against the official 1.21.1 client mappings + neoforge-universal-21.1.265:
+- `kubejs/server_scripts/minebricks_chunkledger.js` (NEW — the table): NativeEvents
+  .onEvent routes ChunkDataEvent.Save/Load to NeoForge.EVENT_BUS, zero Java (first
+  NativeEvents use in the pack — the ledger probe the ruling queued). First touch
+  (chunk data lacks our marker): census the chunk's sections ONCE —
+  PalettedContainer.count(CountConsumer) visits each unique state WITH its count, one
+  native call per non-air section, no per-block walking — write the record INTO the
+  chunk's own data compound (marker + record hit disk in one write, server thread),
+  append to the server persistentData index. Exactly-once by construction; a
+  persistentData wipe heals from chunk NBT on next Load; pre-ledger chunks index at
+  load; a failed census stamps no marker and retries next save. Record =
+  "blockid:count|..." keyed dim|x,z under `mb_ledger:`; tag = minebricks:scanner_targets
+  (#c:ores + ancient debris — hammer taste, hammer untouched).
+- `kubejs/server_scripts/minebricks_scanner.js` (REWRITTEN — the reader): right-click
+  = a call to the table; grouped report plus an honest "(n chunk(s) here not indexed
+  yet)" line; empty-string records are real "indexed, zero ore" chunks. Dial
+  SCANNER_RADIUS_CHUNKS = 0 at file top (hers). Throttle kept. Vehicle untouched —
+  wooden-pick placeholder icon + 9-plank recipe stand (name and art still hers).
+  Triangulation stays parked with the ore/metal matrix conversation.
+- Gates: node --check 3/3, RhinoParseGate 15/15, scope 0 hard (39 warns = documented
+  pre-existing patterns), pw_full_audit 0 problems, index 1483 entries re-pinned
+  c813e691, pack 0.4.17.
+- Boot test (hers): 9 planks or creative tab → stand in any chunk of a fresh world →
+  right-click → "ledger read, chunk (x, z):" line; walk into unexplored chunks and
+  re-check — each indexes on first save.
+
+**RF cull round 1 — RULED + EXECUTED 2026-10-29 (0.4.17, pushed):**
+Her rulings on the census problem list:
+- REMOVED from survival (recipes out via `minebricks_rf_cull.js` + EMI-hidden via
+  c:hidden_from_recipe tag): NC solar panels x4, NC cobblestone generators x3 (the
+  cobble mint vector dies with them), IE thermoelectric generator. Belt-and-suspenders:
+  NC config `solar_power = [0,0,0,0]` — even cheated-in panels mint nothing.
+- DECAY GENERATOR: block KEPT — "it's useful for its decay function, if not its
+  power". No config knob exists for its power, so the clean lever is the recipe
+  layer: 9 overrides in `kubejs/data/nuclearcraftneohaul/recipe/decay_generator/`
+  with efficiency = 0.0 (jar-verified: DecayGeneratorRecipe$Serializer maps
+  efficiency -> getDecayGeneratorPower). Isotope->daughter chains, lifetimes and
+  radiation all untouched; the block's own crafting recipe (lead/cobble/redstone)
+  untouched.
+- KEPT: NC RTGs x4 ("I'm ok with the various RTGs" — they are NC's
+  rtg_uranium/plutonium/americium/californium, rtg_power config untouched), IE
+  windmill ("a ballache and doesn't produce much power, so it can stay"), AR3 solar
+  panel (satellite-chain hardware; jar-verified EntitySolarPanel DOES generate FE on
+  the ground — recorded as a dial for the planet-conditions conversation, not culled).
+- Open cosmetic: NC/IE creative-tab entries remain visible — modifyCreativeTab tab
+  ids unverified, not worth a startup-script crash risk for cosmetics. Uncraftable +
+  EMI-hidden is the survival truth; tab polish is a later item.
 
 **RF census — STAGED 2026-10-28 (RF-CENSUS.md, inquiring mode, read-only):**
 Shape confirmed (producers many / consumers modest-to-big endgame / storage very thin).

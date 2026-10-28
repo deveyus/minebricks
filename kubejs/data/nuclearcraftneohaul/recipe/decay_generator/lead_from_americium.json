@@ -1,0 +1,18 @@
+{
+  "type": "nuclearcraftneohaul:decay_generator_recipe",
+  "decayFactor": 18.0,
+  "efficiency": 0.0,
+  "itemIngredient": {
+    "count": 1,
+    "ingredient": {
+      "item": "nuclearcraftneohaul:fertile_isotope_americium_block"
+    }
+  },
+  "itemProduct": {
+    "count": 1,
+    "ingredient": {
+      "item": "nuclearcraftneohaul:lead_block"
+    }
+  },
+  "radiation": 0.00014
+}
