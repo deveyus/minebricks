@@ -1149,3 +1149,37 @@ all 9 previously-errored mods loaded): `adv_rocketry` FATAL at mod construction,
   scripts can be retuned without code edits. Dump runs (/fooddump,
   /lootdump, /mintdump — first fully working as of 0.4.10) are the
   inputs to that work.
+
+---
+
+**Scanner v1 — STAGED 2026-10-28 (0.4.16, unpushed; rides with the 0.4.15 adpother fix at her word):**
+Vehicle ruling (her, Building mode): SG prospector hammer untouched; scanner = standalone
+generic item, fixed range, no other functions. Built:
+- `kubejs:scanner` (startup_scripts/minebricks_scanner_item.js): maxStackSize 1, icon =
+  vanilla wooden pickaxe via parentModel + byte-identical vanilla texture
+  (assets/kubejs/textures/item/scanner.png, extracted from Mojang 1.21.1 client jar).
+  Placeholder name "Scanner" — THE NAME IS HERS (open item). Art retrofit hers.
+- server_scripts/minebricks_scanner.js: right-click (main hand, server side) cube scan,
+  SCANNER_RANGE = 8 dial at file top, tag-filtered, grouped chat report (top 8 kinds),
+  10t persistentData throttle, 9-plank shaped recipe (#minecraft:planks).
+- kubejs/data/minebricks/tags/block/scanner_targets.json = `#c:ores` + ancient debris —
+  the SAME membership shape as SG's own prospector_hammer_targets (jar-verified), so the
+  scanner sees everything the hammer sees, minus touching the hammer.
+- API surfaces jar-verified (kubejs 2101.7.2-build.377 + 1.21.1 mappings): ItemEvents
+  .rightClicked, ItemClickedKubeEvent, ItemStackKJS .id, LevelKJS kjs$getBlock, LevelBlock
+  .blockState/.block, BlockStateBase.is(TagKey), TagKey.create, registries (also
+  runtime-proven cropscan/mint lineage), event.shaped (supply-pass lineage).
+- Gates: node --check 2/2, RhinoParseGate 13/13, scope gate 0 hard (39 warns = documented
+  pre-existing patterns), pw_full_audit 0 problems, index 1471 entries re-pinned 7a270b1f.
+- Next conversation (hers): ore/metal matrix — "Chalcopyrite gives copper and iron and
+  sulfur and gold and silver in various quantities through various steps", base-metals
+  decisions, planet visit conditions. The scanner's target tag + report payload evolve
+  with that matrix.
+
+**RF census — STAGED 2026-10-28 (RF-CENSUS.md, inquiring mode, read-only):**
+Shape confirmed (producers many / consumers modest-to-big endgame / storage very thin).
+SHARP FINDING: ~16 passive producer blocks across NC/IE/AR3 (4 NC solar tiers, 3 NC
+cobble gens, decay gen, IE windmill blades, IE thermoelectric, AR3 solar) collide with
+the standing no-infinity doctrine — ready list for the audit. Storage = IE LV/MV/HV
+accumulators + 4 NC lithium-ion tiers + AR3 battery, nothing else network-grade.
+Capacity numbers not yet extracted (one config pass away if wanted).
