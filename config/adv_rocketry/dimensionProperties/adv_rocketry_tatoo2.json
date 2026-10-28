@@ -1,0 +1,92 @@
+{
+  "description": "",
+  "position": {
+    "x": 0.0,
+    "y": 0.0,
+    "z": 0.0
+  },
+  "gravitationalMultiplier": 80.0,
+  "earthRadiusMultiplier": 80.0,
+  "rotationAxis": {
+    "x": 0.0,
+    "y": 1.0,
+    "z": 0.0
+  },
+  "parentDimensionId": {
+    "namespace": "adv_rocketry",
+    "path": "tatoo1"
+  },
+  "orbitAxis": {
+    "x": 0.6666666666666666,
+    "y": 0.3333333333333333,
+    "z": -0.6666666666666666
+  },
+  "orbitalDistanceToParent": 0.3,
+  "orbitalBaseOffsetDegrees": 0.0,
+  "dayTimeReference": null,
+  "radiationIntensity": 0.4,
+  "latitude_len": 400000,
+  "targetDayLength": 24000,
+  "atmosphereComposition": {},
+  "baseEnergyGain": 0.0,
+  "canVisit": false,
+  "canGasMine": false,
+  "isKnown": false,
+  "dataRequiredForUnlock": 2000,
+  "artifactItem": null,
+  "customSeaFluid": null,
+  "customSeaFluidLevel": 0,
+  "generateStructures": false,
+  "biomePreset": null,
+  "hasCustomSky": true,
+  "texture": {
+    "namespace": "adv_rocketry",
+    "path": "textures/planet/baked_8k_sun_grayscale.png"
+  },
+  "skyColor": {
+    "x": 1.0,
+    "y": 1.0,
+    "z": 1.0
+  },
+  "cloudValueOverwrite": -1.0,
+  "skyDarken": 0.0,
+  "cloudColor": {
+    "x": 1.0,
+    "y": 1.0,
+    "z": 1.0
+  },
+  "fogColor": {
+    "x": 0.8,
+    "y": 0.9,
+    "z": 1.1
+  },
+  "sunRiseColor": {
+    "x": 3.0,
+    "y": 1.6,
+    "z": 0.2
+  },
+  "reflectiveTextureTintColor": {
+    "x": 1.0,
+    "y": 1.0,
+    "z": 1.0
+  },
+  "emissiveTextureTintColor": {
+    "x": 15.0,
+    "y": 4.5,
+    "z": 1.5
+  },
+  "emissiveLightColor": {
+    "x": 1.0,
+    "y": 0.8,
+    "z": 0.2
+  },
+  "hasRingSystem": false,
+  "dayTime": 0.0,
+  "currentTemp": 300.0,
+  "name": "Tatoo II",
+  "type": "PLANET",
+  "dimensionId": {
+    "namespace": "adv_rocketry",
+    "path": "tatoo2"
+  }
+}

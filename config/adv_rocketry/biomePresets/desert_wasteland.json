@@ -1,0 +1,131 @@
+{
+  "biomes": [
+    {
+      "biome1": "minecraft:desert",
+      "biome2": "minecraft:badlands",
+      "river1": "minecraft:desert",
+      "peak1": "minecraft:badlands",
+      "peak2": "minecraft:desert",
+      "temperaturesList": [
+        "FROZEN",
+        "LOW",
+        "MID",
+        "WARM",
+        "HOT"
+      ],
+      "humidityList": [
+        "VERY_WET",
+        "WET",
+        "MID",
+        "DRY",
+        "VERY_DRY"
+      ],
+      "continentalnessList": [
+        "DEEP_OCEAN",
+        "OCEAN",
+        "COAST",
+        "NEAR_INLAND",
+        "MID_INLAND",
+        "FAR_INLAND"
+      ],
+      "erosionList": [
+        "VERY_LOW",
+        "LOW",
+        "HIGH",
+        "VERY_HIGH"
+      ]
+    },
+    {
+      "biome1": "biomesoplenty:wasteland",
+      "biome2": "biomesoplenty:dryland",
+      "river1": "biomesoplenty:wasteland_steppe",
+      "peak1": "minecraft:desert",
+      "peak2": "minecraft:desert",
+      "temperaturesList": [
+        "FROZEN",
+        "LOW",
+        "MID",
+        "WARM",
+        "HOT"
+      ],
+      "humidityList": [
+        "VERY_WET",
+        "WET",
+        "MID",
+        "DRY",
+        "VERY_DRY"
+      ],
+      "continentalnessList": [
+        "OCEAN",
+        "DEEP_OCEAN",
+        "COAST"
+      ],
+      "erosionList": [
+        "VERY_LOW",
+        "LOW",
+        "HIGH",
+        "VERY_HIGH"
+      ]
+    },
+    {
+      "biome1": "minecraft:badlands",
+      "biome2": "minecraft:eroded_badlands",
+      "river1": "minecraft:desert",
+      "peak1": "minecraft:eroded_badlands",
+      "peak2": "biomesoplenty:dune_beach",
+      "temperaturesList": [
+        "FROZEN",
+        "LOW",
+        "MID",
+        "WARM",
+        "HOT"
+      ],
+      "humidityList": [
+        "VERY_WET",
+        "WET",
+        "MID",
+        "DRY",
+        "VERY_DRY"
+      ],
+      "continentalnessList": [
+        "MID_INLAND",
+        "FAR_INLAND"
+      ],
+      "erosionList": [
+        "VERY_LOW",
+        "LOW"
+      ]
+    },
+    {
+      "biome1": "biomesoplenty:cold_desert",
+      "biome2": "biomesoplenty:tundra",
+      "river1": "biomesoplenty:dryland",
+      "peak1": "minecraft:stony_peaks",
+      "peak2": "minecraft:stony_shore",
+      "temperaturesList": [
+        "LOW"
+      ],
+      "humidityList": [
+        "VERY_WET",
+        "WET",
+        "MID",
+        "DRY",
+        "VERY_DRY"
+      ],
+      "continentalnessList": [
+        "DEEP_OCEAN",
+        "OCEAN",
+        "COAST",
+        "NEAR_INLAND",
+        "MID_INLAND",
+        "FAR_INLAND"
+      ],
+      "erosionList": [
+        "VERY_LOW",
+        "LOW",
+        "HIGH",
+        "VERY_HIGH"
+      ]
+    }
+  ]
+}

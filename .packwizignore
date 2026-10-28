@@ -6,3 +6,12 @@ GROWTH-DIALS.json
 WORLDGEN-SOURCES.json
 kubejs/export/
 .packwizignore
+
+config/xaero/
+config/xaerohud.txt
+config/emi.css
+config/embeddium-options.json
+config/fml.toml
+config/spark/tmp/
+config/spark/tmp-client/
+config/NoChatReports/README.md

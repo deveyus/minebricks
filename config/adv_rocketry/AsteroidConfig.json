@@ -1,0 +1,28 @@
+[
+  {
+    "id": "iron_asteroid",
+    "description": "iron enriched asteroid\norigin: somewhere far away",
+    "spawnProbability": 50.0,
+    "loot": [
+      {
+        "p": 0.5,
+        "actual_num": 0,
+        "id": "minecraft:iron_ore",
+        "amount": 100
+      }
+    ]
+  },
+  {
+    "id": "diamond_asteroid",
+    "description": "rare diamond asteroid",
+    "spawnProbability": 5.0,
+    "loot": [
+      {
+        "p": 0.1,
+        "actual_num": 0,
+        "id": "minecraft:diamond_ore",
+        "amount": 100
+      }
+    ]
+  }
+]

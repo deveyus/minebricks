@@ -1,0 +1,5 @@
+{
+  "use_Transparent_Particle_Engine": true,
+  "planet_Cloud_Noise_Samples": 5,
+  "planet_Cloud_Noise_Warp": true
+}
