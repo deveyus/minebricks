@@ -55,6 +55,26 @@ const MBD_IO = Java.loadClass('com.lowdragmc.mbd2.api.capability.recipe.IO');
 const ItemSlotTraitDef = Java.loadClass('com.lowdragmc.mbd2.common.trait.item.ItemSlotCapabilityTraitDefinition');
 const FluidTankTraitDef = Java.loadClass('com.lowdragmc.mbd2.common.trait.fluid.FluidTankCapabilityTraitDefinition');
 
+// --- recipe content construction (overload-safety) -------------------------
+// MBDRecipeBuilder's inputItems/inputFluids/outputItems families contain
+// MULTIPLE varargs overloads, and KubeJS's Rhino fork reports ANY call into
+// such a family as ambiguous ("The choice of Java method ... is ambiguous")
+// regardless of argument types — even exact matches. Empirically established
+// (scripts/RhinoOverloadHarness*.java against the pack's own rhino.jar):
+// a family with >=2 varargs members never resolves from JS; a family with
+// exactly one varargs member resolves fine. The generic input(cap, values...)
+// / output(cap, values...) methods are each single-varargs families, and the
+// sugar overloads are thin wrappers around them: inputItems(Item,int) ->
+// SizedIngredient.of(ItemLike,int) -> input(ItemRecipeCapability.CAP, ...);
+// inputFluids(FluidStack...) -> SizedFluidIngredient.of(FluidStack) ->
+// input(FluidRecipeCapability.CAP, ...). So we call the generic path with
+// the same content objects the sugar would have built — verified against
+// MBDRecipeBuilder's own constant-pool methodrefs.
+const SizedIngredient = Java.loadClass('net.neoforged.neoforge.common.crafting.SizedIngredient');
+const SizedFluidIngredient = Java.loadClass('net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient');
+const ItemCap = Java.loadClass('com.lowdragmc.mbd2.common.capability.recipe.ItemRecipeCapability').CAP;
+const FluidCap = Java.loadClass('com.lowdragmc.mbd2.common.capability.recipe.FluidRecipeCapability').CAP;
+
 // --- shared predicates -----------------------------------------------------
 const CONTROLLER_ANY = Predicates.controller(Predicates.any());
 const IRON_CASING = Predicates.blocks(Blocks.IRON_BLOCK);
@@ -153,25 +173,25 @@ MBDRegistryEvents.recipeType((event) => {
     // PLACEHOLDER: doubling stand-in — real "crushed ore" intermediate is a
     // DIY-unification decision. Vanilla-only because of startup registry timing.
     builtinRecipe(crusher, 'jaw_crusher/raw_iron', (b) => b
-        .inputItems(Items.RAW_IRON, 1)
-        .outputItems(Items.RAW_IRON, 2)
+        .input(ItemCap, SizedIngredient.of(Items.RAW_IRON, 1))
+        .output(ItemCap, SizedIngredient.of(Items.RAW_IRON, 2))
         .duration(100));
 
     const trommel = event.createRecipeType(RL('minebricks:wash_trommel'));
     // PLACEHOLDER: wet classification stand-in — feed + water in, aggregate out.
     builtinRecipe(trommel, 'wash_trommel/wash_raw_iron', (b) => b
-        .inputItems(Items.RAW_IRON, 1)
-        .inputFluids(new FluidStack(Fluids.WATER, 100))
-        .outputItems(Items.SAND, 1)
-        .outputItems(Items.GRAVEL, 1)
+        .input(ItemCap, SizedIngredient.of(Items.RAW_IRON, 1))
+        .input(FluidCap, SizedFluidIngredient.of(new FluidStack(Fluids.WATER, 100)))
+        .output(ItemCap, SizedIngredient.of(Items.SAND, 1))
+        .output(ItemCap, SizedIngredient.of(Items.GRAVEL, 1))
         .duration(60));
 
     const pool = event.createRecipeType(RL('minebricks:settling_pool'));
     // PLACEHOLDER: settling stand-in — fines settle out of suspension.
     builtinRecipe(pool, 'settling_pool/settle', (b) => b
-        .inputItems(Items.SAND, 1)
-        .inputFluids(new FluidStack(Fluids.WATER, 250))
-        .outputItems(Items.CLAY, 1)
+        .input(ItemCap, SizedIngredient.of(Items.SAND, 1))
+        .input(FluidCap, SizedFluidIngredient.of(new FluidStack(Fluids.WATER, 250)))
+        .output(ItemCap, SizedIngredient.of(Items.CLAY, 1))
         .duration(80));
 
     console.info('MBD2 t1: 3 recipe types registered (crusher/trommel/pool)');

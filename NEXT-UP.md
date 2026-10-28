@@ -1054,3 +1054,24 @@ all 9 previously-errored mods loaded): `adv_rocketry` FATAL at mod construction,
   but all are pack-prefixed (POR_*, MARKER_*, por*, writeText, fireTheMoment,
   KILL_SWITCH, UNLOCK_KEY, STATION_KEY) — outside every injected family.
   House rule going forward: new pack scripts either IIFE-wrap or prefix.
+- OVERLOAD BLOCKER (fixed, 0.4.9): first successful script run (0.4.8) died
+  at MBDRecipeBuilder.inputItems — Rhino: "The choice of Java method ...
+  matching JavaScript argument types (Item,number) is ambiguous". Root cause
+  (empirically established with scripts/RhinoOverloadHarness1-3.java against
+  the pack's own rhino.jar + stub signatures mirrored from the real class):
+  KubeJS's Rhino fork reports ANY call into a Java overload family containing
+  >= 2 VARARGS members as ambiguous, regardless of argument types — even
+  exact single-arg matches. MBDRecipeBuilder: inputItems = 3 varargs + 8
+  fixed, outputItems = 1 varargs + 4 fixed, inputFluids = 3 varargs (all!).
+  Also: getClass() is hidden by the fork (reflection via instances blocked),
+  Supplier-arrow args don't disambiguate. Single-varargs families resolve.
+- FIX PATTERN (house pattern for MBD2 recipes from KubeJS): skip the sugar
+  overloads; call the generic input(cap, values...) / output(cap, values...)
+  — each a single-varargs family — with the content objects the sugar would
+  have built: ItemRecipeCapability.CAP + SizedIngredient.of(ItemLike, int),
+  FluidRecipeCapability.CAP + SizedFluidIngredient.of(FluidStack). Factories
+  verified against MBDRecipeBuilder's own constant-pool methodrefs (its
+  inputItems(Item,int) impl literally calls SizedIngredient.of(ItemLike,int)
+  then input(...)). Harness-proven end-to-end before shipping.
+- 0.4.9 milestone note: 0.4.8's log showed 1/1 startup scripts + all 3
+  multiblocks registered — IIFE fix confirmed; recipes were the next layer.
