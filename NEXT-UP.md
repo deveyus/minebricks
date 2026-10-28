@@ -1075,3 +1075,40 @@ all 9 previously-errored mods loaded): `adv_rocketry` FATAL at mod construction,
   then input(...)). Harness-proven end-to-end before shipping.
 - 0.4.9 milestone note: 0.4.8's log showed 1/1 startup scripts + all 3
   multiblocks registered — IIFE fix confirmed; recipes were the next layer.
+- SPREAD PARSE BLOCKER (fixed, 0.4.10): the Rhino fork cannot parse array
+  spread `[...x]` — EvaluatorException syntax error at parse time, whole
+  file dropped, boot continues (same silent-content-loss genus as the
+  redeclarations). Both pack dump tools (fooddump line 145, lootdump line
+  91) shipped broken since v0.4.1 (2026-10-26) and never executed one
+  line. The "Loaded 7/9 KubeJS server scripts with 2 errors" line has been
+  in every boot log since — missed while chasing the startup fires. Owning
+  it plainly: parse errors are deterministic; these were fixable on day
+  one, the reading was the failure.
+- TOOLCHAIN GAP + GATE (0.4.10): node --check uses V8, which ACCEPTS
+  spread — it could never catch an engine-specific parse failure. New
+  authoritative gate: scripts/RhinoParseGate.java + jarcache/rhino.jar —
+  parses every kubejs/**/*.js with the pack's OWN Rhino fork via the same
+  compileString chain a real boot uses. Validation protocol: the gate must
+  REPRODUCE a known failure (exact file + line) before any clean verdict
+  is trusted. It reproduced fooddump#145 / lootdump#91 exactly, then went
+  10/10 clean post-fix (startup script included).
+- HOUSE RULE (extends the 0.4.8 rule): after ANY script edit, run
+  RhinoParseGate over ALL kubejs scripts (not just the edited file) before
+  rehash/ship. node --check stays as a cheap typo guard, never the
+  authority.
+- RHINO SYNTAX SURFACE (what we know parses): template literals, arrows,
+  ?? (nco), ** — all parsed fine before the spread lines. Array/object
+  spread, and JS `Set` iteration via spread, do NOT. Fix pattern: plain
+  arrays, forEach + push, concat, indexOf-dedupe accumulators.
+- CONFIG LANE (proposed, 0.4.10 — awaiting her first file list):
+  packwiz ships non-mod files (config/, kubejs/, resources) as plain
+  index entries — same refresh/rehash/bump/verify pipeline as scripts, no
+  new tooling. Per-file decision needed: ENFORCED (shipped; every update
+  overwrites player edits — right for defaults we own) vs IGNORED
+  (.packwizignore; player domain — controls, graphics, in-game tweaks).
+  Hygiene: generate shipped configs from a clean boot of the pack, not a
+  used instance (no machine cruft, no config-version migration surprises).
+  Pack-owned tunables (token prices, machine rates) -> small JSON the
+  scripts read at boot via JsonIO — retune without code edits, ships
+  through the same lane. Her loop: she sends file contents, Zee stages
+  into config/, ships verified.
