@@ -1226,7 +1226,7 @@ hash = "013d0cbbeda565b9bccaf251ca3ad04b537185e1280612a08364c81b0fca73fb"
 
 [[files]]
 file = "config/adpother-common.toml"
-hash = "426e748e927f4ebed7f7cf49bc99f9c851f2c619cdde3a2e1ec61abcffc42dc3"
+hash = "600724b1a8108ccf8e112b010e9bb8f2c9defbc1cb310a57e62efa7082d0e140"
 
 [[files]]
 file = "config/adpother/Biomes/adv_rocketry$endless_sand.cfg"
@@ -5958,3 +5958,13 @@ metafile = true
 file = "mods/zerocore.pw.toml"
 hash = "ce603d52501bf33432a197ad4f2bbe63ff49241656f0f2b8a7c2d774bd04b3c9"
 metafile = true
+[[files]]
+file = "mods/curios.pw.toml"
+hash = "d3607a95672591edab6e7eaaa505a066c520f433068082657224bd80c294e4e2"
+metafile = true
+
+[[files]]
+file = "mods/reconstructed-wands.pw.toml"
+hash = "42f56c002f6fb6ef0d4d93403a12838149d5ad197c3a9d6b77b34139c3918919"
+metafile = true
+
