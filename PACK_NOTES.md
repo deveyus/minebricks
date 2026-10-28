@@ -249,3 +249,32 @@ tellraw to one player; constellation = the global broadcast variant. Exact
 trigger (own satellite vs shared constellation) is a pack-lead call recorded
 in the scanner spec. Early game runs on Antique Atlas + vanilla paper maps;
 the ore scanner's rings are vanilla-map decorations and never touch Xaero.
+
+## 0.4.16 staged (2026-10-28 afternoon — her orders, same day)
+
+- **Curios API 9.5.1+1.21.1** — her "bring in Curios" executed for real. Modrinth
+  pin, direct CDN, sha512 live-verified (5981a267...). `metadata:curseforge` pin
+  from the meldworks lineage NOT reused (that download mode is forbidden per the
+  0.4.4 detangle ruling). kubejs-curios NOT staged — offer lane if she wants
+  KubeJS slot scripting.
+- **RE:Constructed Wands 2.0.0+neoforge-1.21.1** — her "Reconstructed Wands".
+  2.0.0 "Architect Update" (2026-10-24): full rebuild of the Construction Wand
+  lineage (ThetaDev MIT notice ships in jars). Zero deps. Doctrine check CLEAN:
+  blocks consumed before placement, refund on refusal, no duplication, undo
+  returns exactly what it removed; server.json has per-tier limits, core toggles,
+  deny tags (bedrock/spawners/portals/containers default-protected) — anti-
+  infinity gate holds. Config lane note: config/reconstructedwands/server.json +
+  client.json boot-generated; `/wands reload` is perm-2. 1.x listing disclosed
+  AI-generated code; 2.0.0 description does not — noted, no action.
+- **MouseTweaks** — ALREADY IN since the 0.4.2 tier-1 QoL pass (2.26.1). Her order
+  satisfied by existing state; no double-add.
+- Audit: 93 metafiles (91+2), index<->pack.toml pin MATCH, 0 problems. All hosts
+  known-good (83 modrinth CDN / 10 forgecdn mediafilez). Committed locally; ship
+  call stays hers (hold default).
+- **Staging-loss disclosure:** the DT/Apotheosis 0.4.16 reported earlier today did
+  not survive locally (no commit, no stash, reflog clean — consistent with the
+  platform rollback that ate the audit tooling originals 10-27). Re-stage as
+  0.4.17 = DT 1.7.2 + DT-Terralith 1.3.0 + Apotheosis 8.9.0 + Apothic trio +
+  Placebo + Patchouli + Curios-slot interplay check + spawner module OFF +
+  gems loot overrides + feature cancellers. Spawners removal needs the Apotheosis
+  jar on disk first (hard dep), which is that batch.
