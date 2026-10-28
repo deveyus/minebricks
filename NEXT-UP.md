@@ -1112,3 +1112,40 @@ all 9 previously-errored mods loaded): `adv_rocketry` FATAL at mod construction,
   scripts read at boot via JsonIO — retune without code edits, ships
   through the same lane. Her loop: she sends file contents, Zee stages
   into config/, ships verified.
+
+## 0.4.11 — config lane v1 (shipped 2026-10-28)
+
+- WHAT SHIPPED: 1,362 config files staged from her instance (all mod
+  defaults — she confirmed zero hand edits), index 104 -> 1,466 entries,
+  every file sha256-verified on copy. 21 personal files NEVER staged and
+  guarded in .packwizignore: config/xaero/ (14 map/HUD profiles),
+  embeddium-options.json, xaerohud.txt, emi.css, spark/tmp*,
+  NoChatReports/README.md, fml.toml. Her rule of thumb held: defaults get
+  enforced, anything tweakable in-game is player domain.
+- HOW IT WAS RULED: mtime archaeology — install burst (1,139 files, one
+  timestamp) vs two later boot waves (244) vs hand-edit signatures (0
+  found; boot batches stamp whole dirs in the same minute). Ruling was
+  hers, one line, zero vetoes. Tooling: scripts/pw_config_inventory.py
+  (inventory/manifest/segments) + scripts/au_rulings.py (verdicts) +
+  scripts/pw_bulk_stage_configs.py (copy, index rebuild, bump).
+- NOTABLE PINS: nuclearcraftneohaul.ncpf.json (275KB — full NC material
+  profile, material system now pack-wide); *-server.toml family (server
+  settings pinned for the SMP — consistent experience).
+- CI FIX (pages.yml): the deploy rsync copied ./ into pages/ INSIDE
+  itself; with 104 files the race never fired, at 1,466 entries rsync
+  caught its own in-flight temps (code 24, bash -e fatal, run 38 failed).
+  Fixed with --exclude 'pages'. Run 39 green. packwiz refresh in CI
+  reproduced the hand-built index BYTE-IDENTICALLY (539f0262...) — the
+  canonical tool cross-validated the rebuild.
+- DRIFT DETECTOR (now live): from here on, run pw_config_inventory
+  against any instance with --index pointing at the pack index — any
+  file whose hash differs from shipped flags MODIFIED. Her copy is the
+  definition of correct; tuning sessions will flag exactly the files
+  she changed, and those small diffs are the whole staging loop.
+- TUNING MOUNTAIN (next): configs now flow through the same
+  rehash/bump/audit/push/verify lane as scripts. Small cycles: tweak
+  in-game -> manifest flags MODIFIED -> stage those files -> ship.
+  Pack-owned tunables (token prices, machine rates) -> JsonIO JSON so
+  scripts can be retuned without code edits. Dump runs (/fooddump,
+  /lootdump, /mintdump — first fully working as of 0.4.10) are the
+  inputs to that work.
