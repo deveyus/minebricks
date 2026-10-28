@@ -1378,3 +1378,14 @@ existing explored chunks untouched (ores already in the ground stay).
   declares it; never installed. DIY material layer is shipped and proven
   end-to-end by the chalcopyrite chain. Adopting EE later would ADD a parallel
   material set needing unification — the opposite of O6.
+- **EE — CLOSED (her Building 2026-10-28 23:09Z: "Go ahead and pull EE then
+  from the pack"). The pull executed and came up EMPTY — that emptiness is the
+  receipt.** Post-order re-sweep, wider than the morning pass: `emendatus`
+  greps to ZERO across pack.toml, index.toml (all 1,507 entries), mods/ (98 pw
+  metafiles), config/, every kubejs script + data file, AND both paxi datapack
+  zips (binary surfaces the text grep can't reach, checked by name listing).
+  Sole hit in the tree = this file's own notes. Nothing to uninstall, no
+  declared dependents to detach, no orphaned configs — EE was never shipped,
+  so the pull was a verification job, not a removal job. This closure
+  supersedes the "LOOK DONE" block and the O6 pre-ruling default above (both
+  stay on record as analysis history, AW3 precedent). EE lane: CLOSED.
