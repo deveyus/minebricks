@@ -588,6 +588,64 @@ TestMachineBuilder / MBDSmokeFixtures were the literal templates). Deliverables:
   Deleted, modes restored, refresh re-run → index exactly 80. Nothing shipped
   in that state.
 
+**ORE ROSTER — AGREED 2026-10-28 20:42–21:10Z (Discord #home-channel); first written down ~21:40Z same day.**
+Pre-write sweep: NO earlier roster record exists anywhere in the pack docs (only
+the ORE TEMPLATE above + `immersiveengineering:mineral/*` vein tags in the mint
+census) — this section is sourced solely from her three messages tonight;
+nothing backfilled from memory.
+
+- **Base Material (her definition):** a produced material in a commonly-available
+  set — "rapid and substantial access" assumed. Founding: **Copper, Tin, Iron**;
+  **Zinc** joins with brass confirmed 20:50Z.
+- **Base Ore (Zee sketch, unobjected):** the worldgen block = deposit-style
+  assemblage — one dominant base material + real minor companions; not a pure
+  mineral.
+- **Gate Material (Zee sketch, unobjected):** availability deliberately pinned
+  outside the starting loop (planet / condition / processing tier); acquiring it
+  IS the gate. **Steel = first Gate Material (hers)** — the gate is the furnace
+  (carbon control + temperature tier), not the rock.
+- Supersession: 20:42Z "one ore per base metal with the other two present" →
+  20:50Z round-robin ruling ("instead of bending over to try to cram in
+  Stannite... as much ride along as makes sense").
+
+Starting four (her 21:10Z: "I like all of those materials"):
+1. **Chalcopyrite** CuFeS₂ — Cu 34.6 / Fe 30.4 / S 34.9. Cu-dominant; Fe
+   secondary; S byproduct; riders: trace Au + Ag, trace Co.
+2. **Cassiterite** SnO₂ — Sn 78.8. Sn-dominant; riders: Fe substitution +
+   pyrrhotite intergrowth, trace Ta/Nb inclusions, trace In; wolframite shares
+   the vein systems (W present before it has an ore of its own).
+3. **Magnetite** Fe₃O₄ — Fe 72.4. Fe-dominant; riders: V + Ti in solid solution.
+4. **Sphalerite** ZnS — Zn 67.1 pure, less when Fe-rich (real substitution → Fe
+   secondary); S byproduct; riders: Ge/In/Cd at real recoverable grades, Ga
+   trace.
+
+**Galena** PbS = optional fifth (Pb for the NC shielding chain + real Ag,
+argentiferous galena; trace Bi/Cd; Pb-Zn inseparable in real deposits) — liked
+with the rest; starting-lineup slot still her explicit call. **Stannite**
+Cu₂FeSnS₄ = natural cameo only, no load-bearing role (her ruling).
+
+Alloy spine (hers): **Bronze** (Cu+Sn direct melt) → **Brass** (Cu+Zn, two real
+routes: cementation bake — zinc vapor soaks into copper, no metallic zinc; clean
+melt-alloy once zinc distillation exists; Zn boils 907°C) → **Iron** → **Steel**
+(first gate). Gate candidates riding free: W, Ta, Nb, In, Ge, Cd, Ga, V, Ti, Co;
+Au/Ag position between base and gate = her pin pending.
+
+Provenance: IE ships vein types named chalcopyrite/galena — reconcile owners in
+the DIY unification pass (O6; EE already demoted there). Open on the lane:
+quantity matrix (hers), Au/Ag graduation point, galena slot,
+planets/conditions/reasons.
+
+**AMENDED 2026-10-28 21:51Z (her, ore-processing lane):** no custom scrubber
+machine — "the roaster needs only to emit pollution properly" (PoR emission
+wiring only); T4's wet-scrubber + scrubber-acids leg is CUT. Knock-on pending
+her pin: T5 autoclave's acid supply now needs a home (Zee flag: simplest real
+option = sulfur → H₂SO₄ plain recipes, no machine). Also 21:51Z: O6 leaning
+slightly EE, her stated criterion = scanhammer-finding — answered same hour
+as neutral (roster ore blocks are mineral-named, DIY-registered either way;
+hammer targets tag identical; down-click ledger mapping custom either way for
+multi-metal assemblages). EE verdict still hers; EE not yet installed
+(census-checked 21:51Z), alpha-3 form list = jar check before commit.
+
 **CURSEFORGE-API DETANGLE 2026-10-27 ~17:30Z (her find, her question).** During the
 first v0.4.2 launch she spotted "the failure path asks for it twice" on Corail
 Tombstone and asked: ride it along directly, or would that violate the author's
@@ -1215,3 +1273,53 @@ cobble gens, decay gen, IE windmill blades, IE thermoelectric, AR3 solar) collid
 the standing no-infinity doctrine — ready list for the audit. Storage = IE LV/MV/HV
 accumulators + 4 NC lithium-ion tiers + AR3 battery, nothing else network-grade.
 Capacity numbers not yet extracted (one config pass away if wanted).
+
+**ORE CHAIN E2E (chalcopyrite, T1→T4) — BUILT 2026-10-29 (0.4.18, pushed):**
+Her go ~22:03Z: "Build the end to end for Chalcopyerite, a rough sketch is more
+useful than guesswork now, also the machines needed to get to T4. Ask me
+questions first if you need to before you work, but following what you already
+know and filling in the most obvious of gaps will likely suffice." No questions
+taken — the sketch latitude covered every gap; all assumptions logged here.
+- **EE ruled extraneous (her, same message):** item forms are OURS. The
+  generation shape she asked for is real: `scripts/gen_ore_textures.py` holds a
+  MATERIALS array (chalcopyrite first; cassiterite/magnetite/sphalerite/galena
+  ride the same loop) × a PARTS array (ore_block/raw/crushed/washed/milled/
+  concentrate/roasted) — byte-wise stdlib PNGs, deterministic per (material,
+  part, pixel) so index hashes stay stable. 7 textures shipped.
+- **New items (kubejs: namespace, scanner precedent):** chalcopyrite_{raw,
+  crushed,washed,milled,concentrate,roasted} + block kubejs:chalcopyrite_ore
+  (hardness 3, requiresTool, stone sound, tagBoth c:ores + mineable/pickaxe —
+  one membership feeds the SG hammer config, the ledger census (scanner_targets
+  includes #c:ores), and the ecosystem; explicit scanner_targets entry added
+  too). Textures pinned via ModelledBuilderBase.texture() (jar-verified).
+- **New machines (minebricks_mbd2_t4.js):** ball_mill + separator (2 out-slots)
+  + roaster — same manual-registration idiom as T1, 3x3x3 iron boxes, EMPTY
+  renderers (art pass later). Recipe types minebricks:{ball_mill,separator,
+  roaster}. DELIBERATE: zero builtin recipes.
+- **The timing solution:** MBD2 fires its registry events during
+  FMLConstructModEvent (source-verified, CommonProxy.enqueueWork) — KubeJS
+  items don't exist yet there. So chain content = DATA-PACK JSON:
+  kubejs/data/minebricks/recipe/<machine>/chalcopyrite.json x5 (one vanilla
+  serializer per recipe type, registered under the type's own id — CommonProxy
+  199-200 — items resolve at recipe-manager time). Chain: raw ×1 → crushed ×2
+  (100t) → +water 100mB → washed +gravel (60t) → milled (120t) → concentrate
+  +quartz @0.5 (100t) → roasted (160t). ALL COUNTS TEMPORARY (her convention)
+  pending the roster matrix.
+- **Ore block loot = self-drop, TEMPORARY:** the real raw-drop + Fortune curve
+  (her ≤+1@III ruling) is the loot-table pass, rides worldgen. The crusher
+  eats block items meanwhile — ROM-ore-realistic for a sketch.
+- **Roaster emission (her "emitter from wherever we want; for now the
+  controller suffices"):** minebricks_roaster_emissions.js —
+  MBDMachineEvents.onRecipeFinish('minebricks:roaster') →
+  WorldData.tryChangePollutionLevelBy(serverLevel, controllerPos, state,
+  ROASTER_EMISSION_PER_RECIPE=20 TEMPORARY). PoR surface jar-verified public
+  static (por-analysis). RUNTIME-VERIFY flag: whether the method needs a
+  configured EmissionSources entry for the state or applies raw delta — first
+  real emission logs chunk pollution before/after. Fallback = config/adpother/
+  Emitters/ user config (the probe session's chimney-attribution comparison
+  owns that; hatches are the eventual shape per her).
+- **Gates:** node --check 3/3; pw_rhino_scope_gate 0 hard (18 files, 59
+  documented run-once warns); RhinoParseGate 3/3; pw_index_add (new tool, task-
+  40 manual-block method formalized) + pw_rehash_entry (--pack arg added; both
+  pw tools defaulted to the stale clone root) → index 1,506 entries, pack
+  0.4.17 → 0.4.18; pw_full_audit 0 problems.

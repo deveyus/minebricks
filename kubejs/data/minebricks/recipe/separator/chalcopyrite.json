@@ -1,0 +1,7 @@
+{
+  "type": "minebricks:separator",
+  "duration": 100,
+  "priority": 0,
+  "inputs": { "item": [ { "content": { "item": "kubejs:chalcopyrite_milled", "count": 1 } } ] },
+  "outputs": { "item": [ { "content": { "item": "kubejs:chalcopyrite_concentrate", "count": 1 } }, { "content": { "item": "minecraft:quartz", "count": 1, "probability": 0.5 } } ] }
+}

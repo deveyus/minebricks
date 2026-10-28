@@ -1,0 +1,10 @@
+{
+  "type": "minebricks:wash_trommel",
+  "duration": 60,
+  "priority": 0,
+  "inputs": {
+    "item": [ { "content": { "item": "kubejs:chalcopyrite_crushed", "count": 1 } } ],
+    "fluid": [ { "content": { "fluid": "minecraft:water", "amount": 100 } } ]
+  },
+  "outputs": { "item": [ { "content": { "item": "kubejs:chalcopyrite_washed", "count": 1 } }, { "content": { "item": "minecraft:gravel", "count": 1 } } ] }
+}

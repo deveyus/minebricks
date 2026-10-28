@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "#c:ores",
-    "minecraft:ancient_debris"
+    "minecraft:ancient_debris",
+    "kubejs:chalcopyrite_ore"
   ]
 }

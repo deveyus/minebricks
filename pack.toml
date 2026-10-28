@@ -1,6 +1,6 @@
 name = "Friend Pack (working title)"
 author = "Fina"
-version = "0.4.17"
+version = "0.4.18"
 pack-format = "packwiz:1.1.0"
 
 [index]
