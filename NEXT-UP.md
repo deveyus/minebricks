@@ -1033,3 +1033,24 @@ all 9 previously-errored mods loaded): `adv_rocketry` FATAL at mod construction,
 - Non-crash lesson: KubeJS script errors are NOT fatal — the file is
   skipped and the game loads without its content. A "benign" boot with
   missing machines = check the KubeJS log lines first.
+- CORRECTION to the reserved-words note above: the "Rhino reports the FIRST
+  collision in file order" inference was WRONG — retracted. Observed boots:
+  error surfaced IO (line 38) while MBDRegistries (line 35) sat above it
+  clean, then after the IO fix the error moved to MBDRegistries. Rhino
+  surfaces only ONE redeclaration per boot, not in file order; several may
+  be queued. Blocks/Items collision status: unknown/irrelevant now.
+- INJECTION MECHANISM (ground truth from pinned jars): LDLib2's
+  LDLibKubeJSPlugin reflectively binds every static field carrying the
+  @KJSBindings annotation (com.lowdragmc.lowdraglib2.integration.kjs.
+  KJSBindings; value = binding name). Annotated holders in mbd2: IO,
+  ContentModifier, MBDRegistries, CapabilityIO, MachineState,
+  ConfigBlockProperties (+ gui/editor helpers). MBD2's plugin additionally
+  binds RL + Shapes statically and every recipe type by registry name.
+  Plus MBDTypeHandles blueprint names (CAPS set above) and event groups.
+  Complete set is partly dynamic — do NOT fight it by renaming.
+- SYSTEMIC FIX (0.4.8): startup script body wrapped in an IIFE — function-
+  scoped consts only shadow outer bindings (legal), so no top-level
+  declaration can ever collide again. Server scripts keep top-level names
+  but all are pack-prefixed (POR_*, MARKER_*, por*, writeText, fireTheMoment,
+  KILL_SWITCH, UNLOCK_KEY, STATION_KEY) — outside every injected family.
+  House rule going forward: new pack scripts either IIFE-wrap or prefix.

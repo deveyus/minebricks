@@ -50,7 +50,7 @@ hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 [[files]]
 file = "kubejs/startup_scripts/minebricks_mbd2_t1.js"
-hash = "01f199fd4e40066e5ddd3b921d148ba9df316c23a27109ba5a39e1e14448f992"
+hash = "e902d8be6d431e686d2d63fe82189afbed71f1aa031b76429bb57fbab28e2828"
 
 [[files]]
 file = "mods/advanced-chimneys.pw.toml"

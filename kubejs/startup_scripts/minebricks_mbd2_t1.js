@@ -17,6 +17,18 @@
 // the KubeJS event's auto-register path cannot set blockPatternFactory.
 // ===========================================================================
 
+// SCOPE ISOLATION (0.4.8): the entire body lives in an IIFE. MBD2/LDLib2
+// inject a large, partly dynamic set of top-level bindings into every KubeJS
+// scope (@KJSBindings-annotated classes: IO, MBDRegistries, MachineState,
+// ConfigBlockProperties, ContentModifier, CapabilityIO...; static plugin
+// binds: RL, Shapes, recipe-type names; plus MBDTypeHandles blueprint names).
+// A top-level `const` that collides with ANY of them gets the whole file
+// killed by Rhino ("redeclaration of var X"), and Rhino surfaces only ONE
+// such collision per boot (observed: IO, then MBDRegistries, in ascending
+// boots — not file order). Function-scoped declarations merely SHADOW outer
+// bindings, which is legal — so the IIFE ends the whack-a-mole for good.
+(() => {
+
 const RL = (id) => Java.loadClass('net.minecraft.resources.ResourceLocation').parse(id);
 
 const Blocks = Java.loadClass('net.minecraft.world.level.block.Blocks');
@@ -190,3 +202,5 @@ MBDRegistryEvents.machine((event) => {
 
     console.info('MBD2 t1: 3 multiblocks registered (jaw_crusher / wash_trommel / settling_pool)');
 });
+
+})();
