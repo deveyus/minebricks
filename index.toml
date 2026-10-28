@@ -1,6 +1,10 @@
 hash-format = "sha256"
 
 [[files]]
+file = "config/paxi/datapacks/mb-worldgen-tuning-0415.zip"
+hash = "93dc6b5490487018ef8af5bd58a1c6931ac48c1565fa7dbec4456ec9ba39848d"
+
+[[files]]
 file = "config/MouseTweaks.cfg"
 hash = "4069ce1a439d8c37453c1b1e9f2037e0942674c7e48723a39b37eab245792ad4"
 
@@ -1226,7 +1230,7 @@ hash = "013d0cbbeda565b9bccaf251ca3ad04b537185e1280612a08364c81b0fca73fb"
 
 [[files]]
 file = "config/adpother-common.toml"
-hash = "426e748e927f4ebed7f7cf49bc99f9c851f2c619cdde3a2e1ec61abcffc42dc3"
+hash = "600724b1a8108ccf8e112b010e9bb8f2c9defbc1cb310a57e62efa7082d0e140"
 
 [[files]]
 file = "config/adpother/Biomes/adv_rocketry$endless_sand.cfg"
@@ -5542,6 +5546,41 @@ metafile = true
 [[files]]
 file = "mods/badpackets.pw.toml"
 hash = "717ffae71ac3918d58e7f335662aec9f0e8632b473e9284c49cd4c8a9834f8ab"
+metafile = true
+
+[[files]]
+file = "mods/apothic-enchanting.pw.toml"
+hash = "f88b19e9a68e786e0bd56591ceaa52348812944d007d3fd7bb9eae700e670f9a"
+metafile = true
+
+[[files]]
+file = "mods/apothic-attributes.pw.toml"
+hash = "f672b445493bb992b1a9e2ec0fb0402554e34551c1d14f31aafbefe0811d340b"
+metafile = true
+
+[[files]]
+file = "mods/patchouli.pw.toml"
+hash = "a2e156365660788588640afc93f513e608b2edc24bd6c27f6a787687ea3dc5bb"
+metafile = true
+
+[[files]]
+file = "mods/apotheosis.pw.toml"
+hash = "e205cb8f608ac7de97252ea564e8b78fbf184a5d4b67b2267565a849125e3ee2"
+metafile = true
+
+[[files]]
+file = "mods/dynamic-trees-terralith.pw.toml"
+hash = "ff5e2c7cb679917856a19fe2e47df7f61752762376a4dedd60fbea7ace80e6e0"
+metafile = true
+
+[[files]]
+file = "mods/dynamictreesplus.pw.toml"
+hash = "4313168d4586d00932f9d60b9869382754170b11ec65c8733032640b4737309e"
+metafile = true
+
+[[files]]
+file = "mods/dynamictrees.pw.toml"
+hash = "8cce403a8a0594fc023b1421e97bfab01c9f3398666e75f537967f6b4f8981f9"
 metafile = true
 
 [[files]]
