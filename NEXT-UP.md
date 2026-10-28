@@ -1323,3 +1323,58 @@ taken — the sketch latitude covered every gap; all assumptions logged here.
   40 manual-block method formalized) + pw_rehash_entry (--pack arg added; both
   pw tools defaulted to the stale clone root) → index 1,506 entries, pack
   0.4.17 → 0.4.18; pw_full_audit 0 problems.
+
+**ORE BLACKOUT — SHIPPED 2026-10-28 ~22:50Z (0.4.19):**
+Her building directive: "go through each mod that currently generates ores and
+tell them to turn off. Yes, I know this will leave us with a world that doesn't
+generate any ores, and that's OK in my book." New-chunk generation only —
+existing explored chunks untouched (ores already in the ground stay).
+
+- **Census method (scripts/oregen-census-1029.py):** all 98 pinned mods jar-
+  scanned for data/*/worldgen/{placed,configured}_feature + neoforge/
+  biome_modifier JSONs; vanilla 1.21.1 client jar enumerated directly; config
+  sweep for worldgen toggles. Result: EVERY ore-gen source in the pack is
+  JSON-driven — zero code-only generators — all killable by datapack override.
+- **CENSUS UNDERCOUNT CAUGHT BY BUILD AUDIT (lesson logged):** the census
+  ore-keyword regex missed bare-metal filenames; the build script's self-audit
+  (kill list vs actual jar contents) caught IE `lead`+`silver` and NC
+  `lead/tin common+rare`. Census-first + audit-both-ends vindicated again.
+- **Killed (25 vanilla placed features → minebricks:no_op, we ship the CF —
+  vanilla has NO no_op json, verified):** coal×2, copper×2, iron×3, gold×5
+  (incl. nether+deltas), redstone×2, lapis×2, diamond×4, emerald, quartz×2,
+  ancient debris×2. **Killed (38 mod biome modifiers → neoforge:none):** IE 7
+  (bauxite, deep_nickel, mineral_veins — the whole excavator vein system —
+  nickel, uranium, lead, silver), Railcraft 12 (lead, nickel×3, saltpeter,
+  silver×2, sulfur×2, tin×2, zinc), Silent Gear 3 (bort, crimson_iron,
+  azure_silver), Silent's Gems 3 (overworld/nether/end — ~24 gems incl.
+  chaos), NC Neohaul 12 (B/Li/Th/U/Pb/Sn × common/rare), Meadow 1
+  (add_biome_modification_meadow — its salt ores lived ONLY in this modifier,
+  biome jsons don't inline them: fully dead).
+- **Kept deliberately (terrain, not ores):** vanilla ore_ dirt/gravel/clay/
+  andesite/diorite/granite disks, blackstone, infested, magma, soul sand, tuff.
+  Terralith stone-disk variants keep running (terrain texture unchanged).
+- **Vehicle:** config/paxi/datapacks/mb-ore-blackout-1029.zip (65 entries,
+  pack_format 48, 0415 idiom). Load order explicit: tuning-0415 first,
+  blackout last (last wins — also beats Terralith's ore_diamond_medium
+  override, same-id file). packwiz refresh → index 1,507, sha256 verified;
+  pack.toml 0.4.18 → 0.4.19; tomllib parse gates green.
+- **Clean verdicts (no action):** AR3 planets generate NO ores (dimension
+  Properties have no ore keys — the one grep hit was the word "core" in
+  Mustafar flavor text); Apotheosis = loot-side only; Tectonic/Lithostitched/
+  Terralith reference vanilla PF ids → all covered by the PF-level kill;
+  Moonlight/ForgeEndertech/DT family = nothing.
+- **FLAGS for her red pen (not touched):** ① Immersive Petroleum [WorldGen] =
+  oil RESERVOIRS, not metals — left alive, her call. ② Amethyst geodes alive
+  (vanilla recipes need shards — spyglass/sensors); not ore-family. ③
+  Vanilla-ingot recipes (compass/bucket/anvil/hopper/rails/cauldron) now gate
+  on OUR chain feeding minecraft-tagged ingots — the O6 unification pass is
+  the next worldgen-adjacent work. ④ Scanhammer unaffected: #c:ores membership
+  is orthogonal to gen (hammer reads tags, world provides nothing — intended).
+  ⑤ Roster vein worldgen (chalcopyrite deposits etc.) = the ONLY remaining
+  worldgen work, rides the roster matrix pass.
+- **EE — standing verdict confirmed (her inquiring "we don't actually need EE
+  at all?"): YES.** emendatus referenced NOWHERE in the pack (mods metafiles,
+  configs, scripts, data, index — only Zee's own notes); no pw metafile
+  declares it; never installed. DIY material layer is shipped and proven
+  end-to-end by the chalcopyrite chain. Adopting EE later would ADD a parallel
+  material set needing unification — the opposite of O6.
