@@ -139,18 +139,20 @@ ServerEvents.commandRegistry((event) => {
         })
 
         const nsLine = Object.keys(nsCount).sort().map((k) => `${k}=${nsCount[k]}`).join(' ')
+        // NOTE (0.4.10): the pack's Rhino fork cannot parse array spread `[...x]`
+        // (parse error -> whole file silently dropped). forEach + push instead.
         const index = [
           `# fooddump index — ${foods} foods out of ${itemReg.size()} items, ${Object.keys(nsCount).length} namespaces`,
-          `# namespaces: ${nsLine}`,
-          ...rows.map((r) => {
-            const fx = r.effects.length
-              ? ' fx=' + r.effects.map((e) => (e.id ? `${e.id}@${e.chance}` : `ERR:${e.error}`)).join('|')
-              : ''
-            const cv = r.convertsTo ? ' -> ' + r.convertsTo : ''
-            const secs = r.eatSeconds === null ? '?' : r.eatSeconds
-            return `${r.id}  nut=${r.nutrition} sat=${r.saturation} ratio=${r.satRatio} alwaysEat=${r.canAlwaysEat} secs=${secs}${fx}${cv}`
-          })
+          `# namespaces: ${nsLine}`
         ]
+        rows.forEach((r) => {
+          const fx = r.effects.length
+            ? ' fx=' + r.effects.map((e) => (e.id ? `${e.id}@${e.chance}` : `ERR:${e.error}`)).join('|')
+            : ''
+          const cv = r.convertsTo ? ' -> ' + r.convertsTo : ''
+          const secs = r.eatSeconds === null ? '?' : r.eatSeconds
+          index.push(`${r.id}  nut=${r.nutrition} sat=${r.saturation} ratio=${r.satRatio} alwaysEat=${r.canAlwaysEat} secs=${secs}${fx}${cv}`)
+        })
         writeText('FOOD-INDEX.txt', index.join('\n'))
 
         log.push(`done: ${foods} foods, ${fails} failed, ${Date.now() - T0}ms`)

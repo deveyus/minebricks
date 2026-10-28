@@ -26,7 +26,7 @@ hash = "c28c5ef7ac3ee565f8a13eb9fa06d9560d59b6e4d4586e1e9761fd4c3aabaa2c"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_fooddump.js"
-hash = "809b98a5f2445153f61329e885a3ac9676b8026396258b222ec5a30faf62d5fd"
+hash = "7359354471502e4da67637f97b56d67003706b1ef9462af996ee455e2c3ede95"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_gps_gate.js"
@@ -34,7 +34,7 @@ hash = "67bb38fb9a3fb747a858e9b192663b68a92d4f6306af78b7643baff5a445d427"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_lootdump.js"
-hash = "2b0dd4031fe87d4d9fc2aca80efc4f7717747f6508b583241965b9838651ceaa"
+hash = "13c8b404b2e6beab27d4b8d38253718b91cf15167a2f82a048c3485c649f4670"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_mintdump.js"

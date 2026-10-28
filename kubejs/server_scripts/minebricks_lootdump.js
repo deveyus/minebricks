@@ -86,9 +86,11 @@ ServerEvents.commandRegistry((event) => {
               if (enc.result().isPresent()) {
                 const json = enc.result().get()
                 entry.pools = json.pools ? json.pools.size() : 0
-                const condTypes = new Set()
+                // NOTE (0.4.10): the pack's Rhino fork cannot parse array spread `[...x]`
+                // (parse error -> whole file silently dropped). Plain arrays only.
+                const condTypes = []
                 walkForConditions(json, condTypes)
-                entry.conditions = [...condTypes].join(',')
+                entry.conditions = condTypes.join(',')
                 JsonIO.write(`kubejs/export/loot/${id.namespace()}/${id.path()}.json`, json)
                 ok++
               } else {
@@ -112,7 +114,10 @@ ServerEvents.commandRegistry((event) => {
             const t = node.get('type')
             if (t && t.isJsonPrimitive && t.isJsonPrimitive()) {
               const s = t.asString()
-              if (s.indexOf('loot') >= 0) acc.add(s.substring(s.indexOf('/') + 1))
+              if (s.indexOf('loot') >= 0) {
+                const short = s.substring(s.indexOf('/') + 1)
+                if (acc.indexOf(short) < 0) acc.push(short)
+              }
             }
           }
           if (node.isJsonArray && node.isJsonArray()) {
