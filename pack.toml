@@ -6,15 +6,7 @@ pack-format = "packwiz:1.1.0"
 [index]
 file = "index.toml"
 hash-format = "sha256"
-<<<<<<< HEAD
-<<<<<<< HEAD
-hash = "33c9f02ea6cc653e4d71ad1c94e6e102a9dfc5b56104041b9c7e01d9caf0a438"
-=======
-hash = "33c9f02ea6cc653e4d71ad1c94e6e102a9dfc5b56104041b9c7e01d9caf0a438"
->>>>>>> 33aa5d4 (0.4.16: scanner v1 — standalone ore-survey item (kubejs:scanner))
-=======
-hash = "33c9f02ea6cc653e4d71ad1c94e6e102a9dfc5b56104041b9c7e01d9caf0a438"
->>>>>>> 7bbdb2d (0.4.17: scanner v1.1 rebuilt on the chunk ledger + RF cull round 1)
+hash = "a7536775a7b5ad6d46fa9edb394295ce1ab42856d8bbfd4c906e88a83b6bc87c"
 
 [versions]
 minecraft = "1.21.1"
