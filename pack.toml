@@ -1,12 +1,16 @@
 name = "Friend Pack (working title)"
 author = "Fina"
-version = "0.4.15"
+version = "0.4.16"
 pack-format = "packwiz:1.1.0"
 
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "edcdf2b2f597d5fae460b334ac3202f645ed65ebb0b01547ed2b9618a49133c0"
+<<<<<<< HEAD
+hash = "75c4ea0cbc9f49a86f6a6815faa160783db4e1cfacbc03db32f8ce38b90020d9"
+=======
+hash = "75c4ea0cbc9f49a86f6a6815faa160783db4e1cfacbc03db32f8ce38b90020d9"
+>>>>>>> 33aa5d4 (0.4.16: scanner v1 — standalone ore-survey item (kubejs:scanner))
 
 [versions]
 minecraft = "1.21.1"

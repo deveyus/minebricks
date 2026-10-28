@@ -5453,6 +5453,10 @@ file = "config/xaeropatreon.txt"
 hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 [[files]]
+file = "kubejs/assets/kubejs/textures/item/scanner.png"
+hash = "a6c2a1de2d8bf88516e5c1cd438d392e9f1dc4fc3e283ecabc838848cc4440a5"
+
+[[files]]
 file = "kubejs/assets/minebricks/lang/en_us.json"
 hash = "87ed0ccbd6971d25e58f34e6806cb676fd7cd2d920d1603bf0420d84e9ee6094"
 
@@ -5463,6 +5467,10 @@ hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 [[files]]
 file = "kubejs/client_scripts/minebricks_lang_tweaks.js"
 hash = "9209b1f27d137af5dc7587b3c32647547c5f35e2a10659b00e3768aad3825a9f"
+
+[[files]]
+file = "kubejs/data/minebricks/tags/block/scanner_targets.json"
+hash = "8bf05d42f1c93b0ab53e41fee9f108a4127fcbe1f058b1e239e398ba3e4d99d7"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_anchor_murder.js"
@@ -5501,12 +5509,20 @@ file = "kubejs/server_scripts/minebricks_por_probe.js"
 hash = "d666139a2391c2ee0a6c5679514c0ffd1fe2fb4d691bf92e66720fdfc4c6b3c9"
 
 [[files]]
+file = "kubejs/server_scripts/minebricks_scanner.js"
+hash = "da73daf83daf7c98b4c57b5afbb6540c61fcd5660a988f4fefe1fb63a5634cc1"
+
+[[files]]
 file = "kubejs/startup_scripts/.keep"
 hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
 [[files]]
 file = "kubejs/startup_scripts/minebricks_mbd2_t1.js"
 hash = "ec2ceb46ac4cb731e30ae50780519a3240203a4db2fa10534f20c84af885b484"
+
+[[files]]
+file = "kubejs/startup_scripts/minebricks_scanner_item.js"
+hash = "98688d5ac814664548ffe1b84ac18dfe57477b824d2c75f93355de293ac70651"
 
 [[files]]
 file = "mods/advanced-chimneys.pw.toml"
