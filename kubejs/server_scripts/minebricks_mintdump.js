@@ -31,6 +31,13 @@
 // her 0.4.11 runtime); all writes via JsonIO (proven working) + console.info
 // mirror into latest.log.
 // NOTE (0.4.10 still applies): no array spread `[...x]` anywhere.
+// NOTE (0.4.13 — her 0.4.12 run autopsy): (1) the registryAccess probe now
+// CALLS the method first — reading `server.registryAccess` as a bare property
+// binds the method object itself, so every getResultItem got fed a JS function
+// ("Can't find method ... getResultItem(function)") and all 11,843 rows landed
+// with out=null. (2) The 0.4.11-era DUMP-LOG.txt is tombstoned on every run —
+// that stale file carried old lootdump errors inside mint's folder and sent
+// the 0.4.12 diagnosis down a wrong path for a while.
 
 ;
 (function () {
@@ -234,6 +241,10 @@
           var log = []
           var T0 = Date.now()
 
+          // retire the 0.4.11-era log name so old failures stop impersonating
+          // fresh ones (that fossil is what made mint/ look loot-sick on 0.4.12)
+          writeText('DUMP-LOG.txt', 'RETIRED — mintdump writes MINT-LOG.txt since 0.4.13. This file is a stale 0.4.11 leftover; safe to delete.')
+
           // --- probe: registries ------------------------------------------------
           var Registries = null
           try {
@@ -247,7 +258,11 @@
           }
 
           // --- probe: registryAccess + recipe manager ---------------------------
-          var regAccess = probeByNames(server, ['registryAccess', 'registryAccess()'], 'registryAccess', log)
+          // CALL the getter first: a bare property read binds the method object
+          // ("registryAccess"), and passing that into getResultItem(...) is what
+          // zeroed every output on 0.4.12. The () form returns the real
+          // RegistryAccess$Frozen the codecs want.
+          var regAccess = probeByNames(server, ['registryAccess()', 'registryAccess'], 'registryAccess', log)
           var rm = probeByNames(server, ['recipeManager', 'getRecipeManager()'], 'recipeManager', log)
           if (!rm) {
             log.push('FATAL: no recipeManager path worked — paste MINT-LOG.txt back to Zee')

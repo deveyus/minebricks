@@ -5470,11 +5470,11 @@ hash = "db74a8dc9daa4ab8c5034583e6f53c4b79ec0f03491df120194de6c58e9f4571"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_cropscan.js"
-hash = "359ce7e1f9cd7e5d90b72ddea6d1e48cdd9c83a8dcdd4178766c05620b33f477"
+hash = "98c29f087e09d462057d1cc6230ad4dc4cd671e49fbf1f48a8597d73b1d0fc8e"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_fooddump.js"
-hash = "0f7df2bcb01441e272f0379db861fc38c110b58a67c17c3fcba3c84cc6c1ab55"
+hash = "eab0cd8fae7d02ec49c723af7af0899468535ed717abf3927f416802f09427c7"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_gps_gate.js"
@@ -5482,11 +5482,11 @@ hash = "67bb38fb9a3fb747a858e9b192663b68a92d4f6306af78b7643baff5a445d427"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_lootdump.js"
-hash = "036a83076fdc2c9968531711c1332aff36e2fe595d26e7ce3b133a3d6b02ddb9"
+hash = "bb701a32c4bc3c4bb8da80e15a8d2c5a6de33fcd676c4c66d79034b2862846fb"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_mintdump.js"
-hash = "1215a24e7d474f07d5a98c056290e9e9d498213bf3b6fdc6035eae0303290ae6"
+hash = "e5f8cdee3eb30df34a522349103c573e4b4eb7b12870c70527aef0da9d72a12f"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_por_probe.js"

@@ -24,6 +24,13 @@
 // her 0.4.11 runtime); all writes via JsonIO (proven working) + console.info
 // mirror into latest.log.
 // NOTE (0.4.10 still applies): no array spread `[...x]` anywhere.
+// NOTE (0.4.13 — her 0.4.12 run autopsy): effect rows now introspect the real
+// chain — pe.effect() is a MobEffectInstance (mappings FoodProperties$PossibleEffect
+// effect()); the id lives one Holder deeper (getEffect().value()), and duration/
+// amplifier come along free (MobEffectInstance getDuration/getAmplifier, mappings
+// verified). 0.4.12 called .value() on the instance itself and every effect row
+// degraded to its error string. Nutrition numbers were never touched — 330/330
+// clean then, and this only enriches the fx fields.
 
 ;
 (function () {
@@ -80,6 +87,8 @@
     var me = null
     var eid = null
     var chance = null
+    var dur = null
+    var amp = null
     var conv = null
     try {
       row.nutrition = fp.nutrition()
@@ -95,15 +104,19 @@
             me = null
             eid = null
             chance = null
+            dur = null
+            amp = null
             try {
-              me = pe.effect().value()
-              eid = String(ctx.Registries.MOB_EFFECT.getKey(me))
+              me = pe.effect() // MobEffectInstance — .value() lives on its Holder, not here
+              eid = String(ctx.Registries.MOB_EFFECT.getKey(me.getEffect().value()))
             } catch (e2) {
               row.effects.push({ error: String(e2) })
               return
             }
             try { chance = pe.probability() } catch (e3) { /* some mappings differ */ }
-            row.effects.push({ id: eid, chance: chance })
+            try { dur = me.getDuration() } catch (e4) { /* optional detail */ }
+            try { amp = me.getAmplifier() } catch (e5) { /* optional detail */ }
+            row.effects.push({ id: eid, chance: chance, duration: dur, amplifier: amp })
           })
         }
       } catch (e) {
@@ -187,7 +200,11 @@
           ]
           rows.forEach(function (r) {
             var fx = r.effects.length
-              ? ' fx=' + r.effects.map(function (e) { return (e.id ? e.id + '@' + e.chance : 'ERR:' + e.error) }).join('|')
+              ? ' fx=' + r.effects.map(function (e) {
+                  if (!e.id) return 'ERR:' + e.error
+                  var durBit = (e.duration !== null && e.duration !== undefined) ? '/' + e.duration + 't' : ''
+                  return e.id + '@' + e.chance + durBit
+                }).join('|')
               : ''
             var cv = r.convertsTo ? ' -> ' + r.convertsTo : ''
             var secs = r.eatSeconds === null ? '?' : r.eatSeconds

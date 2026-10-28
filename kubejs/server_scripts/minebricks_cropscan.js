@@ -35,6 +35,18 @@
 // (class filter blocks java.nio.file.Files — proven in her 0.4.11 runtime),
 // with a console.info mirror into latest.log.
 // NOTE (0.4.10 still applies): no array spread `[...x]` anywhere.
+// NOTE (0.4.13 — her 0.4.12 run autopsy): the whole introspection layer is
+// rewritten because all three Java-class tricks died in her runtime:
+//   getClass()            — not exposed on KubeJS-wrapped blocks (9,864 row fails)
+//   Cls.isInstance(x)     — class-filter wrapper has no isInstance
+//   Map.Entry#getKey()    — KubeJS pairs registry tag entries into (k,v) tuples
+// Replacements, chosen for proof over cleverness:
+//   strict tier = duck-typed CropBlock: getBaseSeedId() exists only there, and
+//     doubles as the seed answer; age property by name; special tier is now an
+//     ID-hint scan (crop/plant/bush/berry/vine), not a class-name scan;
+//   tag index walks builtInRegistryHolder().tags() — the exact chain that
+//     already delivered mint's 1,475 tags on 0.4.12;
+//   item index duck-types BlockItem via getBlock().
 
 ;
 (function () {
@@ -52,30 +64,32 @@
   }
 
   // --- tag reverse index: block id -> [tag ids] ---------------------------
+  // holder-side walk (mint-proven on 0.4.12: 1,475 tags, 16,953 memberships);
+  // the old registry.getTags() entry pairs were unreadable through KubeJS
   function buildTagIndex(blockReg, log) {
     var tagsOf = {}
     var tagEntries = 0
-    var it = null
-    var ent = null
-    var tagId = ''
-    var holders = null
-    var hit = null
+    var it = blockReg.iterator()
+    var block = null
     var id = ''
+    var tags = null
     try {
-      it = blockReg.getTags().iterator()
       while (it.hasNext()) {
-        ent = it.next()
-        tagEntries++
-        tagId = ent.getKey().location().toString()
-        holders = ent.getValue()
-        hit = holders.iterator()
-        while (hit.hasNext()) {
-          id = blockReg.getKey(hit.next().value()).toString()
+        block = it.next()
+        tags = null
+        try {
+          id = blockReg.getKey(block).toString()
+          tags = block.builtInRegistryHolder().tags()
+        } catch (e0) { continue }
+        tags.forEach(function (tk) {
+          var t = null
+          try { t = String(tk.location()) } catch (e1) { try { t = String(tk) } catch (e2) { return } }
           if (!tagsOf[id]) tagsOf[id] = []
-          tagsOf[id].push(tagId)
-        }
+          tagsOf[id].push(t)
+          tagEntries++
+        })
       }
-      log.push('tag index built: ' + tagEntries + ' block tags scanned')
+      log.push('tag index built (holder walk): ' + Object.keys(tagsOf).length + ' tagged blocks, ' + tagEntries + ' memberships')
     } catch (e) {
       log.push('WARN: tag index build failed (' + e + ') — rows will carry empty tag lists')
     }
@@ -83,26 +97,26 @@
   }
 
   // --- item reverse index: crop block -> seed-ish items -------------------
-  function buildItemIndex(itemReg, blockReg, BlockItem, log) {
+  function buildItemIndex(itemReg, blockReg, log) {
     var itemsOfBlock = {}
-    var it = null
+    var it = itemReg.iterator()
     var item = null
     var bid = null
     var key = ''
+    var mapped = 0
     try {
-      it = itemReg.iterator()
       while (it.hasNext()) {
         item = it.next()
-        if (BlockItem.isInstance(item)) {
-          bid = blockReg.getKey(item.getBlock())
-          if (bid) {
-            key = bid.toString()
-            if (!itemsOfBlock[key]) itemsOfBlock[key] = []
-            itemsOfBlock[key].push(itemReg.getKey(item).toString())
-          }
+        // duck-typed BlockItem: only block items answer getBlock()
+        bid = null
+        try { bid = blockReg.getKey(item.getBlock()) } catch (e1) { bid = null }
+        if (bid) {
+          key = bid.toString()
+          if (!itemsOfBlock[key]) itemsOfBlock[key] = []
+          try { itemsOfBlock[key].push(itemReg.getKey(item).toString()); mapped++ } catch (e2) {}
         }
       }
-      log.push('item reverse index built (BlockItem -> block)')
+      log.push('item reverse index built (duck-typed getBlock): ' + mapped + ' block items')
     } catch (e) {
       log.push('WARN: item index failed (' + e + ') — seeds will be empty')
     }
@@ -112,9 +126,8 @@
   // one block -> row, or null to skip. counters ride ctx.
   function scanBlock(b, ctx) {
     var id = ctx.blockReg.getKey(b).toString()
-    var cls = ''
-    var simple = ''
     var isStrict = false
+    var seed = null
     var ageProp = null
     var props = null
     var pit = null
@@ -122,26 +135,26 @@
     var isExtended = false
     var isSpecial = false
     var ns = ''
-    var seed = null
     var items = null
     var ageRange = null
     var tags = null
     var seasonTags = null
     try {
-      cls = b.getClass().getName()
-      simple = cls.substring(cls.lastIndexOf('.') + 1)
-      isStrict = ctx.CropBlock.isInstance(b)
-      ageProp = null
+      // strict tier: duck-typed CropBlock — getBaseSeedId() answers only there,
+      // and doubles as the seed (class filter killed getClass/isInstance)
+      try { seed = ctx.itemReg.getKey(b.getBaseSeedId().getItem()).toString(); isStrict = true } catch (se) {}
       props = b.getStateDefinition().getProperties()
       pit = props.iterator()
       while (pit.hasNext()) {
         p = pit.next()
         try {
-          if (String(p.getName()) === 'age' && ctx.IntegerProperty.isInstance(p)) ageProp = p
+          if (String(p.getName()) === 'age') ageProp = p
         } catch (pe) {}
       }
       isExtended = !isStrict && ageProp && !id.includes('fire') && !id.includes('torch')
-      isSpecial = !isStrict && !isExtended && (simple.includes('Crop') || simple.includes('Plant') || simple.includes('Bush') || simple.includes('Vine'))
+      isSpecial = !isStrict && !isExtended
+        && (id.indexOf('crop') >= 0 || id.indexOf('plant') >= 0 || id.indexOf('bush') >= 0
+            || id.indexOf('berry') >= 0 || id.indexOf('vine') >= 0)
       if (!isStrict && !isExtended && !isSpecial) return null
 
       if (isStrict) ctx.strict++
@@ -151,10 +164,8 @@
       ns = id.split(':')[0]
       ctx.nsCount[ns] = (ctx.nsCount[ns] || 0) + 1
 
-      seed = null
-      if (isStrict) {
-        try { seed = ctx.itemReg.getKey(b.getBaseSeedId().getItem()).toString() } catch (se) {}
-      }
+      // seed was captured by the strict-tier duck type above (no re-wipe here —
+      // 0.4.12's `seed = null` placement cost us exactly this once already)
       items = ctx.itemsOfBlock[id] || []
 
       ageRange = null
@@ -168,7 +179,6 @@
       return {
         block: id,
         tier: isStrict ? 'strict' : (isExtended ? 'extended' : 'special'),
-        cls: simple,
         age: ageRange,
         base_seed: seed,
         items: items,
@@ -210,21 +220,8 @@
             return 0
           }
 
-          // --- probe: classes ----------------------------------------------------
-          var CropBlock = null
-          var IntegerProperty = null
-          var BlockItem = null
-          try {
-            CropBlock = Java.loadClass('net.minecraft.world.level.block.CropBlock')
-            IntegerProperty = Java.loadClass('net.minecraft.world.level.block.state.properties.IntegerProperty')
-            BlockItem = Java.loadClass('net.minecraft.world.item.BlockItem')
-            log.push('class probes OK (CropBlock / IntegerProperty / BlockItem)')
-          } catch (e) {
-            log.push('FATAL: class probe failed: ' + e)
-            writeText('CROP-LOG.txt', log.join('\n'))
-            say('[cropscan] class probe failed — see CROP-LOG.txt')
-            return 0
-          }
+          // (0.4.13: CropBlock/IntegerProperty/BlockItem class probes removed —
+          // detection is duck-typed now, see header note)
 
           // --- probe: sereneseasons presence (phase detection) -------------------
           var ssLoaded = false
@@ -238,13 +235,13 @@
           log.push('sereneseasons loaded: ' + ssLoaded + ' (phase ' + (ssLoaded ? 'B — audit gate' : 'A — authoring corpus') + ')')
 
           var tagsOf = buildTagIndex(blockReg, log)
-          var itemsOfBlock = buildItemIndex(itemReg, blockReg, BlockItem, log)
+          var itemsOfBlock = buildItemIndex(itemReg, blockReg, log)
 
           // --- walk blocks ----------------------------------------------------------
           var rows = []
           var nsCount = {}
-          var ctxData = { blockReg: blockReg, itemReg: itemReg, CropBlock: CropBlock,
-                          IntegerProperty: IntegerProperty, tagsOf: tagsOf, itemsOfBlock: itemsOfBlock,
+          var ctxData = { blockReg: blockReg, itemReg: itemReg,
+                          tagsOf: tagsOf, itemsOfBlock: itemsOfBlock,
                           rows: rows, nsCount: nsCount, log: log,
                           strict: 0, extended: 0, special: 0, fails: 0 }
 
