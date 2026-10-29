@@ -5126,7 +5126,7 @@ hash = "912425e0f8128c386af08b3ffe7caf82b3a01eac44b617e466295d5078696827"
 
 [[files]]
 file = "config/immersiveengineering-server.toml"
-hash = "224890fd3a08bcfd70ad4ffcd277b13843610006658ddf7e26b5b864f2663e53"
+hash = "7cb35075bbabef4fd3b9701b4572b7751ae9fb19e03cd87067175b546da1eb7d"
 
 [[files]]
 file = "config/immersiveengineering-startup.toml"
@@ -5254,7 +5254,7 @@ hash = "245038d7c9bbd19bde309ec3e2fee1a6c893e9ed38f478a8651da6088f69a81e"
 
 [[files]]
 file = "config/paxi/datapacks/mb-ore-blackout-1029.zip"
-hash = "c03c1600bac40cd546aeb91dbfe03aa9e5f71829730bc345ea46df6b80cffc11"
+hash = "89fb875123f63e3800a5a76f3506016f9b4efe25bbed355c1c8c9c30e6a867d3"
 
 [[files]]
 file = "config/paxi/datapacks/mb-vein-worldgen-1029.zip"
