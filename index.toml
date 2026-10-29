@@ -5258,11 +5258,11 @@ hash = "8a0018b7921e80e6cbf86c4f5badd9c21b77d691b0798895c7ce9563620c1452"
 
 [[files]]
 file = "config/paxi/datapacks/mb-vein-worldgen-1029.zip"
-hash = "f9b878d9373b967fbcdc0b98b7f934c522131ef3faf983302bd2767f19e8b788"
+hash = "9d79579fa448843fb2f39934d7722aa1532a9fc2365d9830d4eb9f78fc96f69f"
 
 [[files]]
 file = "config/paxi/datapacks/mb-worldgen-tuning-0415.zip"
-hash = "93dc6b5490487018ef8af5bd58a1c6931ac48c1565fa7dbec4456ec9ba39848d"
+hash = "8bddf90e179661102b2c41ccd2f6c37f50547b3de0f70efa17c0e4fd6d53487f"
 
 [[files]]
 file = "config/paxi/resourcepack_load_order.json"
@@ -6129,4 +6129,3 @@ metafile = true
 file = "mods/zerocore.pw.toml"
 hash = "ce603d52501bf33432a197ad4f2bbe63ff49241656f0f2b8a7c2d774bd04b3c9"
 metafile = true
-
