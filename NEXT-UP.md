@@ -1389,3 +1389,49 @@ existing explored chunks untouched (ores already in the ground stay).
   so the pull was a verification job, not a removal job. This closure
   supersedes the "LOOK DONE" block and the O6 pre-ruling default above (both
   stay on record as analysis history, AW3 precedent). EE lane: CLOSED.
+
+---
+
+## 0.4.20 — ROSTER VEINS SHIP (her Building 2026-10-29 ~00:26Z: "we'll ship this and see what happens, can you make that happen?")
+
+- **SHIPPED: chalcopyrite vein worldgen** via paxi `mb-vein-worldgen-1029.zip`
+  (appended to datapack_load_order after the blackout). Mechanism = the same
+  neoforge:add_features biome-modifier JSON lane the blackout proved, in ADD
+  mode. Her dials verbatim: 1-in-~7 eligible chunks (read as per-ELIGIBLE,
+  global ≈ 1/8.2 at 85% land share), blob size triangular 50-150 (mode
+  assumed 100 — dial), oceans OUT, rivers + beaches IN.
+- **Rate construction (vanilla-only JSON, no lithostitched needed):** 3
+  configured features (ore size attempts 70/140/210 ≈ realized 50/100/150 at
+  ~0.7 vanilla realization) x placed features with rarity_filter 28/14/28 →
+  expected 1/28+1/14+1/28 = exactly 1/7 per eligible chunk, size mix 25/50/25
+  = the triangle. discard_on_air_exposure = 0 (cave walls show ore). Band =
+  trapezoid y −16..80 (center-peaked 32 = the sim band exactly).
+- **Biome whitelists (all four tags shipped, only chalcopyrite's modifier
+  active):** `#minebricks:has_<ore>_fields`, built from a JAR CENSUS of the
+  real biome universe — Terralith 2.6.2 (95 biomes; joins vanilla tags via
+  `#terralith:reference/*` indirection — validated), lets-do-meadow 1.4.8
+  (reuses vanilla meadow only, zero new biome IDs), tectonic (zero biomes).
+  Fail-closed: unknown biomes stay vein-free. Rivers/beaches in all four.
+  Cave-biome split: stony→cassiterite, fungal/jungle→chalcopyrite,
+  frostfire→magnetite, thermal→sphalerite. Exotic rarities intentionally
+  barren (mushroom_fields, alpha_islands, mirage_isles, warped_mesa,
+  skylands×4) — her call to seed later.
+- **NOT in this ship (staged, hers to sequence):** ① cassiterite/magnetite/
+  sphalerite ORE BLOCKS + chains (only chalcopyrite exists at 0.4.18-era
+  e2e — their vein JSONs reference blocks that don't exist yet, so shipping
+  them would be a datapack parse error); ② the sprout marker layer
+  (lithostitched composite vein+sprout from the locked detection stack —
+  needs 4 flora blocks + art); ③ deepslate ore variants (veins target both
+  stone_ore_replaceables and deepslate_ore_replaceables with the ONE block
+  state — visual mismatch down deep until variants exist).
+- **Pipeline note (landmine defused):** friend-pack mirror source had gone
+  stale at 0.4.1 — running minebricks-push.sh as-is would have rsync-deleted
+  the 0.4.15→0.4.19 work from the repo. friend-pack re-synced from origin
+  main after this push; push this time was manual HEAD:main from a fresh
+  clone (same as the EE-pull push).
+- **Post-ship verification = the ledger (census-first):** fresh chunks will
+  carry chalcopyrite fields at design rate; chunk-ledger census measures
+  real fields-per-chunk + blocks-per-field vs the sim (`scripts/vein-rate-
+  sim.py`); dial rarity_filter chances (28/14/28) if measured rates disagree
+  with "ships and see". Scanner v1.1 + Silent's Prospector both unchanged
+  and now have a world to read again.

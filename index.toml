@@ -5250,11 +5250,15 @@ hash = "a4187daa91d863f90dacfcb443e2f062fe3ddbaace98cfdcfa8b3cc558f1f250"
 
 [[files]]
 file = "config/paxi/datapack_load_order.json"
-hash = "3c403ece4b8326d7547252ee0a5ced1d63fa99753ad0b9b9ca3deb375a91e7c4"
+hash = "245038d7c9bbd19bde309ec3e2fee1a6c893e9ed38f478a8651da6088f69a81e"
 
 [[files]]
 file = "config/paxi/datapacks/mb-ore-blackout-1029.zip"
 hash = "8a0018b7921e80e6cbf86c4f5badd9c21b77d691b0798895c7ce9563620c1452"
+
+[[files]]
+file = "config/paxi/datapacks/mb-vein-worldgen-1029.zip"
+hash = "f9b878d9373b967fbcdc0b98b7f934c522131ef3faf983302bd2767f19e8b788"
 
 [[files]]
 file = "config/paxi/datapacks/mb-worldgen-tuning-0415.zip"
@@ -6125,3 +6129,4 @@ metafile = true
 file = "mods/zerocore.pw.toml"
 hash = "ce603d52501bf33432a197ad4f2bbe63ff49241656f0f2b8a7c2d774bd04b3c9"
 metafile = true
+

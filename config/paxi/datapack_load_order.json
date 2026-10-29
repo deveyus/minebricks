@@ -1,6 +1,7 @@
 {
   "loadOrder": [
     "mb-worldgen-tuning-0415.zip",
-    "mb-ore-blackout-1029.zip"
+    "mb-ore-blackout-1029.zip",
+    "mb-vein-worldgen-1029.zip"
   ]
 }
