@@ -5254,11 +5254,11 @@ hash = "245038d7c9bbd19bde309ec3e2fee1a6c893e9ed38f478a8651da6088f69a81e"
 
 [[files]]
 file = "config/paxi/datapacks/mb-ore-blackout-1029.zip"
-hash = "8a0018b7921e80e6cbf86c4f5badd9c21b77d691b0798895c7ce9563620c1452"
+hash = "8aea3044d252158b92c13e4f481cbdd346cbb0e560462e2e86240f5a442e8806"
 
 [[files]]
 file = "config/paxi/datapacks/mb-vein-worldgen-1029.zip"
-hash = "9d79579fa448843fb2f39934d7722aa1532a9fc2365d9830d4eb9f78fc96f69f"
+hash = "68ec75904a0ee24b3eb5ca523574a4d0ae26234676cdc24b44d3da345e5dae1b"
 
 [[files]]
 file = "config/paxi/datapacks/mb-worldgen-tuning-0415.zip"
