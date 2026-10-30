@@ -1,12 +1,12 @@
 name = "Friend Pack (working title)"
 author = "Fina"
-version = "0.4.37"
+version = "0.4.38"
 pack-format = "packwiz:1.1.0"
 
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "28812585b3ddd61860ebf774d7bd20defadd6eab86b7332be9f2f6e0714b152d"
+hash = "f09a22b8ff727c722024e93dd4e2b24097c58cd4378bb685bac8e0d1559bab42"
 
 [versions]
 minecraft = "1.21.1"
