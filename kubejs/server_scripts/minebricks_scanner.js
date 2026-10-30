@@ -40,18 +40,64 @@
     return INDEX_ROOT + ':' + dim + '|' + cx + ',' + cz
   }
 
+  // --- dimension resolution: try multiple accessor chains --------------------
+  // NeoForge 1.21.1: Level.dimension() -> Holder<LevelResource> ->
+  //   Holder.key() -> ResourceKey -> ResourceKey.location() -> ResourceLocation
+  // Older/other paths: Level.dimension().location() or dimensionType().location()
   function playerDim(entity) {
-    var d = ''
+    var level = null
+    var dim = null
+    var key = null
+    var loc = null
     try {
-      d = String(entity.level.dimension().location().toString())
-    } catch (eDim1) {
-      try {
-        d = String(entity.level.getDimension().location().toString())
-      } catch (eDim2) {
-        d = ''
-      }
+      level = entity.level
+    } catch (eLev) {
+      console.info('[scanner] playerDim: entity.level threw: ' + eLev)
+      return ''
     }
-    return d
+    if (!level) {
+      console.info('[scanner] playerDim: entity.level is null')
+      return ''
+    }
+    try {
+      dim = level.dimension()
+    } catch (eDim) {
+      console.info('[scanner] playerDim: level.dimension() threw: ' + eDim)
+      return ''
+    }
+    if (!dim) {
+      console.info('[scanner] playerDim: level.dimension() is null')
+      return ''
+    }
+    // Preferred: Holder.key().location()
+    try {
+      key = dim.key()
+      if (key) {
+        loc = key.location()
+        if (loc) return String(loc.toString())
+      }
+    } catch (eKey) {
+      console.info('[scanner] playerDim: dimension.key().location() threw: ' + eKey)
+    }
+    // Fallback: dimension().location()
+    try {
+      loc = dim.location()
+      if (loc) return String(loc.toString())
+    } catch (eLoc) {
+      console.info('[scanner] playerDim: dimension.location() threw: ' + eLoc)
+    }
+    // Fallback: dimensionType().location()
+    try {
+      dim = level.dimensionType()
+      if (dim) {
+        loc = dim.location()
+        if (loc) return String(loc.toString())
+      }
+    } catch (eType) {
+      console.info('[scanner] playerDim: dimensionType().location() threw: ' + eType)
+    }
+    console.info('[scanner] playerDim: all dimension accessors failed')
+    return ''
   }
 
   // --- seeded RNG: simple LCG seeded by player chunk coordinate --------------
