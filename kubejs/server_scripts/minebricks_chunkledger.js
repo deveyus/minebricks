@@ -56,9 +56,10 @@
 //
 // KNOWN EDGE (documented, accepted): chunks saved before ServerEvents fires
 // (initial spawn-chunk pregen) stamp their chunk-data marker but defer the
-// index append; the Load handler heals the index on the chunk's next load
-// (unload/reload or restart). Fresh worlds — the pack's target — never hit
-// this, because every chunk first-touches after the server is up.
+// index append; deferred entries are flushed into persistentData when
+// ServerEvents.loaded runs, so the scanner table is live immediately.
+// Fresh worlds — the pack's target — never hit this, because every chunk
+// first-touches after the server is up.
 //
 // House rules honored: IIFE scope isolation (0.4.8 doctrine); declarations
 // at function-body top ONLY, loops/try assign (0.4.12 scope doctrine); no
@@ -76,8 +77,11 @@
 
   var TAG_KEY = null
   var BLOCK_REG = null
+  var BlockStateCls = null
+  var IsStateTagMethod = null
   var SERVER = null
   var FIRST_INDEXED = false
+  var DEFERRED = []
   var CENSUS_COUNTS = null
   var CENSUS_TAG = null
 
@@ -96,7 +100,7 @@
   // module-level sink so the SAM wrapper is built once, not per section
   function censusAccept(state, n) {
     var bid = ''
-    if (CENSUS_TAG && state.is(CENSUS_TAG)) {
+    if (CENSUS_TAG && IsStateTagMethod && IsStateTagMethod.invoke(state, CENSUS_TAG)) {
       bid = String(BLOCK_REG.getKey(state.getBlock()).toString())
       if (!CENSUS_COUNTS[bid]) CENSUS_COUNTS[bid] = 0
       CENSUS_COUNTS[bid] = CENSUS_COUNTS[bid] + n
@@ -115,6 +119,10 @@
 
     if (!TAG_KEY) TAG_KEY = buildTagKey()
     if (!BLOCK_REG) BLOCK_REG = Java.loadClass('net.minecraft.core.registries.BuiltInRegistries').BLOCK
+    if (!BlockStateCls) {
+      BlockStateCls = Java.loadClass('net.minecraft.world.level.block.state.BlockState')
+      IsStateTagMethod = BlockStateCls.getMethod('is', Java.loadClass('net.minecraft.tags.TagKey'))
+    }
     CENSUS_TAG = TAG_KEY
     CENSUS_COUNTS = {}
     sections = chunk.getSections()
@@ -152,7 +160,10 @@
 
   function indexPut(dim, cx, cz, rec) {
     var ok = false
-    if (!SERVER || dim === '') return false
+    if (!SERVER || dim === '') {
+      DEFERRED.push({dim: dim, cx: cx, cz: cz, rec: rec})
+      return false
+    }
     try {
       SERVER.persistentData.putString(indexKeyOf(dim, cx, cz), rec)
       ok = true
@@ -238,6 +249,12 @@
   // --- wiring ---------------------------------------------------------------
   ServerEvents.loaded(function (event) {
     SERVER = event.server
+    // flush deferred entries from pre-server chunk saves
+    for (var i = 0; i < DEFERRED.length; i++) {
+      var d = DEFERRED[i]
+      indexPut(d.dim, d.cx, d.cz, d.rec)
+    }
+    DEFERRED = []
   })
   ServerEvents.unloaded(function (event) {
     SERVER = null
