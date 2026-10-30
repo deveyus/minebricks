@@ -5618,7 +5618,7 @@ hash = "b768836e1cf9d61234f0de273827d575e3ddf9d652f4295c3bdad5555c99e75d"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_scanner.js"
-hash = "c4003c0b6aad1e276d51ade7e90d30bef251f42d64f1a857378f82c3c47beecd"
+hash = "e28c17ba75579a9fd0082f7aede0abbc652ca7276742f4b8b35dbc4d179f2429"
 
 [[files]]
 file = "kubejs/startup_scripts/.keep"
