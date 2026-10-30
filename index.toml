@@ -5582,7 +5582,7 @@ hash = "db74a8dc9daa4ab8c5034583e6f53c4b79ec0f03491df120194de6c58e9f4571"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_chunkledger.js"
-hash = "d1ef79ac48cd3a9bca834d44951c8091e8daf54eafda3700bacce1367a14d6e1"
+hash = "a375bf15c25dfa55cb5c6bbaa8f99a91e6067d23e427b14da1833badad5e9746"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_cropscan.js"
@@ -5618,7 +5618,7 @@ hash = "b768836e1cf9d61234f0de273827d575e3ddf9d652f4295c3bdad5555c99e75d"
 
 [[files]]
 file = "kubejs/server_scripts/minebricks_scanner.js"
-hash = "b451929d04466c93ecc78ff5d803450f7656a098b7f4ca942595b4791ff1906b"
+hash = "59affc55fc27caf0c660623da62b45ce1382fb9dbaea35ec446164abdf2de2c7"
 
 [[files]]
 file = "kubejs/startup_scripts/.keep"

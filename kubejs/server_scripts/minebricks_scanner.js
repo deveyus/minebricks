@@ -99,8 +99,11 @@
     }
   }
 
-  // --- find the NEAREST_COUNT ore-bearing chunks outward from player chunk ---
-  function findNearestOreChunks(dim, pcx, pcz, count) {
+  // --- find ALL ore-bearing chunks outward from player chunk ----------------
+  // Search outward in expanding square rings out to MAX_SEARCH_RADIUS chunks.
+  // Collects EVERY ore-bearing chunk found (with exact Euclidean distance),
+  // sorted by distance ascending. Caller takes the 5 nearest.
+  function findNearestOreChunks(dim, pcx, pcz) {
     var found = []
     var ring = 0
     var dx = 0
@@ -112,7 +115,7 @@
     var rec = ''
     var dist = 0
 
-    while (ring <= MAX_SEARCH_RADIUS && found.length < count) {
+    while (ring <= MAX_SEARCH_RADIUS) {
       // walk the ring perimeter: dx = +/-ring, dz = -ring..ring, then
       // dz = +/-ring, dx = -(ring-1)..(ring-1) to avoid double-corners
       dz = -ring
@@ -135,10 +138,8 @@
             }
           } catch (eR) {}
         }
-        if (found.length >= count) break
         dz = dz + 1
       }
-      if (found.length >= count) break
 
       dz = ring
       while (dz > -ring) {
@@ -160,10 +161,8 @@
             }
           } catch (eR) {}
         }
-        if (found.length >= count) break
         dz = dz - 1
       }
-      if (found.length >= count) break
 
       dx = -ring + 1
       while (dx <= ring - 1) {
@@ -185,10 +184,8 @@
             }
           } catch (eR) {}
         }
-        if (found.length >= count) break
         dx = dx + 1
       }
-      if (found.length >= count) break
 
       dx = ring - 1
       while (dx >= -ring + 1) {
@@ -210,18 +207,29 @@
             }
           } catch (eR) {}
         }
-        if (found.length >= count) break
         dx = dx - 1
       }
-      if (found.length >= count) break
 
       ring = ring + 1
     }
+
+    // sort by distance ascending (nearest first)
+    found.sort(function (a, b) { return a.dist - b.dist })
     return found
   }
 
   // --- weighted random pick: sqrt(distance) as weight -------------------------
+  // Takes the NEAREST_COUNT nearest chunks (chunks is already sorted by dist
+  // ascending from findNearestOreChunks), weights each by sqrt(distance),
+  // picks one randomly weighted by those roots, seeded by chunk coordinate.
   function pickWeighted(chunks, rng) {
+    // take only the NEAREST_COUNT nearest
+    var top = []
+    var limit = chunks.length < NEAREST_COUNT ? chunks.length : NEAREST_COUNT
+    for (var i = 0; i < limit; i++) {
+      top.push(chunks[i])
+    }
+
     var totalWeight = 0
     var weights = []
     var i = 0
@@ -229,20 +237,20 @@
     var r = 0
     var acc = 0
 
-    for (i = 0; i < chunks.length; i++) {
-      w = Math.sqrt(chunks[i].dist)
+    for (i = 0; i < top.length; i++) {
+      w = Math.sqrt(top[i].dist)
       weights.push(w)
       totalWeight = totalWeight + w
     }
-    if (totalWeight <= 0) return chunks[0]
+    if (totalWeight <= 0) return top[0]
 
     r = rng() * totalWeight
     acc = 0
-    for (i = 0; i < chunks.length; i++) {
+    for (i = 0; i < top.length; i++) {
       acc = acc + weights[i]
-      if (r <= acc) return chunks[i]
+      if (r <= acc) return top[i]
     }
-    return chunks[chunks.length - 1]
+    return top[top.length - 1]
   }
 
   // --- report -------------------------------------------------------------------

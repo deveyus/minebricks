@@ -144,10 +144,15 @@
   }
 
   // --- index helpers ----------------------------------------------------------
+  // entity.level.dimension is a Holder<LevelResource> field (not a method).
+  // Access as field, convert Holder to string via String(), parse dimension id.
   function dimKeyOf(chunk) {
     var d = ''
     try {
-      d = String(chunk.getLevel().dimension().location().toString())
+      var dimHolder = chunk.getLevel().dimension   // field access (no parens)
+      var s = String(dimHolder)                    // Holder.toString()
+      var m = s.match(/[a-z0-9]+:[a-z0-9_.\/\\-]+/i)
+      if (m) d = m[0]
     } catch (eDim) {
       d = ''
     }
