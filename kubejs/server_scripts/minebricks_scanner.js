@@ -295,6 +295,48 @@
   // --- wiring --------------------------------------------------------------------
   ServerEvents.loaded(function (event) {
     SERVER = event.server
+
+    // Dump dimension structure at startup so we can see what's available
+    console.info('[scanner] DUMP: server = ' + String(event.server))
+    try {
+      var dimMgr = event.server.dimensionManager
+      console.info('[scanner] DUMP: dimensionManager = ' + String(dimMgr))
+      if (dimMgr) {
+        var dims = dimMgr.dimensions
+        console.info('[scanner] DUMP: dimensionManager.dimensions = ' + String(dims))
+        if (dims) {
+          var it = dims.iterator()
+          var n = 0
+          while (it.hasNext()) {
+            var key = it.next()
+            console.info('[scanner] DUMP: dimension key = ' + String(key))
+            n++
+          }
+          console.info('[scanner] DUMP: dimension count = ' + n)
+        }
+      }
+    } catch (e) {
+      console.info('[scanner] DUMP: dimensionManager failed: ' + e)
+    }
+
+    try {
+      var reg = event.server.getRegistry('minecraft:dimension_type')
+      console.info('[scanner] DUMP: registry minecraft:dimension_type = ' + String(reg))
+    } catch (e) {
+      console.info('[scanner] DUMP: getRegistry dimension_type failed: ' + e)
+    }
+
+    // Also dump what's on Level directly
+    try {
+      var serverLevel = event.server.getLevel('minecraft:overworld')
+      console.info('[scanner] DUMP: overworld Level = ' + String(serverLevel))
+      if (serverLevel) {
+        console.info('[scanner] DUMP: Level.dimension field = ' + String(serverLevel.dimension))
+        console.info('[scanner] DUMP: Level.dimensionType field = ' + String(serverLevel.dimensionType))
+      }
+    } catch (e) {
+      console.info('[scanner] DUMP: getLevel overworld failed: ' + e)
+    }
   })
   ServerEvents.unloaded(function (event) {
     SERVER = null
