@@ -5254,7 +5254,7 @@ hash = "245038d7c9bbd19bde309ec3e2fee1a6c893e9ed38f478a8651da6088f69a81e"
 
 [[files]]
 file = "config/paxi/datapacks/mb-ore-blackout-1029.zip"
-hash = "64b5e99d58424708193dd205c677e3cee5f09c1842c073a5ff4087e3a815d0bb"
+hash = "fd2e2965a2ec99416424102797368e3645576c2fb0b079e49a0a9aa66c59d1fc"
 
 [[files]]
 file = "config/paxi/datapacks/mb-vein-worldgen-1029.zip"
@@ -5510,23 +5510,23 @@ hash = "e553813a5d142132b9adbed96cff132c594b0ac862edc46db00cff8b8a146fd8"
 
 [[files]]
 file = "kubejs/data/minebricks/recipe/ball_mill/chalcopyrite.json"
-hash = "747c3d16bc77372b3b1b8df3cd9e3d4e224ec2922ef90b75fbc264e92e6d0d11"
+hash = "5c151fe5696f500ae76d61496b7b375380b1fdc05e7229e39eee2dcc6eb48034"
 
 [[files]]
 file = "kubejs/data/minebricks/recipe/jaw_crusher/chalcopyrite.json"
-hash = "7bf16de2340885c2a06c914113b3e3c476818e8a825536a62b1a4b554b2a4614"
+hash = "cb3c9826355b71f86a69932214c11014beed76c68d72e57b81bbb959efb90177"
 
 [[files]]
 file = "kubejs/data/minebricks/recipe/roaster/chalcopyrite.json"
-hash = "5ec5c8964c58bcdec8f39c1feda2e6985a8e967f0905cdbed97716d953312a07"
+hash = "eda7276bbf15cd320e2080467005507b2e9dbcaebbf49c52a19c42ca2a0a2cdc"
 
 [[files]]
 file = "kubejs/data/minebricks/recipe/separator/chalcopyrite.json"
-hash = "0d52a73383db9313e467f1e3cbc11034a093b07b9a12423602e24e5ddee5eb83"
+hash = "c64d35d00bb356a3d409d29fc5b7fe60a6cf89f414d48cb5e5743377f5c39d4a"
 
 [[files]]
 file = "kubejs/data/minebricks/recipe/wash_trommel/chalcopyrite.json"
-hash = "e5342406018570b681867b52bddc4e01af5b8c3637bc5989bb14429fcb4718c7"
+hash = "d8d16fbbf9f88dc4c84bd1a3fa8720637162f989a76c300f04c6e2fec12d6f02"
 
 [[files]]
 file = "kubejs/data/minebricks/tags/block/scanner_targets.json"
@@ -5630,11 +5630,11 @@ hash = "ec2ceb46ac4cb731e30ae50780519a3240203a4db2fa10534f20c84af885b484"
 
 [[files]]
 file = "kubejs/startup_scripts/minebricks_mbd2_t4.js"
-hash = "7de42e9d97448a7847b7ed2077b53bfee28bd87a597db01415a0011bbdf3a443"
+hash = "f53426b25c990a69cb1bfe757c347f93554a41be6f909dac4ebd954ce82ed2ed"
 
 [[files]]
 file = "kubejs/startup_scripts/minebricks_ore_chain.js"
-hash = "3be500837a75c0385e2ced09daa4ef7b1094ba6a2c614af6f2514b01837eac1f"
+hash = "de0cf6021e696ade1439d1f2bc08f886c1a8f5c54977c5c4771701b7cb87a9f9"
 
 [[files]]
 file = "kubejs/startup_scripts/minebricks_scanner_item.js"
