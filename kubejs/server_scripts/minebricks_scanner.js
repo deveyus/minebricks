@@ -276,20 +276,32 @@
     var rng = null
     try {
       hand = String(event.hand)
-      if (hand !== 'MAIN_HAND') return
+      if (hand !== 'MAIN_HAND') {
+        entity.tell('Scanner: hold it in your main hand.')
+        return
+      }
       entity = event.entity
       if (!entity) return
       // server side only: the event rides 'common' and fires on both logical sides
       if (entity.level.isClientSide()) return
       stackId = String(event.item.id)
-      if (stackId !== SCANNER_ID) return
+      if (stackId !== SCANNER_ID) {
+        entity.tell('Scanner: not a scanner item.')
+        return
+      }
       if (!throttleOK(entity)) return
 
       var pcx = Math.floor(entity.x / 16)
       var pcz = Math.floor(entity.z / 16)
       var dim = playerDim(entity)
-      if (dim === '') return
-      if (!SERVER) return
+      if (dim === '') {
+        entity.tell('Scanner: cannot determine dimension.')
+        return
+      }
+      if (!SERVER) {
+        entity.tell('Scanner: server not ready yet.')
+        return
+      }
 
       rng = makeSeededRng(pcx, pcz)
       chunks = findNearestOreChunks(dim, pcx, pcz, NEAREST_COUNT)
