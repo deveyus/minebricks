@@ -1,6 +1,6 @@
 // ===========================================================================
 // Minebricks — ore chain: chalcopyrite ore block + intermediary items
-// Spec: Fina 2026-10-28 ~22:03Z ("Build the end to end for Chalcopyerite...
+// Spec: Fina 2026-10-28 ~22:03Z ("Build the end to end for Chalcopyrite...
 // the machines needed to get to T4"; EE ruled extraneous same message —
 // item forms are ours, generated from the MATERIALS x PARTS array).
 //

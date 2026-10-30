@@ -1,6 +1,6 @@
 // ===========================================================================
 // Minebricks MBD2 — T3/T4 chain machines (ball mill, separator, roaster)
-// Spec: Fina 2026-10-28 ~22:03Z ("Build the end to end for Chalcopyerite...
+// Spec: Fina 2026-10-28 ~22:03Z ("Build the end to end for Chalcopyrite...
 // also the machines needed to get to T4"). Same source-verified authoring
 // path as minebricks_mbd2_t1.js (TestMachineBuilder pattern, manual
 // registration via MBDRegistries because the KubeJS event's auto-register

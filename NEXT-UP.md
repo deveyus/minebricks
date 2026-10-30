@@ -1275,7 +1275,7 @@ accumulators + 4 NC lithium-ion tiers + AR3 battery, nothing else network-grade.
 Capacity numbers not yet extracted (one config pass away if wanted).
 
 **ORE CHAIN E2E (chalcopyrite, T1→T4) — BUILT 2026-10-29 (0.4.18, pushed):**
-Her go ~22:03Z: "Build the end to end for Chalcopyerite, a rough sketch is more
+Her go ~22:03Z: "Build the end to end for Chalcopyrite, a rough sketch is more
 useful than guesswork now, also the machines needed to get to T4. Ask me
 questions first if you need to before you work, but following what you already
 know and filling in the most obvious of gaps will likely suffice." No questions
