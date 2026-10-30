@@ -40,64 +40,51 @@
     return INDEX_ROOT + ':' + dim + '|' + cx + ',' + cz
   }
 
-  // --- dimension resolution: try multiple accessor chains --------------------
-  // NeoForge 1.21.1: Level.dimension() -> Holder<LevelResource> ->
-  //   Holder.key() -> ResourceKey -> ResourceKey.location() -> ResourceLocation
-  // Older/other paths: Level.dimension().location() or dimensionType().location()
+  // --- dimension resolution: entity.level.dimension is a Holder<LevelResource> field ---
+  // In NeoForge 1.21.1, Level.dimension is a public final field (Holder<LevelResource>),
+  // NOT a callable method. Calling level.dimension() throws "not a function".
+  // Access as a field, convert Holder to string via String(), parse the dimension id.
   function playerDim(entity) {
     var level = null
-    var dim = null
-    var key = null
-    var loc = null
     try {
       level = entity.level
-    } catch (eLev) {
-      console.info('[scanner] playerDim: entity.level threw: ' + eLev)
+    } catch (e) {
+      console.info('[scanner] playerDim: entity.level threw: ' + e)
       return ''
     }
     if (!level) {
       console.info('[scanner] playerDim: entity.level is null')
       return ''
     }
+
+    var dimStr = ''
+
+    // Approach 1: level.dimension field -> Holder -> String() -> parse
     try {
-      dim = level.dimension()
-    } catch (eDim) {
-      console.info('[scanner] playerDim: level.dimension() threw: ' + eDim)
-      return ''
+      var dimHolder = level.dimension   // field access (no parens - it's a field, not a method)
+      var s = String(dimHolder)          // Holder.toString() -> "minecraft:overworld" or similar
+      var m = s.match(/[a-z0-9]+:[a-z0-9_.\/\\-]+/i)
+      if (m) dimStr = m[0]
+    } catch (e) {
+      console.info('[scanner] playerDim: level.dimension field threw: ' + e)
     }
-    if (!dim) {
-      console.info('[scanner] playerDim: level.dimension() is null')
-      return ''
-    }
-    // Preferred: Holder.key().location()
-    try {
-      key = dim.key()
-      if (key) {
-        loc = key.location()
-        if (loc) return String(loc.toString())
+
+    // Approach 2: level.dimensionType field -> Holder -> String() -> parse
+    if (!dimStr) {
+      try {
+        var dt = level.dimensionType
+        if (dt) {
+          var s2 = String(dt)
+          var m2 = s2.match(/[a-z0-9]+:[a-z0-9_.\/\\-]+/i)
+          if (m2) dimStr = m2[0]
+        }
+      } catch (e) {
+        console.info('[scanner] playerDim: level.dimensionType threw: ' + e)
       }
-    } catch (eKey) {
-      console.info('[scanner] playerDim: dimension.key().location() threw: ' + eKey)
     }
-    // Fallback: dimension().location()
-    try {
-      loc = dim.location()
-      if (loc) return String(loc.toString())
-    } catch (eLoc) {
-      console.info('[scanner] playerDim: dimension.location() threw: ' + eLoc)
-    }
-    // Fallback: dimensionType().location()
-    try {
-      dim = level.dimensionType()
-      if (dim) {
-        loc = dim.location()
-        if (loc) return String(loc.toString())
-      }
-    } catch (eType) {
-      console.info('[scanner] playerDim: dimensionType().location() threw: ' + eType)
-    }
-    console.info('[scanner] playerDim: all dimension accessors failed')
-    return ''
+
+    console.info('[scanner] playerDim: resolved dimension = "' + dimStr + '"')
+    return dimStr
   }
 
   // --- seeded RNG: simple LCG seeded by player chunk coordinate --------------
